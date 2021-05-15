@@ -69,8 +69,9 @@ public class JobApi extends BaseController {
             logger.error("请求订单异常", e);
             responseJson = DataTransactionFactory.createBusinessResponseJson(businessServiceDataFlow, ResponseConstant.RESULT_CODE_ERROR, e.getMessage() + e,
                     null);
+        } finally {
+            return responseJson.toJSONString();
         }
-        return responseJson.toJSONString();
     }
 
 

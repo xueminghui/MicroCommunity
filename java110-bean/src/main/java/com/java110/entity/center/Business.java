@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
  * 业务数据
  * Created by wuxw on 2018/4/13.
  */
-public class Business implements Comparable<Business>{
+public class Business implements Comparable{
 
     private String bId;
 
@@ -167,7 +167,8 @@ public class Business implements Comparable<Business>{
     }
 
     @Override
-    public int compareTo(Business otherBusiness) {
+    public int compareTo(Object o) {
+        Business otherBusiness = (Business)o;
         if(this.getSeq() > otherBusiness.getSeq()) {
             return -1;
         }

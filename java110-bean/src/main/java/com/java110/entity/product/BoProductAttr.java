@@ -1,6 +1,7 @@
 package com.java110.entity.product;
 
 import com.java110.entity.product.BoProductAttr;
+import com.java110.entity.product.ProductAttr;
 
 /**
  *
@@ -8,7 +9,7 @@ import com.java110.entity.product.BoProductAttr;
  *
  * Created by wuxw on 2017/5/20.
  */
-public class BoProductAttr extends ProductAttr implements Comparable<BoProductAttr>{
+public class BoProductAttr extends ProductAttr implements Comparable{
 
     private String boId;
 
@@ -40,7 +41,8 @@ public class BoProductAttr extends ProductAttr implements Comparable<BoProductAt
     }
 
     @Override
-    public int compareTo(BoProductAttr otherBoProduct) {
+    public int compareTo(Object o) {
+        BoProductAttr otherBoProduct = (BoProductAttr)o;
         if("DEL".equals(this.getState()) && "ADD".equals(otherBoProduct.getState())) {
             return -1;
         }

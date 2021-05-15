@@ -8,7 +8,7 @@ import java.util.Date;
  * 客户属性表（过程表）
  * Created by wuxw on 2016/12/27.
  */
-public class BoCustAttr extends DefaultBoAttrEntity implements Comparable<BoCustAttr>{
+public class BoCustAttr extends DefaultBoAttrEntity implements Comparable{
 
     private String custId;
 
@@ -35,7 +35,8 @@ public class BoCustAttr extends DefaultBoAttrEntity implements Comparable<BoCust
     }
 
     @Override
-    public int compareTo(BoCustAttr otherBoCust) {
+    public int compareTo(Object o) {
+        BoCustAttr otherBoCust = (BoCustAttr)o;
         if("DEL".equals(this.getState()) && "ADD".equals(otherBoCust.getState())) {
             return -1;
         }
