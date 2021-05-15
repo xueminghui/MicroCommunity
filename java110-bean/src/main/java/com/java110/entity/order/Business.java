@@ -9,7 +9,7 @@ import java.util.List;
  * @create 2019-02-05 上午11:27
  * @desc 订单项 对应表c_business
  **/
-public class Business extends BusinessPlus implements Comparable<Business>{
+public class Business extends BusinessPlus implements Comparable{
 
 
     /**
@@ -76,7 +76,8 @@ public class Business extends BusinessPlus implements Comparable<Business>{
     }
 
     @Override
-    public int compareTo(Business otherBusiness) {
+    public int compareTo(Object o) {
+        Business otherBusiness = (Business)o;
         if(this.getSeq() < otherBusiness.getSeq()) {
             return -1;
         }
