@@ -82,8 +82,8 @@ public class ListInspectionPlansListener extends AbstractServiceApiListener {
 
         if (count > 0) {
             inspectionPlans = BeanConvertUtil.covertBeanList(inspectionPlanInnerServiceSMOImpl.queryInspectionPlans(inspectionPlanDto), ApiInspectionPlanDataVo.class);
-            List<Object> staffIds = new ArrayList<Object>();
-            List<Object> inspectionRouteIds = new ArrayList<Object>();
+            ArrayList staffIds = new ArrayList<>();
+            ArrayList inspectionRouteIds = new ArrayList<>();
             for (ApiInspectionPlanDataVo Plans : inspectionPlans) {
                 staffIds.add(Plans.getStaffId());
                 String[] ids = Plans.getInspectionRouteId().split(",");

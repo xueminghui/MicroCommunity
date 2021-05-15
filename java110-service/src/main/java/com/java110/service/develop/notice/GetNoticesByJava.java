@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName GetNoticesByJava
@@ -21,7 +20,7 @@ public class GetNoticesByJava implements IDevelop {
     @Override
     public JSONObject execute(DataQuery dataQuery) {
         JSONObject params = dataQuery.getRequestParams();
-        List<Object> sqlParams = new ArrayList<Object>();
+        List sqlParams = new ArrayList();
 
         String sql = "SELECT nn.`notice_id` noticeId," +
                 "nn.`title`," +
@@ -49,7 +48,7 @@ public class GetNoticesByJava implements IDevelop {
             sqlParams.add(params.get("title"));
         }
 
-        List<Map<String, Object>> outParam = dataQuery.queryDataBySql(sql,sqlParams);
+        List outParam = dataQuery.queryDataBySql(sql,sqlParams);
 
         JSONObject outObj = new JSONObject();
         outObj.put("notices", outParam);

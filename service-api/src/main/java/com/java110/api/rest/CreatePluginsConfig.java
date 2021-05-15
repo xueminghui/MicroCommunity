@@ -17,7 +17,7 @@ public class CreatePluginsConfig {
     }
 
     public void print() {
-        List<String> list = getFileList(path);
+        List list = getFileList(path);
         if (list == null) {
             return;
         }
@@ -54,7 +54,7 @@ public class CreatePluginsConfig {
         }
     }
 
-    public List<String> getFileList(String path) {
+    public List getFileList(String path) {
         path = getFormatPath(path);
         path = path + "/";
         File filePath = new File(path);
@@ -62,7 +62,7 @@ public class CreatePluginsConfig {
             return null;
         }
         String[] filelist = filePath.list();
-        List<String> filelistFilter = new ArrayList<String>();
+        List filelistFilter = new ArrayList();
 
         for (int i = 0; i < filelist.length; i++) {
             String tempfilename = getFormatPath(path + filelist[i]);

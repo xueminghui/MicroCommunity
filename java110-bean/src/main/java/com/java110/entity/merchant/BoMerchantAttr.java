@@ -9,7 +9,7 @@ import java.util.Date;
  * 商户属性表 bo_merchant_type
  * Created by wuxw on 2017/5/20.
  */
-public class BoMerchantAttr extends DefaultBoAttrEntity implements Comparable<BoMerchantAttr> {
+public class BoMerchantAttr extends DefaultBoAttrEntity implements Comparable {
 
     private String boId;
 
@@ -86,7 +86,8 @@ public class BoMerchantAttr extends DefaultBoAttrEntity implements Comparable<Bo
     }
 
     @Override
-    public int compareTo(BoMerchantAttr otherBoMerchant) {
+    public int compareTo(Object o) {
+        BoMerchantAttr otherBoMerchant = (BoMerchantAttr)o;
         if("DEL".equals(this.getState()) && "ADD".equals(otherBoMerchant.getState())) {
             return -1;
         }
