@@ -15,7 +15,7 @@
 [https://gitee.com/java110/PropertyApp](https://gitee.com/java110/PropertyApp)
 
 ### HC社区商城（免费安装使用）
-[http://bbs.homecommunity.cn/topic/84-shang-cheng-bu-shu-bao-xia-zai](http://bbs.homecommunity.cn/topic/84-shang-cheng-bu-shu-bao-xia-zai)
+[http://bbs.homecommunity.cn/pages/bbs/topic.html?topicId=102021111778030050](http://bbs.homecommunity.cn/pages/bbs/topic.html?topicId=102021111778030050)
 
 ### 分支说明（branch）
 
@@ -42,7 +42,7 @@
 
 方案三、宝塔方式安装
 
-[宝塔方式安装](http://bbs.homecommunity.cn/topic/80-linuxbao-ta-huan-jing-xia-kuai-su-bu-shu-mian-bian-yi-hui-yong-bao-ta-jiu-hui-yong-hc)
+[宝塔方式安装](http://bbs.homecommunity.cn/pages/bbs/topic.html?topicId=102021110831560082)
 
 ### 操作文档
 
@@ -51,6 +51,10 @@
 ### 技术文档
 
 [技术文档](http://www.homecommunity.cn/devDoc)
+
+### 知识库
+
+[技术库](http://bbs.homecommunity.cn) 您有任何问题可以去知识库查阅和提问，我们再第一时间解答您的问题
 
     
 ### 产品
