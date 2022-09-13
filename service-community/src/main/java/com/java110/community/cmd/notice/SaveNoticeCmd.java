@@ -100,6 +100,12 @@ public class SaveNoticeCmd extends Cmd {
         Assert.hasKeyAndValue(reqJson, "startTime", "必选，请填写开始时间 ");
         Assert.hasKeyAndValue(reqJson, "endTime", "必选，请填写结束时间 ");
 
+        String userId = cmdDataFlowContext.getReqHeaders().get("user-id");
+        String storeId = cmdDataFlowContext.getReqHeaders().get("store-id");
+
+        reqJson.put("userId",userId);
+        reqJson.put("storeId",storeId);
+
     }
 
     @Override
@@ -148,7 +154,7 @@ public class SaveNoticeCmd extends Cmd {
 
         int count = 0;
         if (UserDto.LEVEL_CD_ADMIN.equals(userDtos.get(0).getLevelCd())) {
-            CommunityDto communityDto = BeanConvertUtil.covertBean(reqJson, CommunityDto.class);
+            CommunityDto communityDto = new CommunityDto();
             communityDto.setMemberId(reqJson.getString("storeId"));
             communityDto.setAuditStatusCd(StateConstant.AGREE_AUDIT);
             if (reqJson.containsKey("communityName")) {
@@ -162,7 +168,7 @@ public class SaveNoticeCmd extends Cmd {
             }
         } else {
             RoleCommunityDto orgCommunityDto = BeanConvertUtil.covertBean(reqJson, RoleCommunityDto.class);
-            orgCommunityDto.setStaffId(userDtos.get(0).getStaffId());
+            orgCommunityDto.setStaffId(userDtos.get(0).getUserId());
             count = roleCommunityV1InnerServiceSMOImpl.queryRoleCommunitysCount(orgCommunityDto);
             if (count > 0) {
                 List<RoleCommunityDto> roleCommunityDtos = roleCommunityV1InnerServiceSMOImpl.queryRoleCommunitys(orgCommunityDto);
