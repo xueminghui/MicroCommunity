@@ -139,23 +139,23 @@ public class SaveOwnerCmd extends Cmd {
             }
         }
         if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(reqJson.getString("ownerPhoto"));
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(reqJson.getString("communityId"));
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-            reqJson.put("ownerPhotoId", fileDto.getFileId());
-            reqJson.put("fileSaveName", fileName);
-
             JSONObject businessUnit = new JSONObject();
+            String _photo = reqJson.getString("ownerPhoto");
+            if(_photo.length()> 512){
+                FileDto fileDto = new FileDto();
+                fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+                fileDto.setFileName(fileDto.getFileId());
+                fileDto.setContext(_photo);
+                fileDto.setSuffix("jpeg");
+                fileDto.setCommunityId(reqJson.getString("communityId"));
+                _photo = fileInnerServiceSMOImpl.saveFile(fileDto);
+            }
             businessUnit.put("fileRelId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
             businessUnit.put("relTypeCd", "10000");
             businessUnit.put("saveWay", "table");
             businessUnit.put("objId", reqJson.getString("memberId"));
-            businessUnit.put("fileRealName", reqJson.getString("ownerPhotoId"));
-            businessUnit.put("fileSaveName", reqJson.getString("fileSaveName"));
+            businessUnit.put("fileRealName", _photo);
+            businessUnit.put("fileSaveName", _photo);
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             flag = fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             if (flag < 1) {

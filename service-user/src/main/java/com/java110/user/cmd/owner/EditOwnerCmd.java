@@ -142,18 +142,18 @@ public class EditOwnerCmd extends Cmd {
 //        if (link.length() != 11) {
 //            throw new IllegalArgumentException("手机号输入不正确！");
 //        }
-        if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(reqJson.getString("ownerPhoto"));
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(reqJson.getString("communityId"));
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-            reqJson.put("ownerPhotoId", fileDto.getFileId());
-            reqJson.put("fileSaveName", fileName);
-            editOwnerPhoto(reqJson);
-        }
+        // if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
+        //     FileDto fileDto = new FileDto();
+        //     fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+        //     fileDto.setFileName(fileDto.getFileId());
+        //     fileDto.setContext(reqJson.getString("ownerPhoto"));
+        //     fileDto.setSuffix("jpeg");
+        //     fileDto.setCommunityId(reqJson.getString("communityId"));
+        //     String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
+        //     reqJson.put("ownerPhotoId", fileDto.getFileId());
+        //     reqJson.put("fileSaveName", fileName);
+        //     editOwnerPhoto(reqJson);
+        // }
         editOwner(reqJson);
         JSONArray attrs = reqJson.getJSONArray("attrs");
         if (attrs.size() < 1) {
@@ -224,7 +224,18 @@ public class EditOwnerCmd extends Cmd {
         }
     }
 
-    public void editOwnerPhoto(JSONObject paramInJson) {
+     public void editOwnerPhoto(JSONObject paramInJson) {
+
+        String _photo = paramInJson.getString("ownerPhoto");
+        if(_photo.length()> 512){
+            FileDto fileDto = new FileDto();
+            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
+            fileDto.setFileName(fileDto.getFileId());
+            fileDto.setContext(_photo);
+            fileDto.setSuffix("jpeg");
+            fileDto.setCommunityId(paramInJson.getString("communityId"));
+            _photo = fileInnerServiceSMOImpl.saveFile(fileDto);
+        }
 
         FileRelDto fileRelDto = new FileRelDto();
         fileRelDto.setRelTypeCd("10000");
@@ -237,8 +248,8 @@ public class EditOwnerCmd extends Cmd {
             businessUnit.put("relTypeCd", "10000");
             businessUnit.put("saveWay", "table");
             businessUnit.put("objId", paramInJson.getString("memberId"));
-            businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
-            businessUnit.put("fileSaveName", paramInJson.getString("fileSaveName"));
+            businessUnit.put("fileRealName", _photo);
+            businessUnit.put("fileSaveName", _photo);
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             flag = fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             if (flag < 1) {
@@ -249,8 +260,8 @@ public class EditOwnerCmd extends Cmd {
 
         JSONObject businessUnit = new JSONObject();
         businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
-        businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
-        businessUnit.put("fileSaveName", paramInJson.getString("fileSaveName"));
+        businessUnit.put("fileRealName", _photo);
+        businessUnit.put("fileSaveName", _photo);
         FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
         flag = fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
         if (flag < 1) {
