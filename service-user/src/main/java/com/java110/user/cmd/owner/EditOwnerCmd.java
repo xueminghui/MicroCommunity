@@ -142,18 +142,9 @@ public class EditOwnerCmd extends Cmd {
 //        if (link.length() != 11) {
 //            throw new IllegalArgumentException("手机号输入不正确！");
 //        }
-        // if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
-        //     FileDto fileDto = new FileDto();
-        //     fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-        //     fileDto.setFileName(fileDto.getFileId());
-        //     fileDto.setContext(reqJson.getString("ownerPhoto"));
-        //     fileDto.setSuffix("jpeg");
-        //     fileDto.setCommunityId(reqJson.getString("communityId"));
-        //     String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-        //     reqJson.put("ownerPhotoId", fileDto.getFileId());
-        //     reqJson.put("fileSaveName", fileName);
-        //     editOwnerPhoto(reqJson);
-        // }
+       if (reqJson.containsKey("ownerPhoto") && !StringUtils.isEmpty(reqJson.getString("ownerPhoto"))) {
+            editOwnerPhoto(reqJson);
+        }
         editOwner(reqJson);
         JSONArray attrs = reqJson.getJSONArray("attrs");
         if (attrs.size() < 1) {
