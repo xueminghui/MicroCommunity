@@ -46,6 +46,8 @@ public class ApiOwnerDataVo extends Vo {
 
     private String idCard;
 
+     private String url;
+
     public String getOwnerId() {
         return ownerId;
     }
@@ -164,5 +166,13 @@ public class ApiOwnerDataVo extends Vo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+     public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
