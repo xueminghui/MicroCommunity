@@ -74,7 +74,4 @@ public interface IOrgCommunityV1ServiceDao {
      */
     int queryOrgCommunitysCount(Map info);
 
-    int queryRoleCommunitysNameCount(Map info);
-
-    List<Map>  queryRoleCommunitysName(Map info);
 }
