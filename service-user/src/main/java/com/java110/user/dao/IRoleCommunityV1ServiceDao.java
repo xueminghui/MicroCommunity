@@ -74,4 +74,8 @@ public interface IRoleCommunityV1ServiceDao {
      */
     int queryRoleCommunitysCount(Map info);
 
+    int queryRoleCommunitysNameCount(Map info);
+
+    List<Map>  queryRoleCommunitysName(Map info);
+
 }
