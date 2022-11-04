@@ -449,14 +449,9 @@ public class RoomRenovationApi {
             //19000表示装修图片
             fileRelPo.setRelTypeCd("19000");
             for (String photo : photos) {
-                FileDto fileDto = new FileDto();
-                fileDto.setCommunityId("-1");
-                fileDto.setContext(photo);
-                fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-                fileDto.setFileName(fileDto.getFileId());
-                String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-                fileRelPo.setFileRealName(fileName);
-                fileRelPo.setFileSaveName(fileName);
+                 fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
+                fileRelPo.setFileRealName(photo);
+                fileRelPo.setFileSaveName(photo);
                 fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             }
         }
