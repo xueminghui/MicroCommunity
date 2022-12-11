@@ -169,7 +169,7 @@
         and ppu.status_cd = '0'
     </update>
 
-    <select id="queryPrivilegeUsers" parameterType="map" resultType="map">
+     <select id="queryPrivilegeUsers" parameterType="map" resultType="map">
         select distinct t.user_id userId
         from p_privilege_user t
         INNER JOIN p_privilege p on t.p_id = p.p_id and p.status_cd = '0'
@@ -197,9 +197,6 @@
         </if>
         <if test="storeId != null and storeId != ''">
             and t.store_id = #{storeId}
-        </if>
-        <if test="communityId != null and communityId != ''">
-            and t.community_id = #{communityId}
         </if>
     </select>
 
