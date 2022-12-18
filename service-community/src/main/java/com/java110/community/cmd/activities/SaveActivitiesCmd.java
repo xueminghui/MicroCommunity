@@ -229,27 +229,16 @@ public class SaveActivitiesCmd extends Cmd {
 
     public void addActivities(ICmdDataFlowContext context, JSONObject reqJson) {
         reqJson.put("activitiesId", GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_activitiesId));
-        if (reqJson.containsKey("headerImg") && !StringUtils.isEmpty(reqJson.getString("headerImg"))) {
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(reqJson.getString("headerImg"));
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(reqJson.getString("communityId"));
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-
-            reqJson.put("headerImg", fileDto.getFileId());
-            reqJson.put("fileSaveName", fileName);
-
+       if (reqJson.containsKey("headerImg") && !StringUtils.isEmpty(reqJson.getString("headerImg"))) {
             FileRelPo fileRelPo = new FileRelPo();
             fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
             fileRelPo.setFileRealName(reqJson.getString("headerImg"));
-            fileRelPo.setFileSaveName(reqJson.getString("fileSaveName"));
+            fileRelPo.setFileSaveName(reqJson.getString("headerImg"));
             fileRelPo.setObjId(reqJson.getString("activitiesId"));
             fileRelPo.setSaveWay("table");
             fileRelPo.setRelTypeCd("70000");
             int flag = fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-            if(flag < 1){
+            if (flag < 1) {
                 throw new CmdException("保存广告失败");
             }
         }
