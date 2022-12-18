@@ -86,48 +86,34 @@ public class UpdateActivitiesCmd extends Cmd {
     @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
 
-
         if (reqJson.containsKey("headerImg") && !StringUtils.isEmpty(reqJson.getString("headerImg"))) {
-            FileDto fileDto = new FileDto();
-            fileDto.setFileId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_file_id));
-            fileDto.setFileName(fileDto.getFileId());
-            fileDto.setContext(reqJson.getString("headerImg"));
-            fileDto.setSuffix("jpeg");
-            fileDto.setCommunityId(reqJson.getString("communityId"));
-            String fileName = fileInnerServiceSMOImpl.saveFile(fileDto);
-
-            reqJson.put("headerImg", fileDto.getFileId());
-            reqJson.put("fileSaveName", fileName);
-
             FileRelDto fileRelDto = new FileRelDto();
             fileRelDto.setRelTypeCd("70000");
             fileRelDto.setObjId(reqJson.getString("activitiesId"));
             List<FileRelDto> fileRelDtos = fileRelInnerServiceSMOImpl.queryFileRels(fileRelDto);
-
             if (fileRelDtos == null || fileRelDtos.size() == 0) {
                 FileRelPo fileRelPo = new FileRelPo();
                 fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_fileRelId));
                 fileRelPo.setFileRealName(reqJson.getString("headerImg"));
-                fileRelPo.setFileSaveName(reqJson.getString("fileSaveName"));
+                fileRelPo.setFileSaveName(reqJson.getString("headerImg"));
                 fileRelPo.setObjId(reqJson.getString("activitiesId"));
                 fileRelPo.setSaveWay("table");
                 fileRelPo.setRelTypeCd("70000");
                 int flag = fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-                if(flag < 1){
+                if (flag < 1) {
                     throw new CmdException("保存广告失败");
                 }
             } else {
                 FileRelPo fileRelPo = new FileRelPo();
                 fileRelPo.setFileRelId(fileRelDtos.get(0).getFileRelId());
                 fileRelPo.setFileRealName(reqJson.getString("headerImg"));
-                fileRelPo.setFileSaveName(reqJson.getString("fileSaveName"));
+                fileRelPo.setFileSaveName(reqJson.getString("headerImg"));
                 fileRelPo.setObjId(reqJson.getString("activitiesId"));
                 int flag = fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);
-                if(flag < 1){
+                if (flag < 1) {
                     throw new CmdException("保存广告失败");
                 }
             }
-
         }
 
         ActivitiesPo activitiesPo = BeanConvertUtil.covertBean(reqJson, ActivitiesPo.class);
