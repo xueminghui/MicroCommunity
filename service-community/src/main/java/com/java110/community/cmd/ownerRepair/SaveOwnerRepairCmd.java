@@ -37,6 +37,7 @@ import com.java110.vo.ResultVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import com.java110.core.annotation.Java110Transactional;
 
 import java.text.ParseException;
 import java.util.List;
@@ -101,6 +102,7 @@ public class SaveOwnerRepairCmd extends Cmd {
     }
 
     @Override
+    @Java110Transactional
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         //获取当前小区id
         String communityId = reqJson.getString("communityId");
