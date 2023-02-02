@@ -13,18 +13,17 @@ import com.java110.community.bmo.roomRenovationRecord.IGetRoomRenovationRecordBM
 import com.java110.community.bmo.roomRenovationRecord.ISaveRoomRenovationRecordBMO;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.smo.IPhotoSMO;
 import com.java110.dto.RoomDto;
 import com.java110.dto.communitySetting.CommunitySettingDto;
 import com.java110.dto.fee.FeeAttrDto;
 import com.java110.dto.fee.FeeConfigDto;
 import com.java110.dto.fee.FeeDto;
-import com.java110.dto.file.FileDto;
 import com.java110.dto.file.FileRelDto;
 import com.java110.dto.owner.OwnerRoomRelDto;
 import com.java110.dto.roomRenovation.RoomRenovationDto;
 import com.java110.dto.roomRenovationDetail.RoomRenovationDetailDto;
 import com.java110.dto.user.UserDto;
-import com.java110.intf.common.IFileInnerServiceSMO;
 import com.java110.intf.common.IFileRelInnerServiceSMO;
 import com.java110.intf.community.ICommunitySettingInnerServiceSMO;
 import com.java110.intf.community.IRoomRenovationInnerServiceSMO;
@@ -95,9 +94,6 @@ public class RoomRenovationApi {
     private IGetRoomRenovationRecordBMO getRoomRenovationRecordBMOImpl;
 
     @Autowired
-    private IFileInnerServiceSMO fileInnerServiceSMOImpl;
-
-    @Autowired
     private IDeleteRoomRenovationRecordBMO deleteRoomRenovationRecordBMOImpl;
 
     @Autowired
@@ -114,6 +110,9 @@ public class RoomRenovationApi {
 
     @Autowired
     private IOwnerRoomRelInnerServiceSMO ownerRoomRelInnerServiceSMOImpl;
+
+    @Autowired
+    private IPhotoSMO photoSMOImpl;
 
     /**
      * 微信保存消息模板
@@ -438,23 +437,25 @@ public class RoomRenovationApi {
         roomRenovationRecordPo.setStaffName(users.get(0).getName());
         roomRenovationRecordPo.setIsTrue(isTrue);
         saveRoomRenovationRecordBMO.saveRecord(roomRenovationRecordPo);
+        for (String photo : photos) {
+            photoSMOImpl.savePhoto(photo,roomRenovationRecordPo.getRecordId(),roomRenovationPo.getCommunityId(),"19000");
+        }
         FileRelPo fileRelPo = new FileRelPo();
-        fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
         fileRelPo.setObjId(roomRenovationRecordPo.getRecordId());
         //table表示表存储 ftp表示ftp文件存储
         fileRelPo.setSaveWay("ftp");
         fileRelPo.setCreateTime(new Date());
-        //图片上传
-        if (photos != null && photos.size() > 0) {
-            //19000表示装修图片
-            fileRelPo.setRelTypeCd("19000");
-            for (String photo : photos) {
-                 fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
-                fileRelPo.setFileRealName(photo);
-                fileRelPo.setFileSaveName(photo);
-                fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
-            }
-        }
+//        //图片上传
+//        if (photos != null && photos.size() > 0) {
+//            //19000表示装修图片
+//            fileRelPo.setRelTypeCd("19000");
+//            for (String photo : photos) {
+//                fileRelPo.setFileRelId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_relId));
+//                fileRelPo.setFileRealName(photo);
+//                fileRelPo.setFileSaveName(photo);
+//                fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
+//            }
+//        }
         //视频上传
         if (!StringUtil.isEmpty(videoName)) {
             //21000表示装修视频
@@ -568,7 +569,6 @@ public class RoomRenovationApi {
     @RequestMapping(value = "/saveRoomRenovationDetail", method = RequestMethod.POST)
     @Java110Transactional
     public ResponseEntity<String> saveRoomRenovationDetail(@RequestHeader(value = "user-id") String userId,
-                                                           @RequestHeader(value = "user-name") String userName,
                                                            @RequestBody JSONObject reqJson) {
         Assert.hasKeyAndValue(reqJson, "rId", "请求报文中未包含rId");
         Assert.hasKeyAndValue(reqJson, "communityId", "请求报文中未包含communityId");
