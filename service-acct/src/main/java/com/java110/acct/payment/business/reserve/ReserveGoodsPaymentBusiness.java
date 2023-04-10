@@ -242,7 +242,7 @@ public class ReserveGoodsPaymentBusiness implements IPaymentBusiness {
                 throw new CmdException("保存数据失败");
             }
 
-            JSONArray hours = reqJson.getJSONArray("hours");
+            JSONArray hours = goodsObj.getJSONArray("hours");
 
             ReserveGoodsOrderTimePo reserveGoodsOrderTimePo = null;
             for (int timeIndex = 0; timeIndex < hours.size(); timeIndex++) {
