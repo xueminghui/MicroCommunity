@@ -172,7 +172,7 @@ public class ReserveGoodsPaymentBusiness implements IPaymentBusiness {
         ReserveGoodsOrderTimeDto reserveGoodsOrderTimeDto = null;
         int flag = 0;
         int quantity = 0;
-        quantity = Integer.parseInt(reqJson.getString("quantity"));
+        quantity = Integer.parseInt(goodsInfo.getString("quantity"));
         for (int timeIndex = 0; timeIndex < hours.size(); timeIndex++) {
             reserveGoodsOrderTimeDto = new ReserveGoodsOrderTimeDto();
             reserveGoodsOrderTimeDto.setCommunityId(reqJson.getString("communityId"));
