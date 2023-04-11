@@ -57,6 +57,9 @@ public class UpdateFeeCmd extends Cmd {
         List<FeeDto> feeDtos = feeInnerServiceSMOImpl.queryFees(feeDto);
 
         Assert.listOnlyOne(feeDtos, "未查询到费用信息 或查询到多条" + reqJson);
+        if(FeeDto.FEE_FLAG_CYCLE.equals(feeDtos.get(0).getFeeFlag()) && reqJson.containsKey("maxEndTime")){
+            reqJson.remove("maxEndTime");
+        }
     }
 
     @Override
