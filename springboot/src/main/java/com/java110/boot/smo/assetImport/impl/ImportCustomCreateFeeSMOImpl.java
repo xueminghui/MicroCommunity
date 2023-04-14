@@ -121,6 +121,7 @@ public class ImportCustomCreateFeeSMOImpl extends DefaultAbstractComponentSMO im
 
         } catch (Exception e) {
             logger.error("导入失败 ", e);
+              e.printStackTrace();
             return new ResponseEntity<String>("非常抱歉，您填写的模板数据有误：" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
