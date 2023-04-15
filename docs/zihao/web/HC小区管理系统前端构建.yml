@@ -1,9 +1,9 @@
 version: "1.0"
 job:
     job_name: HC小区管理系统前端构建
-    git_url: https://gitee.com/java110/MicroCommunityWeb.git
-    git_passwd: 无
-    git_username: 无
+    git_url: https://gitee.com/new-youth-league/MicroCommunity.git
+    git_passwd: 18181392615
+    git_username: by999999
     work_dir: /home/hc/MicroCommunityWeb
     job_shell: |-
         rm -rf /home/data/web/propertyWeb
