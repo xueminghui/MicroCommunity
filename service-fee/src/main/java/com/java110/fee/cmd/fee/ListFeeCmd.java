@@ -229,7 +229,7 @@ public class ListFeeCmd extends Cmd {
                     }
                 } else if (!StringUtil.isEmpty(feeDto.getPayerObjType()) && feeDto.getPayerObjType().equals("6666")) {
                     OwnerCarDto ownerCarDto = new OwnerCarDto();
-                    ownerCarDto.setCarId(feeDto.getPayerObjId());
+                    ownerCarDto.setMemberId(feeDto.getPayerObjId());
                     List<OwnerCarDto> ownerCarDtos = ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
                     Assert.listOnlyOne(ownerCarDtos, "查询业主车辆表错误！");
                     OwnerDto ownerDto = new OwnerDto();
