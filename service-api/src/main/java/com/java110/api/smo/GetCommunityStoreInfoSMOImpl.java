@@ -33,6 +33,16 @@ public class GetCommunityStoreInfoSMOImpl extends DefaultAbstractComponentSMO im
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new IllegalArgumentException(responseEntity.getBody());
         }
+        if(!StringUtil.isJsonObject(responseEntity.getBody())){
+           // return new ResultVo(responseEntity.getStatusCode() == HttpStatus.OK ? ResultVo.CODE_OK : ResultVo.CODE_ERROR, responseEntity.getBody());
+            throw new IllegalArgumentException(responseEntity.getBody());
+        }
+
+        JSONObject paramJson = JSONObject.parseObject(responseEntity.getBody());
+        if(paramJson.containsKey("code") && paramJson.getIntValue("code") != 0){
+            throw new IllegalArgumentException(paramJson.getString("msg"));
+        }
+
         return new ResultVo(responseEntity.getStatusCode() == HttpStatus.OK ? ResultVo.CODE_OK : ResultVo.CODE_ERROR, responseEntity.getBody());
     }
 
