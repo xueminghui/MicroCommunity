@@ -15,7 +15,7 @@
     </insert>
 
     <select id="queryReportOwnerMonthPayFees" parameterType="Map" resultType="Map">
-        select t.detail_year pfYear,t.detail_month pfMonth,t.fee_id feeId
+        select t.detail_year pfYear,t.detail_month pfMonth,t.fee_id feeId,t.received_amount amount
         from pay_fee_detail_month t
         where t.status_cd = '0'
         and t.detail_id != '-1'
