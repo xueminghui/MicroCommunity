@@ -114,9 +114,11 @@ public class QueryReportFeeDetailRoomCmd extends Cmd {
             return datas;
         }
 
-        BigDecimal oweFee = new BigDecimal(0.00);
-        BigDecimal receivedFee = new BigDecimal(0.00);
+         BigDecimal oweFee = null;
+        BigDecimal receivedFee = null;
         for(int dataIndex = 0; dataIndex < datas.size();dataIndex ++){
+            oweFee = new BigDecimal(0.00);
+            receivedFee = new BigDecimal(0.00);
             data = datas.getJSONObject(dataIndex);
             for(Map info : infos){
                 if(!data.get("roomId").toString().equals(info.get("objId"))){
@@ -131,7 +133,6 @@ public class QueryReportFeeDetailRoomCmd extends Cmd {
             data.put("oweFee",oweFee.doubleValue());
             data.put("receivedFee",receivedFee.doubleValue());
         }
-
         return datas;
     }
 }
