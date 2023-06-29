@@ -116,9 +116,11 @@ public class QueryReportFeeDetailCarCmd extends Cmd {
             return datas;
         }
 
-        BigDecimal oweFee = new BigDecimal(0.00);
-        BigDecimal receivedFee = new BigDecimal(0.00);
+        BigDecimal oweFee = null;
+        BigDecimal receivedFee = null;
         for (int dataIndex = 0; dataIndex < datas.size(); dataIndex++) {
+            oweFee = new BigDecimal(0.00);
+            receivedFee = new BigDecimal(0.00);
             data = datas.getJSONObject(dataIndex);
             for (Map info : infos) {
                 if (!data.get("carId").toString().equals(info.get("objId"))) {
@@ -126,7 +128,7 @@ public class QueryReportFeeDetailCarCmd extends Cmd {
                 }
 
                 oweFee = oweFee.add(new BigDecimal(info.get("oweFee").toString()));
-                receivedFee = oweFee.add(new BigDecimal(info.get("receivedFee").toString()));
+                receivedFee = receivedFee.add(new BigDecimal(info.get("receivedFee").toString()));
                 data.put("oweFee" + info.get("feeTypeCd").toString(), info.get("oweFee"));
                 data.put("receivedFee" + info.get("feeTypeCd").toString(), info.get("receivedFee"));
             }
