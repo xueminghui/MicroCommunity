@@ -25,10 +25,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-/**
- * 业主费用明细导出
- */
 @Service("reportFeeDetailCar")
 public class ReportFeeDetailCarAdapt implements IExportDataAdapt {
 
@@ -124,11 +120,11 @@ public class ReportFeeDetailCarAdapt implements IExportDataAdapt {
             row.createCell(3).setCellValue(dataObj.getString("receivedFee"));
 
             for (int dictIndex = 0; dictIndex < dictDtos.size(); dictIndex++) {
-                oweFee = dataObj.getString("oweFee" + dictDtos.get(0).getStatusCd());
+                oweFee = dataObj.getString("oweFee" + dictDtos.get(dictIndex).getStatusCd());
                 if (StringUtil.isEmpty(oweFee)) {
                     oweFee = "0";
                 }
-                receivedFee = dataObj.getString("receivedFee" + dictDtos.get(0).getStatusCd());
+                receivedFee = dataObj.getString("receivedFee" + dictDtos.get(dictIndex).getStatusCd());
                 if (StringUtil.isEmpty(receivedFee)) {
                     receivedFee = "0";
                 }
@@ -161,7 +157,7 @@ public class ReportFeeDetailCarAdapt implements IExportDataAdapt {
         ownerCarDto.setCarTypeCd(OwnerCarDto.CAR_TYPE_PRIMARY);
         return ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
     }
-
+    
     /**
      * 计算合同欠费 实收费用
      *
@@ -189,15 +185,17 @@ public class ReportFeeDetailCarAdapt implements IExportDataAdapt {
         }
 
         queryStatisticsDto.setObjIds(objIds.toArray(new String[objIds.size()]));
-        List<Map> infos = reportFeeStatisticsInnerServiceSMOImpl.getOwnerFeeSummary(queryStatisticsDto);
+        List<Map> infos = reportFeeStatisticsInnerServiceSMOImpl.getObjFeeSummary(queryStatisticsDto);
 
         if (infos == null || infos.size() < 1) {
             return datas;
         }
 
-        BigDecimal oweFee = new BigDecimal(0.00);
-        BigDecimal receivedFee = new BigDecimal(0.00);
+        BigDecimal oweFee = null;
+        BigDecimal receivedFee = null;
         for (int dataIndex = 0; dataIndex < datas.size(); dataIndex++) {
+            oweFee = new BigDecimal(0.00);
+            receivedFee = new BigDecimal(0.00);
             data = datas.getJSONObject(dataIndex);
             for (Map info : infos) {
                 if (!data.get("carId").toString().equals(info.get("objId"))) {
@@ -205,7 +203,7 @@ public class ReportFeeDetailCarAdapt implements IExportDataAdapt {
                 }
 
                 oweFee = oweFee.add(new BigDecimal(info.get("oweFee").toString()));
-                receivedFee = oweFee.add(new BigDecimal(info.get("receivedFee").toString()));
+                receivedFee = receivedFee.add(new BigDecimal(info.get("receivedFee").toString()));
                 data.put("oweFee" + info.get("feeTypeCd").toString(), info.get("oweFee"));
                 data.put("receivedFee" + info.get("feeTypeCd").toString(), info.get("receivedFee"));
             }
