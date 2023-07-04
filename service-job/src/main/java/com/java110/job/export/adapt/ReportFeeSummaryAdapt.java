@@ -103,7 +103,7 @@ public class ReportFeeSummaryAdapt implements IExportDataAdapt {
         row.createCell(10).setCellValue(roomFeeRate.doubleValue() + "%");
         //((fee.receivedFee-fee.preReceivedFee)/(fee.hisOweFee+fee.curReceivableFee)*100).toFixed(2)
         BigDecimal curReceivableFee = new BigDecimal(dataObj.getDouble("curReceivableFee"));
-        curReceivableFee = hisOweFee.add(curReceivableFee);
+        curReceivableFee = hisOweFee.add(curReceivableFee).add(hisReceivedFee);
         roomFeeRate = new BigDecimal(0);
         if(curReceivableFee.doubleValue()> 0) {
             roomFeeRate = receivedFee.subtract(preReceivedFee).divide(curReceivableFee, 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
