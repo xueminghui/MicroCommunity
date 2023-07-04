@@ -84,9 +84,6 @@ public class DataReportOweDetailStatisticsAdapt implements IExportDataAdapt {
         queryStatisticsDto.setFeeTypeCd(reqJson.getString("feeTypeCd"));
         queryStatisticsDto.setOwnerName(reqJson.getString("ownerName"));
         queryStatisticsDto.setLink(reqJson.getString("link"));
-        queryStatisticsDto.setPage(reqJson.getInteger("page"));
-        queryStatisticsDto.setRow(reqJson.getInteger("row"));
-
         long roomCount = getOweRoomCount(queryStatisticsDto);
 
         roomCount = (int) Math.ceil((double) roomCount / (double) MAX_ROW);
