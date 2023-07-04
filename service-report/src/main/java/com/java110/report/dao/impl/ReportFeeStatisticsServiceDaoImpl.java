@@ -428,4 +428,59 @@ public class ReportFeeStatisticsServiceDaoImpl extends BaseServiceDao implements
 
     }
 
+    @Override
+    public long getMonthReceivedDetailCount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthReceivedDetailCount", info);
+
+        if (infos == null || infos.size() < 1) {
+            return 0;
+        }
+
+        return Long.parseLong(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> getMonthReceivedDetailInfo(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthReceivedDetailInfo", info);
+        return infos;
+    }
+
+    @Override
+    public long getMonthOweDetailCount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthOweDetailCount", info);
+
+        if (infos == null || infos.size() < 1) {
+            return 0;
+        }
+
+        return Long.parseLong(infos.get(0).get("count").toString());
+    }
+
+    @Override
+    public List<Map> getMonthOweDetailInfo(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthOweDetailInfo", info);
+        return infos;
+    }
+
+    @Override
+    public double getMonthOweDetailAmount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthOweDetailAmount", info);
+
+        if (infos == null || infos.size() < 1) {
+            return 0;
+        }
+
+        return Double.parseDouble(infos.get(0).get("amount").toString());
+    }
+
+    @Override
+    public double getMonthReceivedDetailAmount(Map info) {
+        List<Map> infos = sqlSessionTemplate.selectList("reportFeeStatisticsServiceDaoImpl.getMonthReceivedDetailAmount", info);
+
+        if (infos == null || infos.size() < 1) {
+            return 0;
+        }
+
+        return Double.parseDouble(infos.get(0).get("amount").toString());
+    }
 }

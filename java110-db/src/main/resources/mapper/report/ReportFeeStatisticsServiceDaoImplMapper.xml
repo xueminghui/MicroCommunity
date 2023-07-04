@@ -249,7 +249,7 @@
         and t.community_id= #{communityId}
         and t.pay_fee_time &gt; #{startDate}
         and t.pay_fee_time &lt; #{endDate}
-        and t.cur_month_time &gt; #{endDate}
+        and t.cur_month_time &gt;= #{endDate}
     </select>
 
     <!-- 查询实收费用 -->
@@ -479,7 +479,7 @@
         and t.community_id= a.community_id
         and t.pay_fee_time &gt; #{startDate}
         and t.pay_fee_time &lt; #{endDate}
-        and t.cur_month_time &gt; #{endDate}
+        and t.cur_month_time &gt;= #{endDate}
         <if test="configIds !=null ">
             and t.config_id in
             <foreach collection="configIds" item="item" index="index" open="(" close=")" separator=",">
@@ -665,7 +665,7 @@
         and t.community_id= #{communityId}
         and t.pay_fee_time &gt; #{startDate}
         and t.pay_fee_time &lt; #{endDate}
-        and t.cur_month_time &gt; #{endDate}
+        and t.cur_month_time &gt;= #{endDate}
         and t.detail_id != '-1'
         <if test="configIds !=null ">
             and t.config_id in
@@ -966,7 +966,7 @@
         and bu.floor_id = a.floor_id
         ) roomCount,
         (
-         select count(1) from (
+        select count(1) from (
         select bu.floor_id,br.room_id
         from pay_fee_detail t
         INNER JOIN pay_fee pf1 on t.fee_id = pf1.fee_id and pf1.payer_obj_type='3333' and pf1.status_cd = '0'
@@ -1124,7 +1124,8 @@
         LEFT JOIN building_room br on pf.payer_obj_id = br.room_id and br.status_cd = '0'
         left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
         where
-        bu.floor_id = #{floorId}
+        1=1
+        and bu.floor_id = #{floorId}
         and t.community_id = #{communityId}
         and t.create_time &gt; #{startDate}
         and t.create_time &lt; #{endDate}
@@ -1174,7 +1175,7 @@
         LEFT JOIN building_room br on pf.payer_obj_id = br.room_id and br.status_cd = '0'
         left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
         where 1=1
-       and bu.floor_id = #{floorId}
+        and bu.floor_id = #{floorId}
         and t.community_id =  #{communityId}
         and t.pay_fee_time &gt; #{startDate}
         and t.pay_fee_time &lt;  #{endDate}
@@ -1184,6 +1185,200 @@
         </if>
         and t.detail_id != '-1'
         and t.status_cd = '0'
+    </select>
+    <!-- 查询月收入数据 -->
+    <select id="getMonthReceivedDetailCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join pay_fee_detail pfd on t.detail_id = pfd.detail_id and pfd.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id != '-1'
+        and t.community_id = #{communityId}
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
+    </select>
+
+    <!-- 月实收 查询-->
+    <select id="getMonthReceivedDetailInfo" parameterType="Map" resultType="Map">
+        select t.obj_name objName,t.owner_name ownerName,t.link,t.fee_name feeName, pfd.start_time startTime,pfd.end_time endTime,
+        pfd.pay_order_id payOrderId,pfd.cashier_name cashierName,
+        t.receivable_amount receivableAmount,t.received_amount receivedAmount,pfd.create_time createTime
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join pay_fee_detail pfd on t.detail_id = pfd.detail_id and pfd.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id != '-1'
+        and t.community_id = #{communityId}
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 月实收总金额 查询-->
+    <select id="getMonthReceivedDetailAmount" parameterType="Map" resultType="Map">
+        select ifnull(sum(t.received_amount),0.0) amount
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join pay_fee_detail pfd on t.detail_id = pfd.detail_id and pfd.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id != '-1'
+        and t.community_id = #{communityId}
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
+    </select>
+
+    <!-- 查询月欠费数据 -->
+    <select id="getMonthOweDetailCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id = '-1'
+        and t.community_id = #{communityId}
+        and t.receivable_amount &gt; 0
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
+    </select>
+
+    <!-- 月实收 查询-->
+    <select id="getMonthOweDetailInfo" parameterType="Map" resultType="Map">
+        select t.obj_name objName,t.owner_name ownerName,t.link,t.fee_name feeName, pf.end_time startTime,t.deadline_time endTime,
+        t.receivable_amount receivableAmount,t.received_amount receivedAmount
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id = '-1'
+        and t.receivable_amount &gt; 0
+        and t.community_id = #{communityId}
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 月欠费总金额 查询-->
+    <select id="getMonthOweDetailAmount" parameterType="Map" resultType="Map">
+        select ifnull(sum(t.receivable_amount),0.0) amount
+        from pay_fee_detail_month t
+        inner join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
+        left join building_room br on t.obj_id = br.room_id and br.status_cd = '0'
+        left join building_unit bu on br.unit_id = bu.unit_id and bu.status_cd = '0'
+        where 1=1
+        and t.status_cd = '0'
+        and t.cur_month_time &gt;= #{startDate}
+        and t.cur_month_time &lt; #{endDate}
+        and t.detail_id = '-1'
+        and t.community_id = #{communityId}
+        and t.receivable_amount &gt; 0
+        <if test="feeTypeCd != null and feeTypeCd != ''">
+            and pf.fee_type_cd = #{feeTypeCd}
+        </if>
+        <if test="floorId != null and floorId != ''">
+            and bu.floor_id = #{floorId}
+        </if>
+        <if test="objName != null and objName != ''">
+            and t.obj_name like concat('%',#{objName},'%')
+        </if>
+        <if test="ownerName != null and ownerName != ''">
+            and t.owner_name like concat('%',#{ownerName},'%')
+        </if>
+        <if test="link != null and link != ''">
+            and t.link = #{link}
+        </if>
     </select>
 
 </mapper>
