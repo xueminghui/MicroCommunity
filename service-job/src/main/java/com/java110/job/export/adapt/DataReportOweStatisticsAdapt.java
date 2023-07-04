@@ -102,7 +102,7 @@ public class DataReportOweStatisticsAdapt implements IExportDataAdapt {
             row.createCell(1).setCellValue(dataObj.get("roomCount").toString());
             row.createCell(2).setCellValue(dataObj.get("feeRoomCount").toString());
             row.createCell(3).setCellValue(dataObj.get("oweRoomCount").toString());
-            row.createCell(4).setCellValue(dataObj.get("receivedFee").toString());
+            row.createCell(4).setCellValue(dataObj.get("oweFee").toString());
 
             for (int dictIndex = 0; dictIndex < dictDtos.size(); dictIndex++) {
                 oweFee = dataObj.get("oweFee" + dictDtos.get(dictIndex).getStatusCd()).toString();
@@ -131,17 +131,18 @@ public class DataReportOweStatisticsAdapt implements IExportDataAdapt {
             return new ArrayList<>();
         }
 
-        BigDecimal receivedFee = new BigDecimal(0.00);
+        BigDecimal oweFee = null;
         for (Map tmpData : tmpDatas) {
+            oweFee = new BigDecimal(0.00);
             for (Map data : datas) {
                 if (!data.get("floorId").toString().equals(tmpData.get("floorId"))) {
                     continue;
                 }
 
-                receivedFee = receivedFee.add(new BigDecimal(data.get("oweFee").toString()));
+                oweFee = oweFee.add(new BigDecimal(data.get("oweFee").toString()));
                 tmpData.put("oweFee" + data.get("feeTypeCd").toString(), data.get("oweFee"));
             }
-            tmpData.put("oweFee", receivedFee.doubleValue());
+            tmpData.put("oweFee", oweFee.doubleValue());
         }
 
         return tmpDatas;
