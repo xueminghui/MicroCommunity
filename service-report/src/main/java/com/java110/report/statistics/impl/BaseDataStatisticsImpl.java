@@ -78,6 +78,66 @@ public class BaseDataStatisticsImpl implements IBaseDataStatistics {
         return baseDataStatisticsInnerServiceSMOImpl.getRoomInfo(roomDto);
     }
 
+    @Override
+    public long getReceivedRoomCount(QueryStatisticsDto queryStatisticsDto) {
+        RoomDto roomDto = new RoomDto();
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setCommunityId(queryStatisticsDto.getCommunityId());
+        roomDto.setOwnerName(queryStatisticsDto.getOwnerName());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setLink(queryStatisticsDto.getLink());
+        roomDto.setStartDate(queryStatisticsDto.getStartDate());
+        roomDto.setEndDate(queryStatisticsDto.getEndDate());
+        addRoomNumCondition(queryStatisticsDto, roomDto);
+        return baseDataStatisticsInnerServiceSMOImpl.getReceivedRoomCount(roomDto);
+    }
+
+    @Override
+    public List<RoomDto> getReceivedRoomInfo(QueryStatisticsDto queryStatisticsDto) {
+        RoomDto roomDto = new RoomDto();
+        roomDto.setCommunityId(queryStatisticsDto.getCommunityId());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setPage(queryStatisticsDto.getPage());
+        roomDto.setRow(queryStatisticsDto.getRow());
+        roomDto.setOwnerName(queryStatisticsDto.getOwnerName());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setLink(queryStatisticsDto.getLink());
+        roomDto.setStartDate(queryStatisticsDto.getStartDate());
+        roomDto.setEndDate(queryStatisticsDto.getEndDate());
+        addRoomNumCondition(queryStatisticsDto, roomDto);
+        return baseDataStatisticsInnerServiceSMOImpl.getReceivedRoomInfo(roomDto);
+    }
+
+    @Override
+    public long getOweRoomCount(QueryStatisticsDto queryStatisticsDto) {
+        RoomDto roomDto = new RoomDto();
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setCommunityId(queryStatisticsDto.getCommunityId());
+        roomDto.setOwnerName(queryStatisticsDto.getOwnerName());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setLink(queryStatisticsDto.getLink());
+        roomDto.setStartDate(queryStatisticsDto.getStartDate());
+        roomDto.setEndDate(queryStatisticsDto.getEndDate());
+        addRoomNumCondition(queryStatisticsDto, roomDto);
+        return baseDataStatisticsInnerServiceSMOImpl.getOweRoomCount(roomDto);
+    }
+
+    @Override
+    public List<RoomDto> getOweRoomInfo(QueryStatisticsDto queryStatisticsDto) {
+        RoomDto roomDto = new RoomDto();
+        roomDto.setCommunityId(queryStatisticsDto.getCommunityId());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setPage(queryStatisticsDto.getPage());
+        roomDto.setRow(queryStatisticsDto.getRow());
+        roomDto.setOwnerName(queryStatisticsDto.getOwnerName());
+        roomDto.setFloorId(queryStatisticsDto.getFloorId());
+        roomDto.setLink(queryStatisticsDto.getLink());
+        roomDto.setStartDate(queryStatisticsDto.getStartDate());
+        roomDto.setEndDate(queryStatisticsDto.getEndDate());
+        addRoomNumCondition(queryStatisticsDto, roomDto);
+        return baseDataStatisticsInnerServiceSMOImpl.getOweRoomInfo(roomDto);
+    }
+
 
     /**
      * 查询空闲房屋
@@ -162,6 +222,8 @@ public class BaseDataStatisticsImpl implements IBaseDataStatistics {
         ownerCarDto.setCarTypeCd(OwnerCarDto.CAR_TYPE_PRIMARY);
         return ownerCarInnerServiceSMOImpl.queryOwnerCars(ownerCarDto);
     }
+
+
 
 
     /**
