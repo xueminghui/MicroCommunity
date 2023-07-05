@@ -182,7 +182,6 @@ public class PayOweFeeCmd extends Cmd {
 
         dataFlowContext.setResponseEntity(ResultVo.createResponseEntity(data));
 
-        dataFlowContext.setResponseEntity(ResultVo.createResponseEntity(feeReceiptDetailDtos));
     }
 
     private void getFeeReceiptDetailPo(ICmdDataFlowContext dataFlowContext, JSONObject paramObj,
