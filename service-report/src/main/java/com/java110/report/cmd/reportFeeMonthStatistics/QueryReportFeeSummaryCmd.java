@@ -75,6 +75,9 @@ public class QueryReportFeeSummaryCmd extends Cmd {
         queryStatisticsDto.setCommunityId(reqJson.getString("communityId"));
         queryStatisticsDto.setStartDate(reqJson.getString("startDate"));
         queryStatisticsDto.setEndDate(reqJson.getString("endDate"));
+        if(reqJson.containsKey("endDate") && !reqJson.getString("endDate").contains(":")) {
+            queryStatisticsDto.setEndDate(reqJson.getString("endDate") + " 23:59:59");
+        }
         queryStatisticsDto.setConfigId(reqJson.getString("configId"));
         queryStatisticsDto.setFloorId(reqJson.getString("floorId"));
         queryStatisticsDto.setObjName(reqJson.getString("objName"));
@@ -107,7 +110,7 @@ public class QueryReportFeeSummaryCmd extends Cmd {
         //todo 房屋数
         long roomCount = baseDataStatisticsImpl.getRoomCount(queryStatisticsDto);
 
-        //todo 空闲房屋数
+        //todo 收费房屋数
         long feeRoomCount = feeStatisticsImpl.getFeeRoomCount(queryStatisticsDto);
 
         //todo 欠费户数
