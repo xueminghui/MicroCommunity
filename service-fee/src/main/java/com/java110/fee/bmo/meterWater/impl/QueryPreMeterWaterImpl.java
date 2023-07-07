@@ -165,8 +165,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
         return ResultVo.success();
     }
 
-
-    private void dealImportExportMeterWater(ImportExportMeterWaterDto importExportMeterWaterDto, String communityId,
+private void dealImportExportMeterWater(ImportExportMeterWaterDto importExportMeterWaterDto, String communityId,
                                             String storeId, String configId, String userId, String feeTypeCd,
                                             List<PayFeePo> fees, List<MeterWaterPo> meterWaterPos, List<FeeAttrPo> feeAttrPos,
                                             String batchId, String meterType) {
@@ -192,7 +191,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
 
 
         PayFeePo payFeePo = new PayFeePo();
-        payFeePo.setFeeId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_feeId));
+        payFeePo.setFeeId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_feeId,true));
         payFeePo.setIncomeObjId(storeId);
         payFeePo.setAmount("-1");
         payFeePo.setStartTime(importExportMeterWaterDto.getPreReadingTime());
@@ -208,7 +207,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
             payFeePo.setPayerObjType(FeeDto.PAYER_OBJ_TYPE_CONTRACT);
             FeeAttrPo feeAttrPo = new FeeAttrPo();
             feeAttrPo.setCommunityId(communityId);
-            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId,true));
             feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_IMPORT_FEE_NAME);
             String feeName = roomName;
             if ("1010".equals(importExportMeterWaterDto.getMeterType())) {
@@ -230,7 +229,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
         feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_PAY_OBJECT_NAME);
         feeAttrPo.setValue(roomName);
         feeAttrPo.setFeeId(payFeePo.getFeeId());
-        feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+        feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId,true));
         feeAttrPos.add(feeAttrPo);
 
         OwnerDto ownerDto = new OwnerDto();
@@ -244,7 +243,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
             feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_OWNER_ID);
             feeAttrPo.setValue(ownerDtos.get(0).getOwnerId());
             feeAttrPo.setFeeId(payFeePo.getFeeId());
-            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId,true));
             feeAttrPos.add(feeAttrPo);
 
             feeAttrPo = new FeeAttrPo();
@@ -252,7 +251,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
             feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_OWNER_LINK);
             feeAttrPo.setValue(ownerDtos.get(0).getLink());
             feeAttrPo.setFeeId(payFeePo.getFeeId());
-            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId,true));
             feeAttrPos.add(feeAttrPo);
 
             feeAttrPo = new FeeAttrPo();
@@ -260,7 +259,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
             feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_OWNER_NAME);
             feeAttrPo.setValue(ownerDtos.get(0).getName());
             feeAttrPo.setFeeId(payFeePo.getFeeId());
-            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId));
+            feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId,true));
             feeAttrPos.add(feeAttrPo);
 
         }
@@ -289,7 +288,7 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
         meterWaterPo.setObjType(MeterWaterDto.OBJ_TYPE_ROOM);
         meterWaterPo.setPreDegrees(importExportMeterWaterDto.getPreDegrees());
         meterWaterPo.setPreReadingTime(importExportMeterWaterDto.getPreReadingTime());
-        meterWaterPo.setWaterId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_waterId));
+        meterWaterPo.setWaterId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_waterId,true));
         meterWaterPo.setRemark(importExportMeterWaterDto.getRemark());
         meterWaterPo.setPrice(importExportMeterWaterDto.getPrice());
         meterWaterPos.add(meterWaterPo);
@@ -340,4 +339,5 @@ public class QueryPreMeterWaterImpl implements IQueryPreMeterWater {
 
         return true;
     }
+   
 }
