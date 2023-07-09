@@ -709,6 +709,10 @@ public class PayFeeCmd extends Cmd {
             } else {
                 businessFeeDetail.put("receivableAmount", receivedAmount.doubleValue());
             }
+            //todo 如果应收小于实收，将应收刷为 实收
+            if(businessFeeDetail.getDoubleValue("receivableAmount") < receivedAmount.doubleValue()){
+                businessFeeDetail.put("receivableAmount", receivedAmount.doubleValue());
+            }
         } else if ("-103".equals(paramInJson.getString("cycles"))) { //这里按缴费结束时间缴费
             String custEndTime = paramInJson.getString("custEndTime");
             Date endDates = DateUtil.getDateFromStringB(custEndTime);
@@ -726,6 +730,10 @@ public class PayFeeCmd extends Cmd {
             if (paramInJson.containsKey("receivableAmount") && !StringUtil.isEmpty(paramInJson.getString("receivableAmount"))) {
                 businessFeeDetail.put("receivableAmount", paramInJson.getString("receivableAmount"));
             } else {
+                businessFeeDetail.put("receivableAmount", receivedAmount.doubleValue());
+            }
+            //todo 如果应收小于实收，将应收刷为 实收
+            if(businessFeeDetail.getDoubleValue("receivableAmount") < receivedAmount.doubleValue()){
                 businessFeeDetail.put("receivableAmount", receivedAmount.doubleValue());
             }
         } else {
