@@ -61,6 +61,7 @@ public class ReportFeeMonthStatisticsDto extends PageDto implements Serializable
     private String startTime;
     private String endTime;
 
+
     private String statusCd = "0";
 
     private int oweDay;
@@ -152,6 +153,10 @@ public class ReportFeeMonthStatisticsDto extends PageDto implements Serializable
 
     private String cashierId;
     private String cashierName;
+
+    private String feeFlag;
+
+    private String preOweAmount;
 
 
     public String getReceivableAmount() {
@@ -792,5 +797,21 @@ public class ReportFeeMonthStatisticsDto extends PageDto implements Serializable
 
     public void setCashierName(String cashierName) {
         this.cashierName = cashierName;
+    }
+
+    public String getFeeFlag() {
+        return feeFlag;
+    }
+
+    public void setFeeFlag(String feeFlag) {
+        this.feeFlag = feeFlag;
+    }
+
+    public String getPreOweAmount() {
+        return preOweAmount;
+    }
+
+    public void setPreOweAmount(String preOweAmount) {
+        this.preOweAmount = preOweAmount;
     }
 }
