@@ -110,7 +110,11 @@
         </if>
     </insert>
 
-    <!-- 查询费用明细信息 add by wuxw 2018-07-03 -->
+    <!-- 查询费用明细信息 add by wuxw 2018-07-03
+    and pf.status_cd = '0'
+     and pfc.status_cd = '0'
+     有可能会把费用项 和费用删除 所以 不判断 pay_fee_config 和 pay_fee 为 有效状态
+     -->
     <select id="getFeeDetailInfo" parameterType="Map" resultType="Map">
         select
         t.prime_rate,t.prime_rate primeRate,
@@ -125,8 +129,8 @@
         t.cashier_id cashierId,t.cashier_name cashierName
         from pay_fee_detail t
         left join pay_fee_attrs pfa on t.fee_id = pfa.fee_id and pfa.spec_cd = '390002'
-        left join pay_fee pf on t.fee_id = pf.fee_id and pf.status_cd = '0'
-        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join pay_fee pf on t.fee_id = pf.fee_id
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id
         LEFT JOIN meter_water mw on t.fee_id = mw.fee_id and mw.status_cd = '0' and mw.community_id = t.community_id
         left join pay_fee_attrs pfao1 on pfao1.fee_id = t.fee_id and pfao1.spec_cd = '390012' and pfao1.status_cd = '0'
         <if test="ownerId != null and ownerId != ''">
