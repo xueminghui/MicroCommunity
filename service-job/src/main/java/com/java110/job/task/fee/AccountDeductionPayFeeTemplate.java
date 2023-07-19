@@ -25,7 +25,7 @@ import com.java110.utils.util.DateUtil;
 import com.java110.utils.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import com.java110.utils.util.Assert;
 import com.java110.dto.store.StoreUserDto;
 import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
 
