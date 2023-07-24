@@ -7,10 +7,13 @@ import com.java110.core.event.cmd.Cmd;
 import com.java110.core.event.cmd.CmdEvent;
 import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.doc.annotation.*;
+import com.java110.dto.owner.OwnerDto;
 import com.java110.intf.community.ICommunityInnerServiceSMO;
 import com.java110.intf.community.IRoomV1InnerServiceSMO;
 import com.java110.intf.community.IUnitInnerServiceSMO;
 import com.java110.intf.user.IOwnerRoomRelV1InnerServiceSMO;
+import com.java110.intf.user.IOwnerV1InnerServiceSMO;
+import com.java110.po.owner.OwnerPo;
 import com.java110.po.owner.OwnerRoomRelPo;
 import com.java110.po.room.RoomPo;
 import com.java110.utils.constant.BusinessTypeConstant;
@@ -21,6 +24,8 @@ import com.java110.utils.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
+import java.util.List;
+
 @Java110CmdDoc(title = "业主房屋关系绑定",
         description = "对应后台 业主入驻房屋功能",
         httpMethod = "post",
@@ -103,6 +108,9 @@ public class SellRoomCmd extends Cmd {
 
         //更新房屋信息为售出
         updateShellRoom(reqJson);
+
+         //todo 修改业主信息，目的是触发databus 如果 业主房屋上费用的 业主名称 不正确 可以 刷一下
+        updateOwner(reqJson);
     }
 
     /**
@@ -142,5 +150,21 @@ public class SellRoomCmd extends Cmd {
         if (flag < 1) {
             throw new CmdException("添加业主房屋关系");
         }
+    }
+
+    
+    /**
+     * 修改业主信息 目的是触发databus 如果 业主房屋上费用的 业主名称 不正确 可以 刷一下
+     *
+     * @param reqJson
+     */
+    private void updateOwner(JSONObject reqJson) {
+        OwnerDto ownerDto = new OwnerDto();
+        ownerDto.setMemberId(reqJson.getString("ownerId"));
+        ownerDto.setOwnerTypeCd(OwnerDto.OWNER_TYPE_CD_OWNER);
+        List<OwnerDto> ownerDtos = ownerV1InnerServiceSMOImpl.queryOwners(ownerDto);
+        Assert.listOnlyOne(ownerDtos, "业主不存在");
+        OwnerPo ownerPo = BeanConvertUtil.covertBean(ownerDtos.get(0), OwnerPo.class);
+        ownerV1InnerServiceSMOImpl.updateOwner(ownerPo);
     }
 }
