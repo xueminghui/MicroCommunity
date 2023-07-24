@@ -78,6 +78,9 @@ public class SellRoomCmd extends Cmd {
 
     @Autowired
     private IRoomV1InnerServiceSMO roomV1InnerServiceSMOImpl;
+    
+      @Autowired
+    private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
 
     @Override
