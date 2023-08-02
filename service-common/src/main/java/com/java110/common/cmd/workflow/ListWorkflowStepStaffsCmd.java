@@ -33,13 +33,13 @@ public class ListWorkflowStepStaffsCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
         WorkflowStepStaffDto workflowStepStaffDto = BeanConvertUtil.covertBean(reqJson, WorkflowStepStaffDto.class);
-        if (!StringUtil.isEmpty(reqJson.getString("requestType")) && "purchaseHandle".equals(reqJson.getString("requestType"))) {//采购
+        if ("purchaseHandle".equals(reqJson.getString("requestType"))) {//采购
             workflowStepStaffDto.setFlowType(WorkflowDto.FLOW_TYPE_PURCHASE);
         }
-        if (!StringUtil.isEmpty(reqJson.getString("requestType")) && "grantHandle".equals(reqJson.getString("requestType"))) {//领用
+        if ("grantHandle".equals(reqJson.getString("requestType"))) {//领用
             workflowStepStaffDto.setFlowType(WorkflowDto.FLOW_TYPE_COLLECTION);
         }
-        if (!StringUtil.isEmpty(reqJson.getString("requestType")) && "allocationHandle".equals(reqJson.getString("requestType"))) {//调拨
+        if ("allocationHandle".equals(reqJson.getString("requestType"))) {//调拨
             String[] fllowTypes = new String[]{WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE, WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE_GO};
             workflowStepStaffDto.setFlowTypes(fllowTypes);
         }

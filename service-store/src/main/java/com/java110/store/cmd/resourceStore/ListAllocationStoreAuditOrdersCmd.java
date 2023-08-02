@@ -6,8 +6,11 @@ import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.event.cmd.Cmd;
 import com.java110.core.event.cmd.CmdEvent;
 import com.java110.dto.allocationStorehouse.AllocationStorehouseApplyDto;
+import com.java110.dto.workflow.WorkflowDto;
+import com.java110.dto.workflow.WorkflowStepStaffDto;
 import com.java110.entity.audit.AuditUser;
 import com.java110.intf.common.IAllocationStorehouseUserInnerServiceSMO;
+import com.java110.intf.common.IWorkflowStepStaffInnerServiceSMO;
 import com.java110.utils.exception.CmdException;
 import com.java110.utils.util.Assert;
 import com.java110.vo.ResultVo;
@@ -23,6 +26,9 @@ public class ListAllocationStoreAuditOrdersCmd extends Cmd {
 
     @Autowired
     private IAllocationStorehouseUserInnerServiceSMO allocationStorehouseUserInnerServiceSMOImpl;
+
+    @Autowired
+    private IWorkflowStepStaffInnerServiceSMO workflowStepStaffInnerServiceSMOImpl;
 
     @Override
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
@@ -52,10 +58,40 @@ public class ListAllocationStoreAuditOrdersCmd extends Cmd {
             allocationStorehouseApplyDtos = new ArrayList<>();
         }
 
+        //todo 计算  仓库管理员
+        computeStoreManager(allocationStorehouseApplyDtos, auditUser);
+
         ResponseEntity responseEntity
                 = ResultVo.createResponseEntity((int) Math.ceil((double) count / (double) reqJson.getInteger("row")),
                 (int) count,
                 allocationStorehouseApplyDtos);
         context.setResponseEntity(responseEntity);
+    }
+
+    private void computeStoreManager(List<AllocationStorehouseApplyDto> allocationStorehouseApplyDtos, AuditUser auditUser) {
+
+        if (allocationStorehouseApplyDtos == null || allocationStorehouseApplyDtos.size() < 1) {
+            return;
+        }
+
+        //todo 查询调拨 中是否为管理员
+        WorkflowStepStaffDto workflowStepStaffDto = new WorkflowStepStaffDto();
+        workflowStepStaffDto.setFlowType(WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE);
+        workflowStepStaffDto.setStaffId(auditUser.getUserId());
+        List<WorkflowStepStaffDto> workflowStepStaffDtos = workflowStepStaffInnerServiceSMOImpl.queryWorkflowStepStaffs(workflowStepStaffDto);
+
+        if(workflowStepStaffDtos == null || workflowStepStaffDtos.size() < 1){
+            return;
+        }
+
+
+
+        for(AllocationStorehouseApplyDto allocationStorehouseApplyDto: allocationStorehouseApplyDtos){
+            for(WorkflowStepStaffDto tmpWorkflowStepStaffDto : workflowStepStaffDtos) {
+                if (allocationStorehouseApplyDto.getProcessDefinitionKey().equals(tmpWorkflowStepStaffDto.getProcessDefinitionKey())){
+                    allocationStorehouseApplyDto.setStoreManager("Y");
+                }
+            }
+        }
     }
 }
