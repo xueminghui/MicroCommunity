@@ -4,10 +4,10 @@
 git clone https://github.com/java110/MicroCommunity.git <br/>
 Execute mvn clean package and mvn clean install<br/><br/>
 2、Add hosts<br/>
-127.0.0.1 dev.db.java110.com <br/>
+127.0.0.1 192.168.23.128 <br/>
 127.0.0.1 dev.zk.java110.com <br/>
 127.0.0.1 dev.kafka.java110.com <br/>
-127.0.0.1 dev.redis.java110.com <br/>
+127.0.0.1 192.168.23.128 <br/>
 127.0.0.1 api.java110.com <br/>
 127.0.0.1 dev.java110.com <br/>
 3、Install mysql and import TT.sql and hc_community.sql (files are under docs/db)<br/>
@@ -22,12 +22,12 @@ jedis:
       maxTotal: 100
       maxIdle: 20
       maxWaitMillis: 20000
-    host: dev.redis.java110.com
+    host: 192.168.23.128
     port: 6379
     timeout: 3000
-    password: hc
+    password:
 ```
-Change password: hc in hc to the password specified by redis
+Change password: in hc to the password specified by redis
 ```yaml
 spring:
   profiles:
@@ -41,9 +41,9 @@ spring:
     name: community-service
   redis:
     database: 0
-    host: dev.redis.java110.com
+    host: 192.168.23.128
     port: 6379
-    password: hc
+    password:
     pool:
       max-active: 300
       max-wait: 10000
@@ -51,14 +51,14 @@ spring:
       min-idle: 0
       timeout: 0
 ```
-Change password: hc in hc to the password specified by redis<br/>
+Change password: in hc to the password specified by redis<br/>
 ```yaml
 dataSources:
   ds0: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: hc_community
-    password: hc_community@12345678
+    url: jdbc:mysql://192.168.23.128:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: Wonders.300168
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
     initialSize: 5
@@ -67,9 +67,9 @@ dataSources:
     poolPreparedStatements: true
   ds1: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: TT
-    password: TT@12345678
+    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: Wonders.300168
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
     initialSize: 5

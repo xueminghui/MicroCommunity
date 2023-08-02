@@ -1,8 +1,8 @@
 dataSources:
   ds0: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: hc_community
+    url: jdbc:mysql://192.168.23.128:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
     password: ${mysqlpwd}
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
@@ -12,9 +12,9 @@ dataSources:
     poolPreparedStatements: true
 #  ds0_slave0: !!com.alibaba.druid.pool.DruidDataSource
 #    driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8
-#    username: TT
-#    password: TT@12345678
+#    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8
+#    username: root
+#    password: Wonders.300168
 #    connectionTimeoutMilliseconds: 30000
 #    idleTimeoutMilliseconds: 60000
 #    maxPoolSize: 50
@@ -22,8 +22,8 @@ dataSources:
 #    maintenanceIntervalMilliseconds: 30000
   ds1: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: TT
+    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
     password: ${mysqlpwd}
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
@@ -33,9 +33,9 @@ dataSources:
     poolPreparedStatements: true
 #  ds1_slave0: !!com.alibaba.druid.pool.DruidDataSource
 #    driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8
-#    username: TT
-#    password: TT@12345678
+#    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8
+#    username: root
+#    password: Wonders.300168
 #    connectionTimeoutMilliseconds: 30000
 #    idleTimeoutMilliseconds: 60000
 #    maxPoolSize: 50

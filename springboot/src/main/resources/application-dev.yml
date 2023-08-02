@@ -17,9 +17,9 @@ spring:
     name: boot-service
   redis:
     database: 0
-    host: dev.redis.java110.com
+    host: 192.168.23.128
     port: 6379
-    password: hc
+    password:
     pool:
       max-active: 300
       max-wait: 3000
@@ -30,7 +30,7 @@ spring:
 #  redis:
 #    timeout: 5000
 #    database: 0
-#    password: hc
+#    password:
 #    cluster:
 #      nodes: 148.70.139.121:7000,148.70.139.121:7001,148.70.139.121:7002,148.70.139.121:7003,148.70.139.121:7004,148.70.139.121:7005
 #      max-redirects: 3
@@ -55,8 +55,8 @@ feign:
 kafka:
   consumer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 192.168.23.128:2181
+    servers: 192.168.23.128:9092
     enable:
       auto:
         commit: true
@@ -74,8 +74,8 @@ kafka:
 
   producer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 192.168.23.128:2181
+    servers: 192.168.23.128:9092
     retries: 0
     batch:
       size: 4096
