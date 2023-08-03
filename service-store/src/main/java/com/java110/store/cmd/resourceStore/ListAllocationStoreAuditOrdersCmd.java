@@ -74,6 +74,10 @@ public class ListAllocationStoreAuditOrdersCmd extends Cmd {
             return;
         }
 
+        for(AllocationStorehouseApplyDto allocationStorehouseApplyDto: allocationStorehouseApplyDtos){
+            allocationStorehouseApplyDto.setStoreManager("N");
+        }
+
         //todo 查询调拨 中是否为管理员
         WorkflowStepStaffDto workflowStepStaffDto = new WorkflowStepStaffDto();
         workflowStepStaffDto.setFlowType(WorkflowDto.FLOW_TYPE_ALLOCATION_STOREHOUSE);
@@ -88,7 +92,7 @@ public class ListAllocationStoreAuditOrdersCmd extends Cmd {
 
         for(AllocationStorehouseApplyDto allocationStorehouseApplyDto: allocationStorehouseApplyDtos){
             for(WorkflowStepStaffDto tmpWorkflowStepStaffDto : workflowStepStaffDtos) {
-                if (allocationStorehouseApplyDto.getProcessDefinitionKey().equals(tmpWorkflowStepStaffDto.getProcessDefinitionKey())){
+                if (allocationStorehouseApplyDto.getProcessDefinitionKey().equals("java110_"+tmpWorkflowStepStaffDto.getFlowId())){
                     allocationStorehouseApplyDto.setStoreManager("Y");
                 }
             }

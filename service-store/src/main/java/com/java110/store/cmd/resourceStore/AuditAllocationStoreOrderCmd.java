@@ -82,6 +82,8 @@ public class AuditAllocationStoreOrderCmd extends Cmd {
         allocationStorehouseDto.setAuditMessage(reqJson.getString("remark"));
         allocationStorehouseDto.setCurrentUserId(reqJson.getString("userId"));
         allocationStorehouseDto.setNoticeState(reqJson.getString("noticeState"));
+        allocationStorehouseDto.setNextUserId(reqJson.getString("nextUserId"));
+
         AllocationStorehouseApplyDto tmpAllocationStorehouseDto = new AllocationStorehouseApplyDto();
         tmpAllocationStorehouseDto.setApplyId(reqJson.getString("applyId"));
         tmpAllocationStorehouseDto.setStoreId(reqJson.getString("storeId"));
