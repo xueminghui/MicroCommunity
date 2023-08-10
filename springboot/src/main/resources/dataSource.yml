@@ -1,9 +1,9 @@
 dataSources:
   ds0: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: hc_community
-    password: hc_community@12345678
+    url: jdbc:mysql://192.168.23.128:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: Wonders.300168
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
     initialSize: 5
@@ -12,9 +12,9 @@ dataSources:
     poolPreparedStatements: true
   ds1: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: TT
-    password: TT@12345678
+    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: Wonders.300168
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
     initialSize: 5

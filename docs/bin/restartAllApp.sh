@@ -8,9 +8,9 @@ mvn package -Dmaven.test.skip=true
 # 刷hosts
 echo '172.17.0.2 dev.java110.com' >> /etc/hosts
 echo '172.17.0.2 dev.zk.java110.com' >> /etc/hosts
-echo '172.21.0.6 dev.redis.java110.com' >> /etc/hosts
+echo '172.21.0.6 192.168.23.128' >> /etc/hosts
 echo '172.17.0.2 dev.kafka.java110.com' >> /etc/hosts
-echo '172.21.0.15 dev.db.java110.com' >> /etc/hosts
+echo '172.21.0.15 192.168.23.128' >> /etc/hosts
 echo '172.17.0.8 api.java110.com' >> /etc/hosts
 
 if [[ -a ~/jar_deploy ]];then

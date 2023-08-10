@@ -6,7 +6,7 @@ eureka:
     instanceId: ${spring.cloud.client.ip-address}:${server.port}
   client:
     serviceUrl:
-      defaultZone: http://dev.java110.com:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
       #defaultZone: http://localhost:8761/eureka/
 server:
   port: 8003
@@ -24,9 +24,9 @@ spring:
     name: acct-service
   redis:
     database: 0
-    host: dev.redis.java110.com
+    host: 192.168.23.128
     port: 6379
-    password: hc
+    password:
     pool:
       max-active: 300
       max-wait: 10000
@@ -42,9 +42,9 @@ spring:
     filters: stat,wall,log4j
     poolPreparedStatements: true
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://dev.db.java110.com:3306/TT?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://192.168.23.128:3306/TT?useUnicode=true&characterEncoding=utf-8
     maxPoolPreparedStatementPerConnectionSize: 20
-    password: TT@12345678
+    password: Wonders.300168
     testOnBorrow: false
     testWhileIdle: true
     minEvictableIdleTimeMillis: 300000
@@ -52,14 +52,14 @@ spring:
     testOnReturn: false
     driverClassName: com.mysql.cj.jdbc.Driver
     maxActive: 20
-    username: TT
+    username: root
 
 #============== kafka ===================
 kafka:
   consumer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 192.168.23.128:2181
+    servers: 192.168.23.128:9092
     enable:
       auto:
         commit: true
@@ -77,8 +77,8 @@ kafka:
 
   producer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 192.168.23.128:2181
+    servers: 192.168.23.128:9092
     retries: 0
     batch:
       size: 4096
