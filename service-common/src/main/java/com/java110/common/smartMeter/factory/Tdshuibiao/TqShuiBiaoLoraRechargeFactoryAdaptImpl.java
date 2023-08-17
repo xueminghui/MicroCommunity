@@ -35,7 +35,7 @@ public class TqShuiBiaoLoraRechargeFactoryAdaptImpl implements ISmartMeterFactor
 
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/water_security/recharge";
 
-    private static final String NOTIFY_URL = "/app/smartMeter/notify/tqShuiBiaoLoraRechargeFactoryAdaptImpl/992020051967020024";
+    private static final String NOTIFY_URL = "/app/smartMeter/notify/d";
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
