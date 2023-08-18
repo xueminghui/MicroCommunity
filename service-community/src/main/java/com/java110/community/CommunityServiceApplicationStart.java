@@ -77,6 +77,7 @@ public class CommunityServiceApplicationStart {
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
         return restTemplate;
@@ -90,6 +91,7 @@ public class CommunityServiceApplicationStart {
     @Bean
     public com.java110.core.client.RestTemplate outRestTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         com.java110.core.client.RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(com.java110.core.client.RestTemplate.class);
         return restTemplate;
     }

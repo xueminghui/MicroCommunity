@@ -92,6 +92,7 @@ public class CommonServiceApplicationStart {
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
         return restTemplate;
@@ -105,6 +106,7 @@ public class CommonServiceApplicationStart {
     @Bean
     public RestTemplate outRestTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         com.java110.core.client.RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         return restTemplate;
     }
