@@ -66,6 +66,7 @@ public class JobServiceApplication {
     @Bean
     public OutRestTemplate outRestTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         OutRestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(OutRestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
 
@@ -82,7 +83,9 @@ public class JobServiceApplication {
     //@LoadBalanced
     public RestTemplate formRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
+        StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
+        restTemplate.getMessageConverters().add(m);
         return restTemplate;
     }
 
@@ -95,6 +98,7 @@ public class JobServiceApplication {
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         return restTemplate;
     }
