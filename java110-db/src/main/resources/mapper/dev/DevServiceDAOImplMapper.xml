@@ -23,7 +23,7 @@
 
     </select>
 
-    <select id="getMappingInfoAll" resultType="com.java110.entity.mapping.Mapping">
+    <select id="getMappingInfoAll" resultType="com.java110.dto.mapping.Mapping">
         <![CDATA[
 
                      SELECT cm.domain,cm.name,cm.key,cm.value,cm.remark from c_mapping cm where cm.status_cd = '0'

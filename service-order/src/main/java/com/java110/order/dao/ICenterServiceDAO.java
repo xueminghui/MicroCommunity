@@ -3,7 +3,7 @@ package com.java110.order.dao;
 import com.java110.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.dto.businessDatabus.BusinessDatabusDto;
 import com.java110.utils.exception.DAOException;
-import com.java110.entity.mapping.Mapping;
+import com.java110.dto.mapping.Mapping;
 
 import java.util.List;
 import java.util.Map;

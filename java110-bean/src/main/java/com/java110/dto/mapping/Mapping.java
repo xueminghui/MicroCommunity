@@ -1,4 +1,4 @@
-package com.java110.entity.mapping;
+package com.java110.dto.mapping;
 
 import java.io.Serializable;
 import java.util.Date;
