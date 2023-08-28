@@ -14,6 +14,7 @@ import com.java110.dto.owner.OwnerDto;
 import com.java110.dto.payFeeBatch.PayFeeBatchDto;
 import com.java110.dto.user.UserDto;
 import com.java110.fee.bmo.fee.IFeeBMO;
+import com.java110.fee.feeMonth.IPayFeeMonth;
 import com.java110.intf.community.IRoomInnerServiceSMO;
 import com.java110.intf.fee.IFeeAttrInnerServiceSMO;
 import com.java110.intf.fee.IFeeConfigInnerServiceSMO;
@@ -67,6 +68,9 @@ public class SaveRoomCreateFeeCmd extends Cmd {
 
     @Autowired
     private IFeeAttrInnerServiceSMO feeAttrInnerServiceSMOImpl;
+
+    @Autowired
+    private IPayFeeMonth payFeeMonthImpl;
 
 
     @Override
@@ -281,6 +285,13 @@ public class SaveRoomCreateFeeCmd extends Cmd {
         }
 
         flag = feeAttrInnerServiceSMOImpl.saveFeeAttrs(feeAttrsPos);
+
+        // todo 这里异步的方式计算 月数据 和欠费数据
+        List<String> feeIds = new ArrayList<>();
+        for (PayFeePo feePo : feePos) {
+            feeIds.add(feePo.getFeeId());
+        }
+        payFeeMonthImpl.doGeneratorFeeMonths(feeIds, feePos.get(0).getCommunityId());
 
         return flag;
     }

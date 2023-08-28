@@ -1,5 +1,7 @@
 package com.java110.fee.feeMonth;
 
+import java.util.List;
+
 /**
  * 费用离散为 月 应收实收数据
  * <p>
@@ -37,4 +39,10 @@ public interface IPayFeeMonth {
      */
     void deleteFeeMonth(String feeId,String communityId);
 
+    /**
+     * 批量生成 月数据
+     * @param feeIds
+     * @param communityId
+     */
+    void doGeneratorFeeMonths(List<String> feeIds, String communityId);
 }

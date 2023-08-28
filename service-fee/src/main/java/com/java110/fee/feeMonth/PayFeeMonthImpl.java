@@ -168,6 +168,14 @@ public class PayFeeMonthImpl implements IPayFeeMonth {
         payFeeDetailMonthInnerServiceSMOImpl.deletePayFeeDetailMonth(payFeeDetailMonthPo);
     }
 
+    @Override
+    @Async
+    public void doGeneratorFeeMonths(List<String> feeIds, String communityId) {
+        for (String feeId : feeIds) {
+            doGeneratorOrRefreshFeeMonth(feeId, communityId);
+        }
+    }
+
     private void doGeneratorOrRefreshFeeMonth(FeeDto feeDto, String communityId) {
 
         // todo 计算每月单价
