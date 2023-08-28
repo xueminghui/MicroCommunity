@@ -293,6 +293,9 @@ public class SaveRoomCreateFeeCmd extends Cmd {
         }
         payFeeMonthImpl.doGeneratorFeeMonths(feeIds, feePos.get(0).getCommunityId());
 
+        payFeeMonthImpl.doGeneratorOweFees(feeIds,feePos.get(0).getCommunityId());
+
+
         return flag;
     }
 

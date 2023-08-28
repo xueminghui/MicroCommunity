@@ -45,4 +45,13 @@ public interface IPayFeeMonth {
      * @param communityId
      */
     void doGeneratorFeeMonths(List<String> feeIds, String communityId);
+
+
+    /**
+     * 批量生成 欠费数据
+     *
+     * @param feeIds
+     * @param communityId
+     */
+    void doGeneratorOweFees(List<String> feeIds, String communityId);
 }

@@ -9,6 +9,7 @@ import com.java110.dto.fee.FeeDto;
 import com.java110.dto.payFeeDetailMonth.PayFeeDetailMonthDto;
 import com.java110.dto.payFeeDetailMonth.PayFeeMonthOwnerDto;
 import com.java110.intf.fee.*;
+import com.java110.intf.report.IGeneratorOweFeeInnerServiceSMO;
 import com.java110.po.payFeeDetailMonth.PayFeeDetailMonthPo;
 import com.java110.utils.util.Assert;
 import com.java110.utils.util.DateUtil;
@@ -47,6 +48,9 @@ public class PayFeeMonthImpl implements IPayFeeMonth {
 
     @Autowired
     private IComputeFeeSMO computeFeeSMOImpl;
+
+    @Autowired
+    private IGeneratorOweFeeInnerServiceSMO generatorOweFeeInnerServiceSMOImpl;
 
     public static final int DEFAULT_DEAL_COUNT = 200;
 
@@ -173,6 +177,23 @@ public class PayFeeMonthImpl implements IPayFeeMonth {
     public void doGeneratorFeeMonths(List<String> feeIds, String communityId) {
         for (String feeId : feeIds) {
             doGeneratorOrRefreshFeeMonth(feeId, communityId);
+        }
+    }
+
+    @Override
+    @Async
+    public void doGeneratorOweFees(List<String> feeIds, String communityId) {
+        for (String feeId : feeIds) {
+            // todo 查询费用
+            FeeDto feeDto = new FeeDto();
+            feeDto.setCommunityId(communityId);
+            feeDto.setFeeId(feeId);
+            List<FeeDto> tmpFeeDtos = feeInnerServiceSMOImpl.queryFees(feeDto);
+
+            if(tmpFeeDtos == null || tmpFeeDtos.size() < 1){
+                continue;
+            }
+            generatorOweFeeInnerServiceSMOImpl.computeOweFee(tmpFeeDtos.get(0));
         }
     }
 
