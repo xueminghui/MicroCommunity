@@ -80,7 +80,7 @@ public class QrCodePlutusPaymentAdapt implements IQrCodePaymentSMO {
         }
 
         JSONObject paramMap = new JSONObject();
-        paramMap.put("sn", smallWeChatDto.getMchId()); // 富友分配给二级商户的商户号
+        paramMap.put("sn", shopSmallWeChatDto.getMchId()); // 富友分配给二级商户的商户号
         paramMap.put("outTradeId", orderNum);
         paramMap.put("authCode", authCode);
         paramMap.put("tradeAmount", PayUtil.moneyToIntegerStr(payAmount));
