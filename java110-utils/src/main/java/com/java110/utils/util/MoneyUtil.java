@@ -23,7 +23,7 @@ public class MoneyUtil {
      */
     public static double computePriceScale(double price,String scale,int decimalPlace){
 
-        BigDecimal feeTotalPrice = new BigDecimal(price);
+        BigDecimal feeTotalPrice = new BigDecimal(price+"");
 
         if(DOWN.equals(scale)) {
             feeTotalPrice = feeTotalPrice.setScale(decimalPlace, BigDecimal.ROUND_DOWN);
