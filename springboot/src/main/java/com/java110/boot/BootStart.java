@@ -29,8 +29,6 @@ import com.java110.doc.registrar.ApiDocCmdPublishing;
 import com.java110.doc.registrar.ApiDocPublishing;
 import com.java110.intf.dev.ICacheV1InnerServiceSMO;
 import com.java110.service.init.ServiceStartInit;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.constant.MappingConstant;
 import com.java110.utils.factory.ApplicationContextFactory;
 import com.java110.utils.util.StringUtil;
 import okhttp3.ConnectionPool;
@@ -141,9 +139,9 @@ import java.util.concurrent.TimeUnit;
         "com.java110.user.cmd"
 },
         cmdDocClass = ApiDocCmdPublishing.class)
-public class BootApplicationStart {
+public class BootStart {
 
-    private static Logger logger = LoggerFactory.getLogger(BootApplicationStart.class);
+    private static Logger logger = LoggerFactory.getLogger(BootStart.class);
 
     @Resource
     private Java110RestTemplateInterceptor java110RestTemplateInterceptor;
@@ -210,7 +208,7 @@ public class BootApplicationStart {
     public static void main(String[] args) throws Exception {
         try {
             ServiceStartInit.preInitSystemConfig();
-            ApplicationContext context = SpringApplication.run(BootApplicationStart.class, args);
+            ApplicationContext context = SpringApplication.run(BootStart.class, args);
             //服务启动加载
             ServiceStartInit.initSystemConfig(context);
 
