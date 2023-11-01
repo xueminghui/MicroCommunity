@@ -113,10 +113,7 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
      */
     @Override
     public void waitDispersedOweFee(FeeDto feeDto, PayFeeMonthOwnerDto payFeeMonthOwnerDto, Double feePrice, Date deadlineTime) {
-        // todo 费用已经结束
-        if (FeeDto.STATE_FINISH.equals(feeDto.getState())) {
-            return;
-        }
+
 
         // todo 清理 detailId 为-1 的数据
         PayFeeDetailMonthPo payFeeDetailMonthPo = new PayFeeDetailMonthPo();
@@ -124,6 +121,11 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
         payFeeDetailMonthPo.setFeeId(feeDto.getFeeId());
         payFeeDetailMonthPo.setDetailId("-1");
         payFeeDetailMonthInnerServiceSMOImpl.deletePayFeeDetailMonth(payFeeDetailMonthPo);
+
+        // todo 费用已经结束
+        if (FeeDto.STATE_FINISH.equals(feeDto.getState())) {
+            return;
+        }
 
         List<PayFeeDetailMonthPo> payFeeDetailMonthPos = new ArrayList<>();
         // todo 处理 开始时间和结束时间
@@ -140,7 +142,7 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
             if (day < 1) {
                 day = 1;
             }
-            dayReceivableAmount = receivableAmount.divide(new BigDecimal(day), 4, BigDecimal.ROUND_HALF_UP);// 日 应收
+            dayReceivableAmount = receivableAmount.divide(new BigDecimal(day), 8, BigDecimal.ROUND_HALF_UP);// 日 应收
         }
 
         // todo 寻找第一个自然月 一日
@@ -165,7 +167,7 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(startMonthDayTime);
                 curMonthMaxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                dayReceivableAmount = receivableAmount.divide(new BigDecimal(curMonthMaxDay), 4, BigDecimal.ROUND_HALF_UP);// 日 实收
+                dayReceivableAmount = receivableAmount.divide(new BigDecimal(curMonthMaxDay), 8, BigDecimal.ROUND_HALF_UP);// 日 实收
             }
             // todo 计算 应收
             curMonthReceivableAmount = new BigDecimal(curDay).multiply(dayReceivableAmount).setScale(4, BigDecimal.ROUND_HALF_UP);
@@ -192,7 +194,7 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(startMonthDayTime);
             curMonthMaxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-            dayReceivableAmount = receivableAmount.divide(new BigDecimal(curMonthMaxDay), 4, BigDecimal.ROUND_HALF_UP);// 日 实收
+            dayReceivableAmount = receivableAmount.divide(new BigDecimal(curMonthMaxDay), 8, BigDecimal.ROUND_HALF_UP);// 日 实收
         }
         // todo 计算 应收
         curMonthReceivableAmount = new BigDecimal(curDay).multiply(dayReceivableAmount).setScale(4, BigDecimal.ROUND_HALF_UP);
@@ -218,8 +220,8 @@ public class PayFeeMonthHelp implements IPayFeeMonthHelp {
         BigDecimal receivableAmount = new BigDecimal(Double.parseDouble(feeDetailDto.getReceivableAmount()));
         BigDecimal receivedAmount = new BigDecimal(Double.parseDouble(feeDetailDto.getReceivedAmount()));
 
-        BigDecimal dayReceivableAmount = receivableAmount.divide(new BigDecimal(day), 4, BigDecimal.ROUND_HALF_UP);// 日 应收
-        BigDecimal dayReceivedAmount = receivedAmount.divide(new BigDecimal(day), 4, BigDecimal.ROUND_HALF_UP);// 日 实收
+        BigDecimal dayReceivableAmount = receivableAmount.divide(new BigDecimal(day), 8, BigDecimal.ROUND_HALF_UP);// 日 应收
+        BigDecimal dayReceivedAmount = receivedAmount.divide(new BigDecimal(day), 8, BigDecimal.ROUND_HALF_UP);// 日 实收
 
         // todo 寻找第一个自然月 一日
         Calendar firstMonthDayCal = Calendar.getInstance();

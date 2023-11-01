@@ -34,7 +34,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
 
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/recharge";
 
-    private static final String NOTIFY_URL = "/app/smartMeter/notify/tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl/992020051967020024";
+    private static final String NOTIFY_URL = "/app/smartMeter/notify/b";
     @Autowired
     private IMeterMachineSpecV1InnerServiceSMO meterMachineSpecV1InnerServiceSMOImpl;
 
@@ -117,6 +117,10 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         if (meterMachineDetailPos.size() > 0) {
             meterMachineDetailV1InnerServiceSMOImpl.saveMeterMachineDetails(meterMachineDetailPos);
         }
+
+        //todo 下发查询余额
+        requestRead(meterMachineDto);
+
         return new ResultVo(ResultVo.CODE_OK, "请求已发送，等待电表反馈数据");
     }
 
@@ -141,7 +145,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         item.put("retry_times", 1);
         item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
         item.put("address", meterMachineDto.getAddress());
-        item.put("type", 3);
+        item.put("type", 22);
         req.add(item);
         List<MeterMachineDetailPo> meterMachineDetailPos = new ArrayList<>();
         MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();
@@ -202,7 +206,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             item.put("retry_times", 1);
             item.put("cid", meterMachineSpecDtos.get(0).getSpecValue());
             item.put("address", meterMachineDto.getAddress());
-            item.put("type", 3);
+            item.put("type", 22);
             req.add(item);
 
             MeterMachineDetailPo meterMachineDetailPo = new MeterMachineDetailPo();

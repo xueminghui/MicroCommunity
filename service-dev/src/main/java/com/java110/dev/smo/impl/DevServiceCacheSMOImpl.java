@@ -1,7 +1,6 @@
 package com.java110.dev.smo.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.factory.DataTransactionFactory;
 import com.java110.db.dao.IQueryServiceDAO;
 import com.java110.dev.dao.IDevServiceDAO;
@@ -10,7 +9,7 @@ import com.java110.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.dto.businessDatabus.BusinessDatabusDto;
 import com.java110.dto.businessTableHis.BusinessTableHisDto;
 import com.java110.entity.center.AppRoute;
-import com.java110.entity.mapping.Mapping;
+import com.java110.dto.mapping.Mapping;
 import com.java110.entity.order.ServiceBusiness;
 import com.java110.entity.service.ServiceSql;
 import com.java110.service.context.DataQuery;

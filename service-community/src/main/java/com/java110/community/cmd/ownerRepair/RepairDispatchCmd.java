@@ -163,7 +163,7 @@ public class RepairDispatchCmd extends Cmd {
         RepairUserDto repairUserDto = new RepairUserDto();
         repairUserDto.setRepairId(reqJson.getString("repairId"));
         repairUserDto.setCommunityId(reqJson.getString("communityId"));
-        repairUserDto.setState(RepairUserDto.STATE_DOING);
+        //repairUserDto.setState(RepairUserDto.STATE_DOING);
         repairUserDto.setStaffId(reqJson.getString("userId"));
         List<RepairUserDto> repairUserDtos = repairUserInnerServiceSMOImpl.queryRepairUsers(repairUserDto);
         if (repairUserDtos != null && repairUserDtos.size() != 1) {
@@ -190,7 +190,7 @@ public class RepairDispatchCmd extends Cmd {
         repair.setStaffId(reqJson.getString("staffId"));
         repair.setCommunityId(reqJson.getString("communityId"));
 //        repair.setRuId(repairUserDtos.get(0).getPreRuId());
-        repair.setStates(new String[]{RepairUserDto.STATE_TRANSFER, RepairUserDto.STATE_CLOSE, RepairUserDto.STATE_STOP});
+        repair.setStates(new String[]{RepairUserDto.STATE_TRANSFER, RepairUserDto.STATE_CLOSE, RepairUserDto.STATE_STOP,RepairUserDto.STATE_EVALUATE});
         List<RepairUserDto> repairUsers = repairUserInnerServiceSMOImpl.queryRepairUsers(repair);
         if (repairUsers == null || repairUsers.size() < 1) { //指派的不能退单
             if (RepairDto.REPAIR_WAY_GRABBING.equals(repairDtos.get(0).getRepairWay())

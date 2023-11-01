@@ -18,6 +18,7 @@ package com.java110.fee.smo.impl;
 
 import com.java110.dto.fee.PayFeeDto;
 import com.java110.fee.dao.IPayFeeV1ServiceDao;
+import com.java110.fee.feeMonth.IPayFeeMonth;
 import com.java110.intf.fee.IPayFeeV1InnerServiceSMO;
 import com.java110.po.fee.PayFeePo;
 import com.java110.utils.util.BeanConvertUtil;
@@ -42,11 +43,18 @@ public class PayFeeV1InnerServiceSMOImpl extends BaseServiceSMO implements IPayF
 
     @Autowired
     private IPayFeeV1ServiceDao payFeeV1ServiceDaoImpl;
-
+    @Autowired
+    private IPayFeeMonth payFeeMonthImpl;
 
     @Override
-    public int savePayFee(@RequestBody  PayFeePo PayFeePo) {
-        int saveFlag = payFeeV1ServiceDaoImpl.savePayFeeInfo(BeanConvertUtil.beanCovertMap(PayFeePo));
+    public int savePayFee(@RequestBody  PayFeePo payFeePo) {
+        int saveFlag = payFeeV1ServiceDaoImpl.savePayFeeInfo(BeanConvertUtil.beanCovertMap(payFeePo));
+        if (saveFlag < 1) {
+            return saveFlag;
+        }
+
+        //todo 离散月报表
+        payFeeMonthImpl.doGeneratorOrRefreshFeeMonth(payFeePo.getFeeId(), payFeePo.getCommunityId());
         return saveFlag;
     }
 

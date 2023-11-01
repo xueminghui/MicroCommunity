@@ -358,8 +358,8 @@ public class RepairFinishCmd extends Cmd {
             repairUserDto.setRepairId(reqJson.getString("repairId"));
             repairUserDto.setCommunityId(reqJson.getString("communityId"));
             repairUserDto.setRepairEvent(RepairUserDto.REPAIR_EVENT_START_USER);
-            repairUserDtos = repairUserInnerServiceSMOImpl.queryRepairUsers(repairUserDto);
-            if (repairUserDtos.size() != 1) {
+            List<RepairUserDto> startRepairUserDtos = repairUserInnerServiceSMOImpl.queryRepairUsers(repairUserDto);
+            if (startRepairUserDtos.size() != 1) {
                 ResponseEntity<String> responseEntity = ResultVo.createResponseEntity(ResultVo.CODE_BUSINESS_VERIFICATION, "数据错误 该订单没有发起人！");
                 context.setResponseEntity(responseEntity);
                 return;
@@ -376,8 +376,8 @@ public class RepairFinishCmd extends Cmd {
             }
             repairUserPo.setRepairId(reqJson.getString("repairId"));
             if ("Z".equals(repairChannel)) {  //如果是业主端报修的走下面的方法
-                repairUserPo.setStaffId(repairUserDtos.get(0).getStaffId());
-                repairUserPo.setStaffName(repairUserDtos.get(0).getStaffName());
+                repairUserPo.setStaffId(startRepairUserDtos.get(0).getStaffId());
+                repairUserPo.setStaffName(startRepairUserDtos.get(0).getStaffName());
             } else { //如果不是业主报修，并且有偿
                 RepairDto repairDto = new RepairDto();
                 repairDto.setRepairId(reqJson.getString("repairId"));

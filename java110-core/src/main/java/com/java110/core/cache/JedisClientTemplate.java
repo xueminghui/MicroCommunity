@@ -32,7 +32,7 @@ public class JedisClientTemplate implements Jedis {
 
     @Override
     public String set(byte[] key, byte[] value) {
-        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.opsForValue().set(new String(key), value);
         return "";
     }
 
@@ -40,7 +40,7 @@ public class JedisClientTemplate implements Jedis {
     public String set(String key, String value, String nxxx, String expx, int time) {
 //        redisTemplate.opsForValue().set(key, value,nxxx,expx,time);
 //        return "";
-        return redisTemplate.execute(new RedisCallback() {
+        Object ext = redisTemplate.execute(new RedisCallback() {
             public String doInRedis(RedisConnection connection) {
                 //redis.clients.jedis.Jedis jedis = (redis.clients.jedis.Jedis) connection.getNativeConnection();
                 Object nativeConnection = connection.getNativeConnection();
@@ -55,7 +55,11 @@ public class JedisClientTemplate implements Jedis {
                 }
                 return "";
             }
-        }, true).toString();
+        }, true);
+        if (ext == null) {
+            return "";
+        }
+        return ext.toString();
     }
 
 
@@ -71,7 +75,7 @@ public class JedisClientTemplate implements Jedis {
 
     @Override
     public byte[] get(byte[] key) {
-        Object value = redisTemplate.opsForValue().get(key);
+        Object value = redisTemplate.opsForValue().get(new String(key));
         if (value == null) {
             return null;
         }
@@ -129,7 +133,7 @@ public class JedisClientTemplate implements Jedis {
 
     @Override
     public Long del(byte[] key) {
-        redisTemplate.delete(key);
+        redisTemplate.delete(new String(key));
         return 1L;
     }
 

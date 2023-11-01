@@ -11,6 +11,7 @@ import com.java110.dto.basePrivilege.BasePrivilegeDto;
 import com.java110.dto.store.StoreDto;
 import com.java110.dto.user.UserDto;
 import com.java110.entity.component.ComponentValidateResult;
+import com.java110.intf.community.IMenuInnerServiceSMO;
 import com.java110.intf.user.IUserInnerServiceSMO;
 import com.java110.utils.cache.PrivilegeCache;
 import com.java110.utils.constant.CommonConstant;
@@ -37,8 +38,6 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     protected static final String DEFAULT_PAY_ADAPT = "wechatPayAdapt";// 默认微信通用支付
     private static final String URL_API = "";
 
-    @Autowired
-    private IGetCommunityStoreInfoSMO getCommunityStoreInfoSMOImpl;
 
     @Autowired
     private WechatAuthProperties wechatAuthProperties;
@@ -52,6 +51,9 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     @Autowired
     private IUserInnerServiceSMO userInnerServiceSMOImpl;
 
+    @Autowired
+    private IGetCommunityStoreInfoSMO getCommunityStoreInfoSMOImpl;
+
     //微信支付
     public static final String DOMAIN_WECHAT_PAY = "WECHAT_PAY";
     // 微信服务商支付开关
@@ -62,6 +64,10 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     private static final String WECHAT_SERVICE_APP_ID = "SERVICE_APP_ID";
 
     private static final String WECHAT_SERVICE_MCH_ID = "SERVICE_MCH_ID";
+
+
+    @Autowired
+    private IMenuInnerServiceSMO menuInnerServiceSMOImpl;
 
 
     /**
@@ -89,11 +95,9 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
 
         headers.put(CommonConstant.USER_ID, StringUtil.isEmpty(pd.getUserId()) ? "-1" : pd.getUserId());
 
-        if (!headers.containsKey(CommonConstant.HTTP_USER_ID)) {
-            headers.put(CommonConstant.HTTP_USER_ID, StringUtil.isEmpty(pd.getUserId()) ? "-1" : pd.getUserId());
-        }
         if (!headers.containsKey(CommonConstant.HTTP_APP_ID)) {
             headers.put(CommonConstant.HTTP_APP_ID, pd.getAppId());
+
         }
         if (!headers.containsKey(CommonConstant.APP_ID)) {
             headers.put(CommonConstant.APP_ID, pd.getAppId());
@@ -148,10 +152,8 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
             headers.put(CommonConstant.HTTP_USER_ID, "-1");
         }
 
-        headers.put(CommonConstant.USER_ID, "-1");
-
-        if (!headers.containsKey(CommonConstant.HTTP_USER_ID)) {
-            headers.put(CommonConstant.HTTP_USER_ID, "-1");
+        if (!headers.containsKey(CommonConstant.USER_ID)) {
+            headers.put(CommonConstant.USER_ID, headers.get(CommonConstant.HTTP_USER_ID));
         }
         if (!headers.containsKey(CommonConstant.HTTP_TRANSACTION_ID)) {
             headers.put(CommonConstant.HTTP_TRANSACTION_ID, GenerateCodeFactory.getUUID());
@@ -339,7 +341,6 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         if (basePrivilegeDtos == null || basePrivilegeDtos.size() < 1) {
             return;
         }
-        String tmpResource = null;
         boolean hasPrivilege = false;
         for (BasePrivilegeDto privilegeDto : basePrivilegeDtos) {
             if (resource.equals(privilegeDto.getResource())) {
@@ -350,20 +351,18 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
             return;
         }
 
-        ResultVo resultVo = getCommunityStoreInfoSMOImpl.checkUserHasResourceListener(restTemplate, pd, paramIn, pd.getUserId());
-        if (resultVo == null ||
-                resultVo.getCode() != ResultVo.CODE_OK) {
-            throw new UnsupportedOperationException("用户没有权限操作");
-        }
-        JSONArray privileges = JSONArray.parseArray(resultVo.getMsg());
+        BasePrivilegeDto basePrivilegeDto = new BasePrivilegeDto();
+        basePrivilegeDto.setResource(resource);
+        basePrivilegeDto.setUserId(pd.getUserId());
+        List<Map> privileges = menuInnerServiceSMOImpl.checkUserHasResource(basePrivilegeDto);
 
-        hasPrivilege = false;
         if (privileges == null || privileges.size() < 1) {
             throw new UnsupportedOperationException("用户没有权限操作");
         }
+
+        hasPrivilege = false;
         for (int privilegeIndex = 0; privilegeIndex < privileges.size(); privilegeIndex++) {
-            tmpResource = privileges.getJSONObject(privilegeIndex).getString("resource");
-            if (resource.equals(tmpResource)) {
+            if (resource.equals(privileges.get(privilegeIndex).get("resource"))) {
                 hasPrivilege = true;
                 break;
             }
@@ -383,14 +382,10 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         Assert.hasLength(pd.getUserId(), "用户未登录请先登录");
 
         ResultVo resultVo = getCommunityStoreInfoSMOImpl.getStoreInfo(pd, restTemplate, pd.getUserId());
-
+        logger.debug("查询商户信息 getStoreInfo ：{}", resultVo.toString());
         return new ResponseEntity<String>(resultVo.getMsg(), resultVo.getCode() == ResultVo.CODE_OK ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<String> getStoreEnterCommunitys(IPageData pd, String storeId, String storeTypeCd, RestTemplate restTemplate) {
-        ResultVo resultVo = getCommunityStoreInfoSMOImpl.getStoreEnterCommunitys(pd, storeId, storeTypeCd, restTemplate);
-        return new ResponseEntity<String>(resultVo.getMsg(), resultVo.getCode() == ResultVo.CODE_OK ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
-    }
 
     /**
      * 查询商户信息
@@ -399,17 +394,12 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
      */
     protected void checkStoreEnterCommunity(IPageData pd, String storeId, String storeTypeCd, String communityId, RestTemplate restTemplate) {
         Assert.hasLength(pd.getUserId(), "用户未登录请先登录");
-        ResponseEntity<String> responseEntity = null;
-        responseEntity = getStoreEnterCommunitys(pd, storeId, storeTypeCd, restTemplate);
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+        ResultVo resultVo =  getCommunityStoreInfoSMOImpl.getStoreEnterCommunitys(pd, storeId, storeTypeCd, restTemplate);
+        if (resultVo.getCode() != ResultVo.CODE_OK) {
             throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, "还未入驻小区，请先入驻小区");
         }
 
-        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "data", "还未入驻小区，请先入驻小区");
-
-        JSONObject community = JSONObject.parseObject(responseEntity.getBody().toString());
-
-        JSONArray communitys = community.getJSONArray("data");
+        JSONArray communitys = JSONArray.parseArray(resultVo.getData().toString());
 
         if (communitys == null || communitys.size() == 0) {
             throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, "还未入驻小区，请先入驻小区");
@@ -422,7 +412,6 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         }
 
     }
-
 
     private JSONObject getCurrentCommunity(JSONArray communitys, String communityId) {
         for (int communityIndex = 0; communityIndex < communitys.size(); communityIndex++) {

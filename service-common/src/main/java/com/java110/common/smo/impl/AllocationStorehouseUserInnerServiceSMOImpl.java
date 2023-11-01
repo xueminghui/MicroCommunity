@@ -167,6 +167,7 @@ public class AllocationStorehouseUserInnerServiceSMOImpl extends BaseServiceSMO 
             String business_key = pi.getBusinessKey();
             appIyIds.add(business_key);
             taskBusinessKeyMap.put(business_key, task.getId());
+            taskBusinessKeyMap.put(business_key+"_ProcessDefinitionKey", pi.getProcessDefinitionKey());
         }
 
         if (appIyIds == null || appIyIds.size() == 0) {
@@ -180,6 +181,8 @@ public class AllocationStorehouseUserInnerServiceSMOImpl extends BaseServiceSMO 
         List<AllocationStorehouseApplyDto> tmpAllocationStorehouseApplyDtos = allocationStorehouseApplyInnerServiceSMOImpl.queryAllocationStorehouseApplys(allocationStorehouseApplyDto);
         for (AllocationStorehouseApplyDto tmpAllocationStorehouseApplyDto : tmpAllocationStorehouseApplyDtos) {
             tmpAllocationStorehouseApplyDto.setTaskId(taskBusinessKeyMap.get(tmpAllocationStorehouseApplyDto.getApplyId()));
+            tmpAllocationStorehouseApplyDto.setProcessDefinitionKey(taskBusinessKeyMap.get(tmpAllocationStorehouseApplyDto.getApplyId()+"_ProcessDefinitionKey"));
+
         }
         return tmpAllocationStorehouseApplyDtos;
     }
@@ -359,6 +362,7 @@ public class AllocationStorehouseUserInnerServiceSMOImpl extends BaseServiceSMO 
         variables.put("currentUserId", allocationStorehouseApplyDto.getCurrentUserId());
         variables.put("flag", "1200".equals(allocationStorehouseApplyDto.getAuditCode()) ? "false" : "true");
         variables.put("startUserId", allocationStorehouseApplyDto.getStartUserId());
+        variables.put("nextUserId", allocationStorehouseApplyDto.getNextUserId());
         taskService.complete(allocationStorehouseApplyDto.getTaskId(), variables);
         ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         if (pi == null) {

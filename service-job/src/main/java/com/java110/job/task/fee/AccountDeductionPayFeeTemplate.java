@@ -25,6 +25,9 @@ import com.java110.utils.util.DateUtil;
 import com.java110.utils.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.java110.utils.util.Assert;
+import com.java110.dto.store.StoreUserDto;
+import com.java110.intf.store.IStoreUserV1InnerServiceSMO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,9 @@ public class AccountDeductionPayFeeTemplate extends TaskSystemQuartz {
 
     @Autowired
     private IAccountInnerServiceSMO accountInnerServiceSMOImpl;
+
+    @Autowired
+    private IStoreUserV1InnerServiceSMO storeUserV1InnerServiceSMOImpl;
 
     @Autowired
     RestTemplate restTemplate;
@@ -116,6 +122,13 @@ public class AccountDeductionPayFeeTemplate extends TaskSystemQuartz {
         if (feeDtos == null || feeDtos.size() < 1) {
             return;
         }
+        StoreUserDto storeUserDto = new StoreUserDto();
+        storeUserDto.setStoreId(feeDtos.get(0).getIncomeObjId());
+        storeUserDto.setRelCd(StoreUserDto.REL_CD_MANAGER);
+        List<StoreUserDto> storeUserDtos = storeUserV1InnerServiceSMOImpl.queryStoreUsers(storeUserDto);
+
+        Assert.listOnlyOne(storeUserDtos,"没有扣款的用户");
+
         List<FeeDto> tmpFeeDtos = new ArrayList<>();
         for (FeeDto tmpFeeDto : feeDtos) {
             computeFeeSMOImpl.computeEveryOweFee(tmpFeeDto);//计算欠费金额
@@ -164,7 +177,7 @@ public class AccountDeductionPayFeeTemplate extends TaskSystemQuartz {
                 param.put("fees", fees);
                 param.put("remark", "定时账户扣款缴费");
                 try {
-                    CallApiServiceFactory.postForApi(AppDto.JOB_APP_ID, param, ServiceCodeConstant.SERVICE_CODE_PAY_OWE_FEE, JSONObject.class);
+                    CallApiServiceFactory.postForApi(AppDto.JOB_APP_ID, param, ServiceCodeConstant.SERVICE_CODE_PAY_OWE_FEE, JSONObject.class,storeUserDtos.get(0).getUserId());
                 } catch (SMOException e) {
                     logger.error("缴费失败", e);
                     accountDetailPo = new AccountDetailPo();

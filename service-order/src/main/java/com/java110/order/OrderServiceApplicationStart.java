@@ -91,6 +91,7 @@ public class OrderServiceApplicationStart {
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
         return restTemplate;
@@ -104,6 +105,7 @@ public class OrderServiceApplicationStart {
     @Bean
     public RestTemplate outRestTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         return restTemplate;
     }

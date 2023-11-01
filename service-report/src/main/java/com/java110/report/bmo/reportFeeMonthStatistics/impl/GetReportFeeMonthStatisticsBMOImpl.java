@@ -909,7 +909,7 @@ public class GetReportFeeMonthStatisticsBMOImpl implements IGetReportFeeMonthSta
         List<Map> reportFeeMonthStatisticsDtos = null;
         if (count > 0) {
             reportFeeMonthStatisticsDtos = reportFeeMonthStatisticsInnerServiceSMOImpl.queryHuaningOweFeeDetail(paramInfo);
-            refreshOweFee(reportFeeMonthStatisticsDtos, paramInfo);
+            //refreshOweFee(reportFeeMonthStatisticsDtos, paramInfo);
         } else {
             reportFeeMonthStatisticsDtos = new ArrayList<>();
         }

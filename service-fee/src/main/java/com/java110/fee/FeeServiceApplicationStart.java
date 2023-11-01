@@ -45,6 +45,7 @@ import java.nio.charset.Charset;
         "com.java110.intf.job",
         "com.java110.intf.acct",
         "com.java110.intf.common",
+        "com.java110.intf.report",
         "com.java110.intf.store"})
 public class FeeServiceApplicationStart {
 
@@ -61,6 +62,7 @@ public class FeeServiceApplicationStart {
     @LoadBalanced
     public RestTemplate restTemplate() {
         StringHttpMessageConverter m = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+        m.setWriteAcceptCharset(false);
         RestTemplate restTemplate = new RestTemplateBuilder().additionalMessageConverters(m).build(RestTemplate.class);
         restTemplate.getInterceptors().add(java110RestTemplateInterceptor);
         return restTemplate;
