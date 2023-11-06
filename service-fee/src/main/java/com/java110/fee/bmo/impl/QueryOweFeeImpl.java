@@ -76,7 +76,7 @@ public class QueryOweFeeImpl implements IQueryOweFee {
     public ResponseEntity<String> query(FeeDto feeDto) {
 
         //查询费用信息arrearsEndTime
-        feeDto.setArrearsEndTime(DateUtil.getCurrentDate());
+       // feeDto.setArrearsEndTime(DateUtil.getCurrentDate());
         feeDto.setState(FeeDto.STATE_DOING);
         List<FeeDto> feeDtos = feeInnerServiceSMOImpl.queryFees(feeDto);
 
@@ -102,7 +102,7 @@ public class QueryOweFeeImpl implements IQueryOweFee {
                 );
 
                 tmpFeeDto.setVal(val);
-                if (tmpFeeDto.getFeePrice() > 0) {
+                if (tmpFeeDto.getFeeTotalPrice() > 0) {
                     tmpFeeDtos.add(tmpFeeDto);
                 }
             } catch (Exception e) {
