@@ -204,4 +204,6 @@ public class QrCodeWechatPaymentAdapt implements IQrCodePaymentSMO {
         onlinePayPo.setState(state);
         onlinePayV1InnerServiceSMOImpl.updateOnlinePay(onlinePayPo);
     }
+
+
 }
