@@ -8,6 +8,7 @@ import com.java110.dto.fee.*;
 import com.java110.dto.logSystemError.LogSystemErrorDto;
 import com.java110.dto.owner.OwnerCarDto;
 import com.java110.dto.owner.OwnerRoomRelDto;
+import com.java110.dto.task.TaskAttrDto;
 import com.java110.dto.task.TaskDto;
 import com.java110.intf.community.IParkingSpaceInnerServiceSMO;
 import com.java110.intf.community.IRoomInnerServiceSMO;
@@ -113,7 +114,8 @@ public class GenerateBillProTemplate extends TaskSystemQuartz {
         //查询费用项
         FeeConfigDto feeConfigDto = new FeeConfigDto();
         feeConfigDto.setCommunityId(communityDto.getCommunityId());
-        feeConfigDto.setBillType(getCurTaskAttr(taskDto, TASK_ATTR_BILL_TYPE).getValue());
+        TaskAttrDto curTaskAttr = getCurTaskAttr(taskDto, TASK_ATTR_BILL_TYPE);
+        feeConfigDto.setBillType(curTaskAttr == null ? null : curTaskAttr.getValue());
 
         if (StringUtil.isEmpty(feeConfigDto.getBillType())) {
             throw new IllegalArgumentException("配置错误 未拿到属性值");

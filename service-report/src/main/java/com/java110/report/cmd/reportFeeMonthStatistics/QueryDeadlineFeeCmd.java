@@ -62,6 +62,7 @@ public class QueryDeadlineFeeCmd extends Cmd {
 
         ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
 
+        context.setResponseEntity(responseEntity);
     }
 
     private void freshReportDeadlineDay(List<ReportFeeMonthStatisticsDto> reportFeeMonthStatisticsDtos) {

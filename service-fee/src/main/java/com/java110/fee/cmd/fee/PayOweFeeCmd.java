@@ -131,6 +131,10 @@ public class PayOweFeeCmd extends Cmd {
         userDto.setUserId(userId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         Assert.listOnlyOne(userDtos, "用户未登录");
+
+        String payOrderId = paramObj.getString("payOrderId");
+
+
         //添加单元信息
         List<FeeReceiptPo> feeReceiptPos = new ArrayList<>();
         List<FeeReceiptDetailPo> feeReceiptDetailPos = new ArrayList<>();
@@ -152,7 +156,7 @@ public class PayOweFeeCmd extends Cmd {
             }
 
             //todo 去缴费
-            getFeeReceiptDetailPo(dataFlowContext, feeObj, feeReceiptDetailPos, feeReceiptPos, userDtos.get(0));
+            getFeeReceiptDetailPo(dataFlowContext, feeObj, feeReceiptDetailPos, feeReceiptPos, userDtos.get(0), payOrderId);
         }
 
         //这里只是写入 收据表，暂不考虑 事务一致性问题，就算写入失败 也只是影响 收据打印，如果 贵公司对 收据要求 比较高，不能有失败的情况 请加入事务管理
@@ -187,7 +191,8 @@ public class PayOweFeeCmd extends Cmd {
     private void getFeeReceiptDetailPo(ICmdDataFlowContext dataFlowContext, JSONObject paramObj,
                                        List<FeeReceiptDetailPo> feeReceiptDetailPos,
                                        List<FeeReceiptPo> feeReceiptPos,
-                                       UserDto userDto) {
+                                       UserDto userDto,
+                                       String payOrderId) {
         int flag = 0;
         if (!paramObj.containsKey("primeRate")) {
             paramObj.put("primeRate", "6");
@@ -203,7 +208,7 @@ public class PayOweFeeCmd extends Cmd {
         }
         paramObj.put("state", "1400");
         // todo 添加交费明细
-        addOweFeeDetail(paramObj, dataFlowContext, feeReceiptDetailPos, feeReceiptPos, userDto);
+        addOweFeeDetail(paramObj, dataFlowContext, feeReceiptDetailPos, feeReceiptPos, userDto,payOrderId);
         modifyOweFee(paramObj, dataFlowContext);
 
         //修改车辆
@@ -326,7 +331,7 @@ public class PayOweFeeCmd extends Cmd {
     public void addOweFeeDetail(JSONObject paramInJson, ICmdDataFlowContext dataFlowContext,
                                 List<FeeReceiptDetailPo> feeReceiptDetailPos,
                                 List<FeeReceiptPo> feeReceiptPos,
-                                UserDto userDto) {
+                                UserDto userDto,String payOrderId) {
 
         JSONObject businessFeeDetail = new JSONObject();
         businessFeeDetail.putAll(paramInJson);
@@ -376,6 +381,12 @@ public class PayOweFeeCmd extends Cmd {
             payFeeDetailPo.setPayOrderId(oId);
 
         }
+
+        // todo 如果 扫码枪支付 输入支付订单ID
+        if(!StringUtil.isEmpty(payOrderId)){
+            payFeeDetailPo.setPayOrderId(payOrderId);
+        }
+
         payFeeDetailPo.setCashierId(userDto.getUserId());
         payFeeDetailPo.setCashierName(userDto.getName());
 

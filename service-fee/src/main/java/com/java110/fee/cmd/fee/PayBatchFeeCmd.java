@@ -163,14 +163,15 @@ public class PayBatchFeeCmd extends Cmd {
         userDto.setUserId(userId);
         List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
         Assert.listOnlyOne(userDtos, "用户未登录");
-
+        String payOrderId = reqJson.getString("payOrderId");
         JSONArray fees = reqJson.getJSONArray("fees");
         JSONObject paramInObj = null;
         JSONArray details = new JSONArray();
         for (int feeIndex = 0; feeIndex < fees.size(); feeIndex++) {
             try {
                 paramInObj = fees.getJSONObject(feeIndex);
-                doDeal(paramInObj, reqJson.getString("communityId"), cmdDataFlowContext, userDtos.get(0));
+                paramInObj.put("payOrderId",reqJson.getString("payOrderId"));
+                doDeal(paramInObj, reqJson.getString("communityId"), cmdDataFlowContext, userDtos.get(0),payOrderId);
             } catch (Exception e) {
                 logger.error("处理异常", e);
                 throw new CmdException(e.getMessage());
@@ -184,10 +185,11 @@ public class PayBatchFeeCmd extends Cmd {
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(data));
     }
 
-    private void doDeal(JSONObject paramObj, String communityId, ICmdDataFlowContext cmdDataFlowContext, UserDto userDto) throws Exception {
+    private void doDeal(JSONObject paramObj, String communityId, ICmdDataFlowContext cmdDataFlowContext, UserDto userDto,String payOrderId) throws Exception {
         paramObj.put("communityId", communityId);
         //获取订单ID
         String oId = Java110TransactionalFactory.getOId();
+
 
         //开始锁代码
         PayFeePo payFeePo = null;
@@ -200,7 +202,12 @@ public class PayBatchFeeCmd extends Cmd {
             if (StringUtil.isEmpty(oId)) {
                 oId = payFeeDetailPo.getDetailId();
             }
+
             payFeeDetailPo.setPayOrderId(oId);
+            // todo 如果 扫码枪支付 输入支付订单ID
+            if(!StringUtil.isEmpty(payOrderId)){
+                payFeeDetailPo.setPayOrderId(payOrderId);
+            }
             payFeeDetailPo.setCashierId(userDto.getUserId());
             payFeeDetailPo.setCashierName(userDto.getName());
             int flag = payFeeDetailNewV1InnerServiceSMOImpl.savePayFeeDetailNew(payFeeDetailPo);

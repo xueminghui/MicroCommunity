@@ -115,7 +115,7 @@ public class QrCodePlutusPaymentAdapt implements IQrCodePaymentSMO {
         if ("1".equals(paramObj.getString("status"))) {
             return new ResultVo(ResultVo.CODE_OK, "成功");
         } else {
-            return new ResultVo(ResultVo.CODE_ERROR, paramObj.getString("remark"));
+            return new ResultVo(ResultVo.CODE_ERROR,json.getString("msg")+paramObj.getString("remark"));
         }
 
     }
@@ -174,7 +174,7 @@ public class QrCodePlutusPaymentAdapt implements IQrCodePaymentSMO {
         } else if ("0".equals(paramObj.getString("status"))) {
             return new ResultVo(ResultVo.CODE_WAIT_PAY, "等待支付完成");
         } else {
-            return new ResultVo(ResultVo.CODE_ERROR, paramObj.getString("remark"));
+            return new ResultVo(ResultVo.CODE_ERROR, json.getString("msg")+paramObj.getString("remark"));
         }
     }
 }

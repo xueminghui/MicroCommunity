@@ -11,10 +11,7 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Unit test for simple App.
@@ -28,9 +25,12 @@ public class AppTest
     public void should()
     {
 
-     Calendar calendar = Calendar.getInstance();
-     calendar.set(Calendar.YEAR,2023);
-     calendar.set(Calendar.MONTH,11);
-        System.out.printf(DateUtil.getFormatTimeString(calendar.getTime(),DateUtil.DATE_FORMATE_STRING_A));
+        double money = 80;
+
+        Map info =new HashMap<>();
+        info.put("money",money);
+
+        double a = Double.parseDouble(info.get("money").toString());
+        System.out.println(a);
     }
 }
