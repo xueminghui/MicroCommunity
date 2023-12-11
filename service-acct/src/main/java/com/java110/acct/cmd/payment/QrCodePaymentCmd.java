@@ -12,6 +12,7 @@ import com.java110.core.log.LoggerFactory;
 import com.java110.dto.community.CommunityDto;
 import com.java110.dto.fee.FeeDetailDto;
 import com.java110.intf.community.ICommunityV1InnerServiceSMO;
+import com.java110.utils.cache.CommonCache;
 import com.java110.utils.cache.MappingCache;
 import com.java110.utils.constant.CommonConstant;
 import com.java110.utils.constant.WechatConstant;
@@ -88,6 +89,9 @@ public class QrCodePaymentCmd extends Cmd {
             feeName = feeName.substring(0, 120);
         }
 
+        //todo 缓存订单ID
+        CommonCache.setValue("qrCode_order"+orderId,orderId,CommonCache.PAY_DEFAULT_EXPIRE_TIME);
+
         ResultVo resultVo = null;
         try {
             resultVo = qrCodePaymentSMOImpl.pay(reqJson.getString("communityId"), orderId, receivedAmount, authCode, feeName);
@@ -106,6 +110,11 @@ public class QrCodePaymentCmd extends Cmd {
         String userId = cmdDataFlowContext.getReqHeaders().get(CommonConstant.USER_ID);
         //JSONObject paramOut = CallApiServiceFactory.postForApi(appId, reqJson, "fee.payFee", JSONObject.class, userId);
         reqJson.put("payOrderId",orderId);
+        orderId = CommonCache.getAndRemoveValue("qrCode_order"+orderId);
+
+        if(StringUtil.isEmpty(orderId)){
+            throw new CmdException("订单已经处理过");
+        }
         JSONObject paramOut = CallApiServiceFactory.postForApi(appId, reqJson, reqJson.getString("subServiceCode"), JSONObject.class, userId);
         cmdDataFlowContext.setResponseEntity(ResultVo.createResponseEntity(paramOut));
     }
