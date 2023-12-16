@@ -9,10 +9,10 @@
     <insert id="saveMeterMachineInfo" parameterType="Map">
         insert into meter_machine(
         heartbeat_time,impl_bean,address,prestore_degrees,machine_name,room_id,room_name,cur_reading_time,machine_model,
-        cur_degrees,machine_id,meter_type,fee_config_name,community_id,fee_config_id,read_day,read_hours
+        cur_degrees,machine_id,meter_type,fee_config_name,community_id,fee_config_id,read_day,read_hours,cur_dsp
         ) values (
         #{heartbeatTime},#{implBean},#{address},#{prestoreDegrees},#{machineName},#{roomId},#{roomName},#{curReadingTime},
-        #{machineModel},#{curDegrees},#{machineId},#{meterType},#{feeConfigName},#{communityId},#{feeConfigId},#{readDay},#{readHours}
+        #{machineModel},#{curDegrees},#{machineId},#{meterType},#{feeConfigName},#{communityId},#{feeConfigId},#{readDay},#{readHours},#{cur_dsp}
         )
     </insert>
 
@@ -26,7 +26,7 @@
         machineModel,t.cur_degrees,t.cur_degrees curDegrees,t.machine_id,t.machine_id
         machineId,t.meter_type,t.meter_type meterType,t.fee_config_name,t.fee_config_name
         feeConfigName,t.community_id,t.community_id communityId,t.fee_config_id,t.fee_config_id feeConfigId,
-        mmf.factory_name implBeanName,t.create_time createTime,t.read_day readDay,t.read_hours readHours
+        mmf.factory_name implBeanName,t.create_time createTime,t.read_day readDay,t.read_hours readHours,t.cur_dsp curDsp
         from meter_machine t
         left join meter_machine_factory mmf on t.impl_bean = mmf.factory_id and mmf.status_cd='0'
         where 1 =1
@@ -149,6 +149,9 @@
         </if>
         <if test="readHours !=null ">
             , t.read_hours = #{readHours}
+        </if>
+        <if test="cur_dsp !=null ">
+            , t.cur_dsp = #{cur_dsp}
         </if>
         where 1=1
         <if test="machineId !=null and machineId != ''">

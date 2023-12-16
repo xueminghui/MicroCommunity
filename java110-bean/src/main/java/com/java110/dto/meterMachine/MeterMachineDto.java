@@ -55,6 +55,8 @@ public class MeterMachineDto extends PageDto implements Serializable {
 
     private int readHours;
 
+    private String curDsp;
+
 
     public String getHeartbeatTime() {
         return heartbeatTime;
@@ -271,5 +273,13 @@ public class MeterMachineDto extends PageDto implements Serializable {
 
     public void setDegree(String degree) {
         this.degree = degree;
+    }
+
+    public String getCurDsp () {
+        return curDsp;
+    }
+
+    public void setCurDsp (String curDsp) {
+        this.curDsp = curDsp;
     }
 }

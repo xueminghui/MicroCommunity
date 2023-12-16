@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.common.smartMeter.ISmartMeterCoreRead;
 import com.java110.common.smartMeter.ISmartMeterFactoryAdapt;
+import com.java110.common.smartMeter.factory.zhongkong.WyRequestUtils;
 import com.java110.core.factory.GenerateCodeFactory;
+import com.java110.core.log.LoggerFactory;
 import com.java110.dto.meterMachine.MeterMachineDto;
 import com.java110.dto.meterMachine.MeterMachineDetailDto;
 import com.java110.dto.meterMachine.MeterMachineSpecDto;
@@ -16,6 +18,7 @@ import com.java110.intf.user.IUserInnerServiceSMO;
 import com.java110.po.meterMachineDetail.MeterMachineDetailPo;
 import com.java110.utils.cache.UrlCache;
 import com.java110.vo.ResultVo;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,7 @@ import java.util.Map;
  */
 @Service("tqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl")
 public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterFactoryAdapt {
-
+    private static Logger logger = LoggerFactory.getLogger(TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl.class);
     private static final String READ_URL = "http://api2.tqdianbiao.com/Api_v2/ele_read";
 
     private static final String RECHARGE_URL = "http://api2.tqdianbiao.com/Api_v2/ele_security/recharge";
@@ -72,7 +75,6 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         Map<String, Object> item = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
         params.put("money", money + "");
-
         item.put("opr_id", detailId);
         item.put("time_out", 0);
         item.put("must_online", true);
@@ -81,7 +83,6 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         item.put("address", meterMachineDto.getAddress());
         item.put("params", params);
         req.add(item);
-
 
         String request_content = JSON.toJSONString(req);
 
@@ -170,7 +171,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         JSONArray responseContent = paramOut.getJSONArray("response_content");
-
+        logger.info(responseContent.toString());
         for (int resIndex = 0; resIndex < responseContent.size(); resIndex++) {
             String status = responseContent.getJSONObject(resIndex).getString("status");
             if (!"SUCCESS".equals(status)) {
@@ -178,6 +179,7 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
             }
         }
         if (meterMachineDetailPos.size() > 0) {
+            logger.info(meterMachineDetailPos.toString());
             meterMachineDetailV1InnerServiceSMOImpl.saveMeterMachineDetails(meterMachineDetailPos);
         }
         return new ResultVo(ResultVo.CODE_OK, "提交重置");
@@ -307,8 +309,9 @@ public class TqDianBiaoRemoteDanFeiLvPreFactoryAdaptImpl implements ISmartMeterF
         }
 
         double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
-
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        String cur_dsp = contentObject.getJSONArray("data").getJSONObject(0).getString("dsp");
+        System.out.println("单项远程单费率预付费表打印cur_dsp：" + cur_dsp);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId,cur_dsp);
     }
 
 }

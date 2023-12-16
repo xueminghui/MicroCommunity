@@ -253,7 +253,7 @@ public class TqShuiBiaoLoraReadFactoryAdaptImpl implements ISmartMeterFactoryAda
          */
         double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
 
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId,"");
     }
 
 

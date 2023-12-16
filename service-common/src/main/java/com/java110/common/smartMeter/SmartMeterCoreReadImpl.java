@@ -73,7 +73,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
     private IMeterMachineFactoryV1InnerServiceSMO meterMachineFactoryV1InnerServiceSMOImpl;
 
     @Override
-    public void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree, String batchId) {
+    public void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto,String degree,String batchId,String cur_dsp) {
 
         MeterMachineDto meterMachineDto = new MeterMachineDto();
         meterMachineDto.setMachineId(meterMachineDetailDto.getMachineId());
@@ -111,6 +111,7 @@ public class SmartMeterCoreReadImpl implements ISmartMeterCoreRead {
         meterMachinePo.setCurDegrees(degree);
         meterMachinePo.setPrestoreDegrees(degree);
         meterMachinePo.setCurReadingTime(DateUtil.getNow(DateUtil.DATE_FORMATE_STRING_A));
+        meterMachinePo.setCur_dsp(cur_dsp);
         meterMachineV1InnerServiceSMOImpl.updateMeterMachine(meterMachinePo);
 
         if (!MeterMachineDto.MACHINE_MODEL_READ.equals(meterMachineDtos.get(0).getMachineModel())) {
