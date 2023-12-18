@@ -243,8 +243,9 @@ public class TqDianBiaoDanxiangDanFeiLvFactoryAdaptImpl implements ISmartMeterFa
         }
 
         double degree = contentObject.getJSONArray("data").getJSONObject(0).getJSONArray("value").getDouble(0);
-
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        String cur_dsp = contentObject.getJSONArray("data").getJSONObject(0).getString("dsp");
+        System.out.println("单项单费率抄表打印cur_dsp：" + cur_dsp);
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId,cur_dsp);
     }
 
 

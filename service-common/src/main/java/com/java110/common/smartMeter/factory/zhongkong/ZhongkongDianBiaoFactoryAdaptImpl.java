@@ -177,7 +177,7 @@ public class ZhongkongDianBiaoFactoryAdaptImpl implements ISmartMeterFactoryAdap
     private void doBusiness(JSONObject contentObject, String batchId, List<MeterMachineDetailDto> meterMachineDetailDtos) {
 
         double degree = contentObject.getDoubleValue("bqds");
-
-        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId);
+        String dsp = "";
+        smartMeterCoreReadImpl.saveMeterAndCreateFee(meterMachineDetailDtos.get(0), degree + "", batchId,dsp);
     }
 }

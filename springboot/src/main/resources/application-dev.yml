@@ -74,7 +74,7 @@ kafka:
 
   producer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
+    connect: dev.zk.java110.com:2181
     servers: dev.kafka.java110.com:9092
     retries: 0
     batch:

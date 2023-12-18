@@ -11,7 +11,7 @@ public interface ISmartMeterCoreRead {
     /**
      * 抄表
      */
-    void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree,String batchId);
+    void saveMeterAndCreateFee(MeterMachineDetailDto meterMachineDetailDto, String degree,String batchId,String cur_dsp );
 
     String generatorBatch(String communityId);
 

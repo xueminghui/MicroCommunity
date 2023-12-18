@@ -44,6 +44,7 @@ public class MeterMachinePo implements Serializable {
     private String feeConfigName;
     private String communityId;
     private String feeConfigId;
+    private String cur_dsp; //本期信息 "dsp": " 购电次数: 8   剩余金额: 313.18 元  总用电量: 379.82 kWh "
 
     private int readDay ;
 
@@ -191,5 +192,13 @@ public class MeterMachinePo implements Serializable {
 
     public void setReadHours(int readHours) {
         this.readHours = readHours;
+    }
+
+    public String getCur_dsp () {
+        return cur_dsp;
+    }
+
+    public void setCur_dsp (String cur_dsp) {
+        this.cur_dsp = cur_dsp;
     }
 }
