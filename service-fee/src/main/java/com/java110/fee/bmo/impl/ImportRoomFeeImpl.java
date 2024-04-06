@@ -86,7 +86,6 @@ public class ImportRoomFeeImpl implements IImportRoomFee {
      * @return
      */
     @Override
-    @Java110Transactional
     public ResponseEntity<String> importFee(JSONObject reqJson) {
 
         int successCount = 0;
@@ -209,7 +208,7 @@ public class ImportRoomFeeImpl implements IImportRoomFee {
             feeAttrPo.setCommunityId(communityId);
             feeAttrPo.setAttrId(GenerateCodeFactory.getGeneratorId(GenerateCodeFactory.CODE_PREFIX_attrId, true));
             feeAttrPo.setSpecCd(FeeAttrDto.SPEC_CD_IMPORT_FEE_NAME);
-            feeAttrPo.setValue(importRoomFee.getFeeName());
+            feeAttrPo.setValue(feeConfigDtos.get(0).getFeeName());
             feeAttrPo.setFeeId(payFeePo.getFeeId());
             feeAttrPos.add(feeAttrPo);
 
