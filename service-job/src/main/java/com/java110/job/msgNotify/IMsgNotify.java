@@ -82,6 +82,22 @@ public interface IMsgNotify {
     ResultVo sendDistributeRepairStaffMsg(String communityId, String userId, JSONObject content);
 
     /**
+     * 派单超时通知
+     *
+     * @param communityId 小区
+     * @param userId      用户
+     * @param content     {
+     *                    repairId,
+     *                    repairName，
+     *                    tel，
+     *                    time，
+     *                    address
+     *                    }
+     * @return
+     */
+    ResultVo sendOverTimeRepairStaffMsg(String communityId, String userId, JSONObject content);
+
+    /**
      * 派单给业主通知
      *
      * @param communityId 小区

@@ -294,6 +294,11 @@ public class AliMsgNotifyImpl implements IMsgNotify {
     }
 
     @Override
+    public ResultVo sendOverTimeRepairStaffMsg(String communityId, String userId, JSONObject content) {
+        return new ResultVo(ResultVo.CODE_OK,"成功");
+    }
+
+    @Override
     public ResultVo sendDistributeRepairOwnerMsg(String communityId, String userId, JSONObject content) {
 
         return new ResultVo(ResultVo.CODE_OK,"成功");
