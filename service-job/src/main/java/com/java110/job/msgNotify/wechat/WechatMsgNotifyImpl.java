@@ -411,9 +411,9 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
         PropertyFeeTemplateMessage templateMessage = new PropertyFeeTemplateMessage();
         templateMessage.setTemplate_id(templateId);
         templateMessage.setTouser(openId);
-        data.put("thing7", new Content(content.getString("address")));
-        data.put("time13", new Content(content.getString("time")));
-        data.put("thing9", new Content(content.getString("repairName")));
+        data.put("thing6", new Content(content.getString("address")));
+        data.put("time2", new Content(content.getString("time")));
+        data.put("thing8", new Content(content.getString("repairName")));
         templateMessage.setData(data);
         templateMessage.setUrl(content.getString("url"));
         logger.info("发送模板消息内容:{}", JSON.toJSONString(templateMessage));
