@@ -64,7 +64,7 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
         templateKeys.put(SPEC_CD_WECHAT_PROCESS_TEMPLATE, new String[]{"流程名称", "发起时间", "发起人"});
         templateKeys.put(SPEC_CD_WECHAT_SUCCESS_TEMPLATE, new String[]{"缴费房间", "费用类型", "费用周期", "缴费金额"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_REMIND_TEMPLATE, new String[]{"报修类型", "报修地址", "报修问题"});
-        templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE, new String[]{"报修类型", "报修时间", "处理人"});
+        templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE, new String[]{"所属项目", "报修时间", "处理人"});
         templateKeys.put(SPEC_CD_WECHAT_DISPATCH_REMIND_TEMPLATE, new String[]{"联系人", "手机号", "报修时间", "维修地址"});
         templateKeys.put(SPEC_CD_WECHAT_SCHEDULE_TEMPLATE, new String[]{"平台受理人", "联系电话", "受理时间"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_END_TEMPLATE, new String[]{"房屋地址", "维修工程师", "维修完成时间"});
@@ -411,10 +411,9 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
         PropertyFeeTemplateMessage templateMessage = new PropertyFeeTemplateMessage();
         templateMessage.setTemplate_id(templateId);
         templateMessage.setTouser(openId);
-        data.put("thing7", new Content(content.getString("repairName")));
-        data.put("phone_number3", new Content(content.getString("tel")));
+        data.put("thing7", new Content(content.getString("address")));
         data.put("time13", new Content(content.getString("time")));
-        data.put("thing9", new Content(content.getString("address")));
+        data.put("thing9", new Content(content.getString("repairName")));
         templateMessage.setData(data);
         templateMessage.setUrl(content.getString("url"));
         logger.info("发送模板消息内容:{}", JSON.toJSONString(templateMessage));
