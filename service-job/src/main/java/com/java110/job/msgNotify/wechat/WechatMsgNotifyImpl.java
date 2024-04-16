@@ -55,6 +55,7 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
     public static final String SPEC_CD_WECHAT_REPAIR_CHARGE_SCENE_TEMPLATE = "33016";//报修通知-上门维修现场收费通知业主
     public static final String SPEC_CD_WECHAT_OA_WORKFLOW_AUDIT_TEMPLATE = "33017";//流程待审批通知
     public static final String SPEC_CD_WECHAT_OA_WORKFLOW_AUDIT_FINISH_TEMPLATE = "33018";//流程待审批完成通知
+    public static final String SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE = "22001";//维修单超时提醒模板
 
     private static final Map<String, String[]> templateKeys = new HashMap<>();
 
@@ -63,6 +64,7 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
         templateKeys.put(SPEC_CD_WECHAT_PROCESS_TEMPLATE, new String[]{"流程名称", "发起时间", "发起人"});
         templateKeys.put(SPEC_CD_WECHAT_SUCCESS_TEMPLATE, new String[]{"缴费房间", "费用类型", "费用周期", "缴费金额"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_REMIND_TEMPLATE, new String[]{"报修类型", "报修地址", "报修问题"});
+        templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE, new String[]{"报修类型", "报修时间", "处理人"});
         templateKeys.put(SPEC_CD_WECHAT_DISPATCH_REMIND_TEMPLATE, new String[]{"联系人", "手机号", "报修时间", "维修地址"});
         templateKeys.put(SPEC_CD_WECHAT_SCHEDULE_TEMPLATE, new String[]{"平台受理人", "联系电话", "受理时间"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_END_TEMPLATE, new String[]{"房屋地址", "维修工程师", "维修完成时间"});
@@ -351,6 +353,58 @@ public class WechatMsgNotifyImpl implements IMsgNotify {
             throw new IllegalArgumentException("开发者账户编码映射未配置域为=" + MappingConstant.WECHAT_DOMAIN + ",键为=" + SPEC_CD_WECHAT_DISPATCH_REMIND_TEMPLATE);
         }
         String templateId = wechatTemplateImpl.getTemplateId(communityId, mapping.getValue(), mapping.getName(), templateKeys.get(SPEC_CD_WECHAT_DISPATCH_REMIND_TEMPLATE));
+
+        String url = sendMsgUrl + accessToken;
+        JSONObject data = new JSONObject();
+        PropertyFeeTemplateMessage templateMessage = new PropertyFeeTemplateMessage();
+        templateMessage.setTemplate_id(templateId);
+        templateMessage.setTouser(openId);
+        data.put("thing7", new Content(content.getString("repairName")));
+        data.put("phone_number3", new Content(content.getString("tel")));
+        data.put("time13", new Content(content.getString("time")));
+        data.put("thing9", new Content(content.getString("address")));
+        templateMessage.setData(data);
+        templateMessage.setUrl(content.getString("url"));
+        logger.info("发送模板消息内容:{}", JSON.toJSONString(templateMessage));
+        ResponseEntity<String> responseEntity = outRestTemplate.postForEntity(url, JSON.toJSONString(templateMessage), String.class);
+        logger.info("微信模板返回内容:{}", responseEntity);
+
+        JSONObject paramOut = JSONObject.parseObject(responseEntity.getBody());
+        return new ResultVo(paramOut.getIntValue("errcode"), paramOut.getString("errmsg"));
+    }
+
+    /**
+     * 派单超时通知
+     *
+     * @param communityId 小区
+     * @param userId      用户
+     * @param content     {
+     *                    repairName，
+     *                    tel，
+     *                    time，
+     *                    address
+     *                    }
+     * @return
+     */
+    @Override
+    public ResultVo sendOverTimeRepairStaffMsg(String communityId, String userId, JSONObject content) {
+        String accessToken = wechatTemplateImpl.getAccessToken(communityId);
+
+        StaffAppAuthDto staffAppAuthDto = new StaffAppAuthDto();
+        staffAppAuthDto.setStaffId(userId);
+        staffAppAuthDto.setAppType("WECHAT");
+        List<StaffAppAuthDto> staffAppAuthDtos = staffAppAuthInnerServiceSMOImpl.queryStaffAppAuths(staffAppAuthDto);
+        if (staffAppAuthDtos == null || staffAppAuthDtos.size() < 1) {
+            throw new IllegalArgumentException("员工未认证，没有获取到微信openId");
+        }
+        String openId = staffAppAuthDtos.get(0).getOpenId();
+
+        Mapping mapping = MappingCache.getMapping(MappingConstant.WECHAT_DOMAIN, SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE);
+
+        if (mapping == null) {
+            throw new IllegalArgumentException("开发者账户编码映射未配置域为=" + MappingConstant.WECHAT_DOMAIN + ",键为=" + SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE);
+        }
+        String templateId = wechatTemplateImpl.getTemplateId(communityId, mapping.getValue(), mapping.getName(), templateKeys.get(SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE));
 
         String url = sendMsgUrl + accessToken;
         JSONObject data = new JSONObject();

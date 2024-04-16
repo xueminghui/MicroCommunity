@@ -82,6 +82,7 @@ public class WorkLicenseMsgNotifyImpl implements IMsgNotify {
     public static final String SPEC_CD_WECHAT_OA_WORKFLOW_AUDIT_TEMPLATE = "33017";//流程待审批通知
     public static final String SPEC_CD_WECHAT_OA_WORKFLOW_AUDIT_FINISH_TEMPLATE = "33018";//流程待审批完成通知
 
+    public static final String SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE = "22001";//维修单超时提醒模板
     private static final Map<String, String[]> templateKeys = new HashMap<>();
 
     static {
@@ -89,6 +90,7 @@ public class WorkLicenseMsgNotifyImpl implements IMsgNotify {
         templateKeys.put(SPEC_CD_WECHAT_PROCESS_TEMPLATE, new String[]{"流程名称", "发起时间", "发起人"});
         templateKeys.put(SPEC_CD_WECHAT_SUCCESS_TEMPLATE, new String[]{"缴费房间", "费用类型", "费用周期", "缴费金额"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_REMIND_TEMPLATE, new String[]{"报修类型", "报修地址", "报修问题"});
+        templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE, new String[]{"报修类型", "报修时间", "处理人"});
         templateKeys.put(SPEC_CD_WECHAT_DISPATCH_REMIND_TEMPLATE, new String[]{"联系人", "手机号", "报修时间", "维修地址"});
         templateKeys.put(SPEC_CD_WECHAT_SCHEDULE_TEMPLATE, new String[]{"平台受理人", "联系电话", "受理时间"});
         templateKeys.put(SPEC_CD_WECHAT_WORK_ORDER_END_TEMPLATE, new String[]{"房屋地址", "维修工程师", "维修完成时间"});
@@ -310,6 +312,28 @@ public class WorkLicenseMsgNotifyImpl implements IMsgNotify {
         JSONObject paramIn = new JSONObject();
         paramIn.put("staffTel", userDtos.get(0).getTel());
         paramIn.put("ttsText", "尊敬的员工，您有一个报修单需要处理，单号为" + content.getString("repairId") + "，请您及时处理");
+        ResultVo resultVo = sendIotImpl.post(PLAY_TTS_URL, paramIn);
+        return resultVo;
+    }
+
+    @Override
+    public ResultVo sendOverTimeRepairStaffMsg(String communityId, String userId, JSONObject content) {
+        if (StringUtil.isEmpty(userId) || userId.startsWith("-")) {
+            throw new IllegalArgumentException("员工不存在,userId = " + userId);
+        }
+
+
+        UserDto userDto = new UserDto();
+        userDto.setUserId(userId);
+        List<UserDto> userDtos = userV1InnerServiceSMOImpl.queryUsers(userDto);
+        if (ListUtil.isNull(userDtos)) {
+            throw new IllegalArgumentException("员工不存在");
+        }
+
+
+        JSONObject paramIn = new JSONObject();
+        paramIn.put("staffTel", userDtos.get(0).getTel());
+        paramIn.put("ttsText", "尊敬的员工，您有一个报修派单超时需要处理，单号为" + content.getString("repairId") + "，请您及时处理");
         ResultVo resultVo = sendIotImpl.post(PLAY_TTS_URL, paramIn);
         return resultVo;
     }

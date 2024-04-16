@@ -15,6 +15,7 @@ import java.util.Date;
  **/
 public class SmallWechatAttrDto extends PageDto implements Serializable {
 
+    public static final String SPEC_CD_WECHAT_WORK_ORDER_OVERTIME_TEMPLATE = "22001";//维修单超时提醒模板
     public static final String SPEC_CD_TOKEN = "33001";//token
     public static final String SPEC_CD_OWE_FEE_TEMPLATE = "33002";//欠费推送模板
     public static final String SPEC_CD_WECHAT_TEMPLATE = "33003";//欠费推送模板、装修跟踪记录通知
