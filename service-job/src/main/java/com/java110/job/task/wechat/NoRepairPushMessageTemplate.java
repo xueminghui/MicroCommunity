@@ -6,6 +6,7 @@ import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.core.log.LoggerFactory;
 import com.java110.dto.community.CommunityDto;
 import com.java110.dto.log.LogSystemErrorDto;
+import com.java110.dto.org.OrgDto;
 import com.java110.dto.org.OrgStaffRelDto;
 import com.java110.dto.repair.RepairDto;
 import com.java110.dto.repair.RepairSettingDto;
@@ -62,6 +63,8 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
     @Autowired
     private IOrgStaffRelInnerServiceSMO iOrgStaffRelInnerServiceSMO;
 
+    @Autowired
+    private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
 
 
     //键(派修单超时时间)
@@ -118,6 +121,7 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
             long secRepairTime = repairTime * 2;
             AtomicInteger pushTime = new AtomicInteger();
             // 第一次推送到小组经理级别
+
             if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) > (repairTime * 1000 * 60)  && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((repairTime + 2) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
                 pushTime.set(1);
                 pushToUper(communityDto, tmpRepairDto, pushTime.get());
@@ -187,10 +191,16 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
 
                 UserDto staffDto1 = new UserDto();
                 String curOrgId = orgStaffRelDto1.getOrgId();
-                if (pushTime == 2 ) {
+                if (pushTime == 2 && Integer.parseInt(orgStaffRelDto1.getOrgLevel()) >= 2) {
                     curOrgId = orgStaffRelDto1.getParentOrgId();
                 }
-                if (Objects.equals(orgStaffRelDto1.getParentOrgId(),"-1" )) {
+                if (pushTime == 3 && Integer.parseInt(orgStaffRelDto1.getOrgLevel()) >= 3) {
+                    OrgDto orgDto1 = new OrgDto();
+                    orgDto1.setOrgId(orgStaffRelDto1.getParentOrgId());
+                    List<OrgDto> orgDtoList = orgV1InnerServiceSMOImpl.queryOrgs(orgDto1);
+                    curOrgId = orgDtoList.get(0).getParentOrgId();
+                }
+                if (Objects.equals(curOrgId,"-1" )) {
                     continue;
                 }
                 staffDto1.setOrgId(curOrgId);
