@@ -121,24 +121,24 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
             long thirRepairTime = repairTime * 3;
             AtomicInteger pushTime = new AtomicInteger();
             // 第一次推送到小组经理级别
-            pushTime.set(3);
-            pushToUper(communityDto, tmpRepairDto, pushTime.get());
-//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (repairTime * 1000 * 60)  && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((repairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
-//                pushTime.set(1);
-//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
-//
-//            }
-//            // 第二次推送到区域经理级别
-//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (secRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((secRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
-//                pushTime.set(2);
-//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
-//            }
-//
-//            // 第三次推送到更上级经理级别
-//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (thirRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((thirRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
-//                pushTime.set(3);
-//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
-//            }
+//            pushTime.set(1);
+//            pushToUper(communityDto, tmpRepairDto, pushTime.get());
+            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (repairTime * 1000 * 60)  && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((repairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+                pushTime.set(1);
+                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+
+            }
+            // 第二次推送到区域经理级别
+            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (secRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((secRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+                pushTime.set(2);
+                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+            }
+
+            // 第三次推送到更上级经理级别
+            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (thirRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((thirRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+                pushTime.set(3);
+                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+            }
 
         }
     }
@@ -229,12 +229,12 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
                 }
             }
         }
-        if (null != pushStaffDataVo) pushMsgToStaff(tmpRepairDto, pushStaffDataVo, communityDto);
+        if (null != pushStaffDataVo) pushMsgToStaff(tmpRepairDto, lastDispatchDto, communityDto);
 
     }
 
 
-    private void pushMsgToStaff( RepairDto repairDto,ApiStaffDataVo apiStaffDataVo,CommunityDto communityDto) {
+    private void pushMsgToStaff( RepairDto repairDto,RepairUserDto lastDispatchDto,CommunityDto communityDto) {
 //        RepairUserDto repairUserDto = new RepairUserDto();
 //        repairUserDto.setRuId(businessRepairUser.getString("ruId"));
 //        List<RepairUserDto> repairUserDtos = repairUserInnerServiceSMO.queryRepairUsers(repairUserDto);
@@ -277,7 +277,7 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
 
         JSONObject paramIn = new JSONObject();
 
-        paramIn.put("repairName", repairName);
+        paramIn.put("repairName", lastDispatchDto.getStaffName());
         paramIn.put("repairObjName", repairObjName);
         paramIn.put("tel", tel);
         paramIn.put("communityId", communityId);
