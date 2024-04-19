@@ -108,30 +108,37 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
         List<RepairDto> repairDtos = repairInnerServiceSMOImpl.queryRepairs(repairDto);
 
         for (RepairDto tmpRepairDto : repairDtos) {
-            // 检查派单时间是否超过了30分钟
+            // 检查派单时间是否超过了设置的派单超时时间
             //获取当前时间
             Date nowTime = new Date();
             //默认30分钟
-//            int autoEvaluateHour = 30;
             String repairTimeString = CommunitySettingFactory.getValue(communityDto.getCommunityId(), REPAIR_OVERTIME_SETTING);
             if (StringUtil.isEmpty(repairTimeString)) {
                 repairTimeString = MappingCache.getValue(MappingConstant.REPAIR_DOMAIN,REPAIR_OVERTIME_SETTING);
             }
             long repairTime= Long.parseLong(Objects.requireNonNull(repairTimeString));
             long secRepairTime = repairTime * 2;
+            long thirRepairTime = repairTime * 3;
             AtomicInteger pushTime = new AtomicInteger();
             // 第一次推送到小组经理级别
-
-            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) > (repairTime * 1000 * 60)  && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((repairTime + 2) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
-                pushTime.set(1);
-                pushToUper(communityDto, tmpRepairDto, pushTime.get());
-
-            }
-            // 第二次推送到区域经理级别
-            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) > (secRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((secRepairTime + 2) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
-                pushTime.set(2);
-                pushToUper(communityDto, tmpRepairDto, pushTime.get());
-            }
+            pushTime.set(3);
+            pushToUper(communityDto, tmpRepairDto, pushTime.get());
+//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (repairTime * 1000 * 60)  && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((repairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+//                pushTime.set(1);
+//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+//
+//            }
+//            // 第二次推送到区域经理级别
+//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (secRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((secRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+//                pushTime.set(2);
+//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+//            }
+//
+//            // 第三次推送到更上级经理级别
+//            if (repairTime > 0 && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) >= (thirRepairTime * 1000 * 60) && (nowTime.getTime() - tmpRepairDto.getCreateTime().getTime()) < ((thirRepairTime + 1.5) * 1000 * 60)) { //如果评价开始时间距离当前时间超过了配置时间，查询订单详情
+//                pushTime.set(3);
+//                pushToUper(communityDto, tmpRepairDto, pushTime.get());
+//            }
 
         }
     }
@@ -147,10 +154,11 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
             return;
         }
         repairUserDtos = repairUserInnerServiceSMOImpl.queryRepairUsers(repairUserDto);
-        RepairUserDto lastDispatchDto = null; // 最后一个派单的维修工
-        Boolean needNotic = false;
+        boolean needNotic = false;
         long latestCreateTime = Long.MIN_VALUE;
 
+        // 最后一个派单的维修工
+        RepairUserDto lastDispatchDto = null;
         for (RepairUserDto tempDto : repairUserDtos) {
             if (!Objects.equals(tempDto.getState(), RepairUserDto.STATE_DISPATCH) || !Objects.equals(tempDto.getState(),RepairUserDto.STATE_TRANSFER ) || !Objects.equals(tempDto.getState(),RepairUserDto.STATE_SUBMIT )|| !Objects.equals(tempDto.getState(),RepairUserDto.STATE_DOING)) {
                 needNotic = true;
@@ -172,9 +180,9 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
 
 
         // 查询指派的维修工的领导
-        // 发送通知，超过时间大于30分钟，发送通知给部门经理
-        //超过60分钟，发送通知给区域经理
-        // 判断是不是管理员，管理员反馈 物业 的所角色
+        // 发送通知，超过时间大于超时时间，发送通知给部门经理
+        //超过两倍的超时时间，发送通知给区域经理
+
         UserDto userDto1 = new UserDto();
         userDto1.setUserId(lastDispatchDto.getStaffId());
         userDto1.setPage(1);
@@ -198,7 +206,11 @@ public class NoRepairPushMessageTemplate extends TaskSystemQuartz {
                     OrgDto orgDto1 = new OrgDto();
                     orgDto1.setOrgId(orgStaffRelDto1.getParentOrgId());
                     List<OrgDto> orgDtoList = orgV1InnerServiceSMOImpl.queryOrgs(orgDto1);
-                    curOrgId = orgDtoList.get(0).getParentOrgId();
+                    if (orgDtoList.size() <= 0) {
+                        curOrgId = "-1";
+                    }else {
+                        curOrgId = orgDtoList.get(0).getParentOrgId();
+                    }
                 }
                 if (Objects.equals(curOrgId,"-1" )) {
                     continue;
