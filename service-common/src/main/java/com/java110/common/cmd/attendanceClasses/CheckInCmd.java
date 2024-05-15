@@ -127,16 +127,21 @@ public class CheckInCmd extends Cmd {
             throw new CmdException("员工没有考勤任务");
         }
 
+       boolean hasCheckInAttendance = false;
         for (AttendanceClassesStaffDto tmpAttendanceClassesStaffDto : attendanceClassesStaffs) {
             // 考勤班次是否存在
             AttendanceClassesDto attendanceClassesDto = new AttendanceClassesDto();
             attendanceClassesDto.setStoreId(storeUserDtos.get(0).getStoreId());
             attendanceClassesDto.setClassesId(tmpAttendanceClassesStaffDto.getClassesId());
             List<AttendanceClassesDto> attendanceClassesDtos = attendanceClassesV1InnerServiceSMOImpl.queryAttendanceClassess(attendanceClassesDto);
-            if (attendanceClassesDtos == null || attendanceClassesDtos.size() < 1) {
-                throw new CmdException("班次不存在");
+            if (ListUtil.isNull(attendanceClassesDtos)) {
+                continue;
             }
+            hasCheckInAttendance = true;
             doCheckInAttendanceLog(context, reqJson, storeUserDtos, userDtos, attendanceClassesDtos.get(0));
+        }
+        if (!hasCheckInAttendance) {
+            throw new CmdException("班次不存在");
         }
     }
 
