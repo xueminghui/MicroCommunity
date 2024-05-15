@@ -26,6 +26,7 @@ import com.java110.po.attendance.AttendanceLogPo;
 import com.java110.utils.exception.CmdException;
 import com.java110.utils.util.Assert;
 import com.java110.utils.util.DateUtil;
+import com.java110.utils.util.ListUtil;
 import com.java110.utils.util.StringUtil;
 import com.java110.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,7 @@ public class CheckInCmd extends Cmd {
             throw new CmdException("员工没有考勤任务");
         }
 
-       boolean hasCheckInAttendance = false;
+        boolean hasCheckInAttendance = false;
         for (AttendanceClassesStaffDto tmpAttendanceClassesStaffDto : attendanceClassesStaffs) {
             // 考勤班次是否存在
             AttendanceClassesDto attendanceClassesDto = new AttendanceClassesDto();
