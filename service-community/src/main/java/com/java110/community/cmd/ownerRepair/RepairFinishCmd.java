@@ -551,9 +551,13 @@ public class RepairFinishCmd extends Cmd {
             //维修类型
             repairPoolPo.setMaintenanceType(reqJson.getString("maintenanceType"));
             //用料
-            repairPoolPo.setRepairMaterials(repairMaterial.substring(0, repairMaterial.length() - 1));
+            if (!StringUtil.isEmpty(repairMaterial)) {
+                repairPoolPo.setRepairMaterials(repairMaterial.substring(0, repairMaterial.length() - 1));
+            }
             //费用明细
-            repairPoolPo.setRepairFee(repairFee.substring(0, repairFee.length() - 1));
+            if (!StringUtil.isEmpty(repairFee)) {
+                repairPoolPo.setRepairFee(repairFee.substring(0, repairFee.length() - 1));
+            }
             //支付方式
             repairPoolPo.setPayType(reqJson.getString("payType"));
             flag = repairPoolV1InnerServiceSMOImpl.updateRepairPoolNew(repairPoolPo);

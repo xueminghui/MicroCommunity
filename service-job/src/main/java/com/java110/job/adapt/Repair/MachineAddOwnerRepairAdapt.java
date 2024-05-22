@@ -168,7 +168,11 @@ public class MachineAddOwnerRepairAdapt extends DatabusAdaptImpl {
             String wechatUrl = MappingCache.getValue(MappingConstant.URL_DOMAIN,"STAFF_WECHAT_URL");
             content.put("url",wechatUrl);
 
-            msgNotify.sendAddOwnerRepairMsg(communityDto.getCommunityId(),userDto.getUserId(),content);
+            try {
+                msgNotify.sendAddOwnerRepairMsg(communityDto.getCommunityId(), userDto.getUserId(), content);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
