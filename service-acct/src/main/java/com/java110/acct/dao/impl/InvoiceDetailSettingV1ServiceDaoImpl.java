@@ -34,7 +34,7 @@ public class InvoiceDetailSettingV1ServiceDaoImpl extends BaseServiceDao impleme
         } else {
             info.setUpdatedBy(info.getCreatedBy());
             info.setUpdatedTime(new Date());
-            count = sqlSessionTemplate.delete("invoiceDetailSettingV1ServiceDaoImpl.updateInvoiceDetailSetting", info);
+            count = sqlSessionTemplate.update("invoiceDetailSettingV1ServiceDaoImpl.updateInvoiceDetailSetting", info);
         }
         return count;
     }
