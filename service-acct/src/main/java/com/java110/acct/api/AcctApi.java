@@ -10,12 +10,12 @@ import com.java110.utils.exception.InitConfigDataException;
 import com.java110.utils.exception.InitDataFlowContextException;
 import org.slf4j.Logger;
 import com.java110.core.log.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +27,9 @@ import java.util.Map;
 @RestController
 public class AcctApi extends BaseController {
 
-    private static Logger logger = LoggerFactory.getLogger(AcctApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(AcctApi.class);
 
-    @Autowired
+    @Resource
     IAcctServiceSMO acctServiceSMOImpl;
 
     /**

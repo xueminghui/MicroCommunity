@@ -42,6 +42,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -304,7 +305,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
     private void judgeAuthority(ApiDataFlow dataFlow) throws NoAuthorityException {
         Date startDate = DateUtil.getCurrentDate();
 
-        if (StringUtil.isNullOrNone(dataFlow.getAppId()) || dataFlow.getAppRoutes().size() == 0) {
+        if (StringUtil.isNullOrNone(dataFlow.getAppId()) || dataFlow.getAppRoutes().isEmpty()) {
             //添加耗时
             DataFlowFactory.addCostTime(dataFlow, "judgeAuthority", "鉴权耗时", startDate);
             throw new NoAuthorityException(ResponseConstant.RESULT_CODE_NO_AUTHORITY_ERROR, "APP_ID 为空或不正确");
@@ -347,7 +348,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
 
         //检验白名单
         List<String> whileListIp = dataFlow.getAppRoutes().get(0).getWhileListIp();
-        if (whileListIp != null && whileListIp.size() > 0 && !whileListIp.contains(dataFlow.getIp())) {
+        if (whileListIp != null && !whileListIp.isEmpty() && !whileListIp.contains(dataFlow.getIp())) {
             //添加耗时
             DataFlowFactory.addCostTime(dataFlow, "judgeAuthority", "鉴权耗时", startDate);
             throw new NoAuthorityException(ResponseConstant.RESULT_CODE_NO_AUTHORITY_ERROR, "当前IP被限制不能访问服务");
@@ -355,7 +356,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
 
         //检查黑名单
         List<String> backListIp = dataFlow.getAppRoutes().get(0).getBackListIp();
-        if (backListIp != null && backListIp.size() > 0 && backListIp.contains(dataFlow.getIp())) {
+        if (backListIp != null && !backListIp.isEmpty() && backListIp.contains(dataFlow.getIp())) {
             //添加耗时
             DataFlowFactory.addCostTime(dataFlow, "judgeAuthority", "鉴权耗时", startDate);
             throw new NoAuthorityException(ResponseConstant.RESULT_CODE_NO_AUTHORITY_ERROR, "当前IP被限制不能访问服务");
@@ -576,7 +577,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
                 && (!reqJson.containsKey("storeId") || StringUtil.isEmpty(reqJson.getString("storeId")))) {
             reqJson.put("storeId", reqHeader.get(CommonConstant.STORE_ID));
         }
-        HttpEntity<String> httpEntity = new HttpEntity<String>(reqJson.toJSONString(), header);
+        HttpEntity<String> httpEntity = new HttpEntity<>(reqJson.toJSONString(), header);
         String orgRequestUrl = dataFlow.getRequestHeaders().get("REQUEST_URL");
 
         String serviceCode = appService.getServiceCode();
@@ -589,7 +590,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
         ResponseEntity responseEntity = null;
         //todo url 带了地址这里 拼接
         if (!StringUtil.isNullOrNone(orgRequestUrl)) {
-            String param = orgRequestUrl.contains("?") ? orgRequestUrl.substring(orgRequestUrl.indexOf("?") + 1, orgRequestUrl.length()) : "";
+            String param = orgRequestUrl.contains("?") ? orgRequestUrl.substring(orgRequestUrl.indexOf("?") + 1) : "";
             requestUrl += ("?" + param);
         }
         try {
@@ -599,7 +600,7 @@ public class ApiServiceSMOImpl extends LoggerEngine implements IApiServiceSMO {
             HttpHeaders headers = responseEntity.getHeaders();
             String oId = "-1";
             if (headers.containsKey(OrderDto.O_ID)) {
-                oId = headers.get(OrderDto.O_ID).get(0);
+                oId = Objects.requireNonNull(Objects.requireNonNull(headers.get(OrderDto.O_ID))).get(0);
             }
 
         } catch (HttpStatusCodeException e) { //todo 这里spring 框架 在4XX 或 5XX 时抛出 HttpServerErrorException 异常，需要重新封装一下

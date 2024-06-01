@@ -28,8 +28,8 @@ public class ApplicationContextFactory {
     public static <T> T getBean(String beanName,Class<T> t){
         Object bean = applicationContext.getBean(beanName);
 
-        if(bean != null && t.isAssignableFrom(bean.getClass()) ){
-            return (T)bean;
+        if(t.isAssignableFrom(bean.getClass()) ){
+            return (T) bean;
         }
 
         return null;

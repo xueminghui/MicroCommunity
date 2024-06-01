@@ -23,10 +23,10 @@ import com.java110.po.supplier.SupplierKeyPo;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.core.base.smo.BaseServiceSMO;
 import com.java110.dto.PageDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -40,27 +40,24 @@ import java.util.List;
 @RestController
 public class SupplierKeyV1InnerServiceSMOImpl extends BaseServiceSMO implements ISupplierKeyV1InnerServiceSMO {
 
-    @Autowired
+    @Resource
     private ISupplierKeyV1ServiceDao supplierKeyV1ServiceDaoImpl;
 
 
     @Override
     public int saveSupplierKey(@RequestBody  SupplierKeyPo supplierKeyPo) {
-        int saveFlag = supplierKeyV1ServiceDaoImpl.saveSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
-        return saveFlag;
+        return supplierKeyV1ServiceDaoImpl.saveSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
     }
 
      @Override
     public int updateSupplierKey(@RequestBody  SupplierKeyPo supplierKeyPo) {
-        int saveFlag = supplierKeyV1ServiceDaoImpl.updateSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
-        return saveFlag;
+         return supplierKeyV1ServiceDaoImpl.updateSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
     }
 
      @Override
     public int deleteSupplierKey(@RequestBody  SupplierKeyPo supplierKeyPo) {
        supplierKeyPo.setStatusCd("1");
-       int saveFlag = supplierKeyV1ServiceDaoImpl.updateSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
-       return saveFlag;
+         return supplierKeyV1ServiceDaoImpl.updateSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyPo));
     }
 
     @Override
@@ -74,9 +71,7 @@ public class SupplierKeyV1InnerServiceSMOImpl extends BaseServiceSMO implements 
             supplierKeyDto.setPage((page - 1) * supplierKeyDto.getRow());
         }
 
-        List<SupplierKeyDto> supplierKeys = BeanConvertUtil.covertBeanList(supplierKeyV1ServiceDaoImpl.getSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyDto)), SupplierKeyDto.class);
-
-        return supplierKeys;
+        return BeanConvertUtil.covertBeanList(supplierKeyV1ServiceDaoImpl.getSupplierKeyInfo(BeanConvertUtil.beanCovertMap(supplierKeyDto)), SupplierKeyDto.class);
     }
 
 

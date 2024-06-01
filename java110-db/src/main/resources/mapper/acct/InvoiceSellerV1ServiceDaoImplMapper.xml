@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="invoiceSellerV1ServiceDaoImpl">
+    <resultMap id="invoiceSellerPoMap" type="com.java110.po.invoiceSeller.InvoiceSellerPo">
+        <id  column="oi_id" property="oiId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="seller_name" property="sellerName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="seller_tax_no" property="sellerTaxNo" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="seller_phone" property="sellerPhone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="seller_address" property="sellerAddress" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="seller_branch_bank" property="sellerBranchBank" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="seller_bank_account" property="sellerBankAccount" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="created_time" property="createdTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="saveInvoiceSeller" parameterType="com.java110.po.invoiceSeller.InvoiceSellerPo">
+        insert into invoice_seller(oi_id, seller_name, seller_tax_no,seller_phone,seller_address,seller_branch_bank, seller_bank_account, remark, created_by, created_time)
+        values(#{oiId}, #{sellerName}, #{sellerTaxNo}, #{sellerPhone}, #{sellerAddress}, #{sellerBranchBank}, #{sellerBankAccount}, #{remark}, #{createdBy}, #{createdTime})
+    </insert>
+
+    <select id="findSellerPoByName" parameterType="java.lang.String" resultMap="invoiceSellerPoMap">
+        select oi_id, seller_name, seller_tax_no, seller_phone, seller_address, seller_branch_bank, seller_bank_account, remark, created_by, created_time, updated_by, updated_time
+        from invoice_seller
+        where seller_name = #{sellerName, jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateInvoiceSeller" parameterType="com.java110.po.invoiceSeller.InvoiceSellerPo">
+        update invoice_seller set seller_name = #{sellerName,jdbcType=VARCHAR},
+                                  seller_tax_no = #{sellerTaxNo, jdbcType=VARCHAR},
+                                  seller_phone = #{sellerPhone, jdbcType=VARCHAR},
+                                  seller_address = #{sellerAddress, jdbcType=VARCHAR},
+                                  seller_branch_bank = #{sellerBranchBank, jdbcType=VARCHAR},
+                                  seller_bank_account = #{sellerBankAccount, jdbcType=BIGINT},
+                                  remark = #{remark, jdbcType=VARCHAR},
+                                  updated_by = #{updatedBy, jdbcType=VARCHAR},
+                                  updated_time = #{updatedTime, jdbcType=TIMESTAMP}
+        where oi_id = #{oiId, jdbcType=VARCHAR}
+    </update>
+
+    <select id="findInvoiceSellers" parameterType="com.java110.po.invoiceSeller.InvoiceSellerPo" resultMap="invoiceSellerPoMap">
+        select oi_id, seller_name, seller_tax_no, seller_phone, seller_address, seller_branch_bank, seller_bank_account, remark, created_by, created_time, updated_by, updated_time
+        from invoice_seller
+        <include refid="whereCondition" />
+        <if test="offset!=null">
+            limit #{offset}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findInvoiceSellerCounts" parameterType="com.java110.po.invoiceSeller.InvoiceSellerPo" resultType="java.lang.Integer">
+        select count(1)
+        from invoice_seller
+        <include refid="whereCondition" />
+    </select>
+
+    <sql id="whereCondition">
+        <where>
+            <if test="sellerName!=null and sellerName!=''">
+                and seller_name like #{sellerName, jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="sellerTaxNo!=null and sellerTaxNo!=''">
+                and seller_tax_no like #{sellerTaxNo, jdbcType=VARCHAR} || '%'
+            </if>
+            <if test="sellerPhone!=null and sellerPhone!=''">
+                and seller_phone like #{sellerPhone, jdbcType=VARCHAR} || '%'
+            </if>
+        </where>
+    </sql>
+
+    <delete id="deleteInvoiceSellerById" parameterType="java.lang.String">
+        delete from invoice_seller where oi_id = #{oiId, jdbcType=VARCHAR}
+    </delete>
+</mapper>

@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class BaseServiceSMO extends AppBase {
 
-    private static final Logger logger = LoggerFactory.getLogger(BaseServiceSMO.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BaseServiceSMO.class);
 
     /**
      * 主键生成
@@ -95,7 +95,7 @@ public class BaseServiceSMO extends AppBase {
      * @return
      */
     public static Map<String, String> urlToMap(String urlparam) {
-        if (urlparam.indexOf("?") < 0) {
+        if (!urlparam.contains("?")) {
             return new HashMap<>();
         }
         urlparam = urlparam.substring(urlparam.indexOf("?")+1);

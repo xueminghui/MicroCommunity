@@ -53,9 +53,9 @@ public class Assert extends org.springframework.util.Assert {
     /**
      * 判断 jsonObject 是否为空
      *
-     * @param jsonStr
-     * @param key
-     * @param message
+     * @param jsonStr json 字符串
+     * @param key 键
+     * @param message 错误消息
      */
     public static void jsonObjectHaveKey(String jsonStr, String key, String message) {
         Assert.hasLength(jsonStr, "不是有效的json为空," + message);
@@ -70,9 +70,9 @@ public class Assert extends org.springframework.util.Assert {
     /**
      * 判断 jsonObject 是否为空
      *
-     * @param info
-     * @param key
-     * @param message
+     * @param info Map 对象参数
+     * @param key 键
+     * @param message 消息
      */
     public static void hasKey(Map info, String key, String message) {
         isNotNull(info, key, message);
@@ -118,14 +118,14 @@ public class Assert extends org.springframework.util.Assert {
     /**
      * 判断json是否为空
      *
-     * @param jsonArray
-     * @param message
+     * @param jsonArray json数组
+     * @param message 异常信息
      */
-    public static void listNotNull(List jsonArray, String message) {
+    public static void listNotNull(List<?> jsonArray, String message) {
 
         Assert.notNull(jsonArray, message);
 
-        if (jsonArray.size() < 1) {
+        if (jsonArray.isEmpty()) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -134,10 +134,10 @@ public class Assert extends org.springframework.util.Assert {
     /**
      * 数组只有一条数据
      *
-     * @param jsonArray
-     * @param message
+     * @param jsonArray json数组
+     * @param message 异常消息
      */
-    public static void listOnlyOne(List jsonArray, String message) {
+    public static void listOnlyOne(List<?> jsonArray, String message) {
 
         Assert.notNull(jsonArray, message);
 

@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClientException;
  **/
 public class RestTemplate extends org.springframework.web.client.RestTemplate {
 
-    private static Logger logger = LoggerFactory.getLogger(RestTemplate.class);
+    private static final Logger logger = LoggerFactory.getLogger(RestTemplate.class);
 
     // exchange
 

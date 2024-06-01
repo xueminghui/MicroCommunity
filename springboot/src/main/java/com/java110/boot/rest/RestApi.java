@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,20 +51,20 @@ import java.util.Map;
 )
 public class RestApi extends BaseController {
 
-    private static Logger logger = LoggerFactory.getLogger(RestApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
     private static final String VERSION = "version";
     private static final String VERSION_2 = "2.0";
-    @Autowired
+    @Resource
     private IApiServiceSMO apiServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IUserInnerServiceSMO userInnerServiceSMOImpl;
 
 
     /**
      * 健康检查 服务
      *
-     * @return
+     * @return ""
      */
     @RequestMapping(path = "/health", method = RequestMethod.GET)
     @ApiOperation(value = "服务健康检查", notes = "test: 返回 2XX 表示服务正常")

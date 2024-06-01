@@ -172,7 +172,7 @@ public class PrintUtil4 {
     }
 
     private static String signature(String USER, String UKEY, String STIME) {
-        return DigestUtils.sha1Hex(USER + UKEY + STIME);
+        return DigestUtils.sha256Hex(USER + UKEY + STIME);
     }
 
 

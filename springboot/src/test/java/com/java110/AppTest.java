@@ -44,7 +44,7 @@ public class AppTest {
 
         BigDecimal addTotalAmount = new BigDecimal("0");
         double curOweMonth = 0;
-        BigDecimal curFeePrice = new BigDecimal(feeDto.getFeePrice());
+        BigDecimal curFeePrice = BigDecimal.valueOf(feeDto.getFeePrice());
 
         //todo 递增本轮欠费开始时间
         Date curOweStartTime = null;

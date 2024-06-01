@@ -40,7 +40,7 @@ import java.util.Map;
 @Service("invoiceEventV1ServiceDaoImpl")
 public class InvoiceEventV1ServiceDaoImpl extends BaseServiceDao implements IInvoiceEventV1ServiceDao {
 
-    private static Logger logger = LoggerFactory.getLogger(InvoiceEventV1ServiceDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceEventV1ServiceDaoImpl.class);
 
 
 
@@ -55,9 +55,7 @@ public class InvoiceEventV1ServiceDaoImpl extends BaseServiceDao implements IInv
     public int saveInvoiceEventInfo(Map info) throws DAOException {
         logger.debug("保存 saveInvoiceEventInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("invoiceEventV1ServiceDaoImpl.saveInvoiceEventInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.insert("invoiceEventV1ServiceDaoImpl.saveInvoiceEventInfo",info);
     }
 
 

@@ -50,8 +50,6 @@ public class DefaultSupplierAdapt implements ISupplierAdapt {
                 DefaultSupplierFactory.getConfigValue(supplierConfigDtos,
                         DefaultSupplierFactory.COUPON_QRCODE_URL), supplierConfigDtos);
 
-        CouponQrCodeDto couponQrCodeDto = paramOut.toJavaObject(CouponQrCodeDto.class);
-
-        return couponQrCodeDto;
+        return paramOut.toJavaObject(CouponQrCodeDto.class);
     }
 }

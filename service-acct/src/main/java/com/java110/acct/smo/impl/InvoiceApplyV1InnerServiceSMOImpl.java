@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,33 +43,30 @@ import java.util.List;
 @RestController
 public class InvoiceApplyV1InnerServiceSMOImpl extends BaseServiceSMO implements IInvoiceApplyV1InnerServiceSMO {
 
-    @Autowired
+    @Resource
     private IInvoiceApplyV1ServiceDao invoiceApplyV1ServiceDaoImpl;
 
 
     @Override
     public int saveInvoiceApply(@RequestBody  InvoiceApplyPo invoiceApplyPo) {
-        int saveFlag = invoiceApplyV1ServiceDaoImpl.saveInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
-        return saveFlag;
+        return invoiceApplyV1ServiceDaoImpl.saveInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
     }
 
      @Override
     public int updateInvoiceApply(@RequestBody  InvoiceApplyPo invoiceApplyPo) {
-        int saveFlag = invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
-        return saveFlag;
+         return invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
     }
 
      @Override
     public int deleteInvoiceApply(@RequestBody  InvoiceApplyPo invoiceApplyPo) {
        invoiceApplyPo.setStatusCd("1");
-       int saveFlag = invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
-       return saveFlag;
+         return invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyPo));
     }
 
     @Override
     public List<InvoiceApplyDto> queryInvoiceApplys(@RequestBody  InvoiceApplyDto invoiceApplyDto) {
 
-        //校验是否传了 分页信息
+        //校验是否传了 分页信息fvgb7rsss7r2
 
         int page = invoiceApplyDto.getPage();
 
@@ -76,9 +74,7 @@ public class InvoiceApplyV1InnerServiceSMOImpl extends BaseServiceSMO implements
             invoiceApplyDto.setPage((page - 1) * invoiceApplyDto.getRow());
         }
 
-        List<InvoiceApplyDto> invoiceApplys = BeanConvertUtil.covertBeanList(invoiceApplyV1ServiceDaoImpl.getInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyDto)), InvoiceApplyDto.class);
-
-        return invoiceApplys;
+        return BeanConvertUtil.covertBeanList(invoiceApplyV1ServiceDaoImpl.getInvoiceApplyInfo(BeanConvertUtil.beanCovertMap(invoiceApplyDto)), InvoiceApplyDto.class);
     }
 
 

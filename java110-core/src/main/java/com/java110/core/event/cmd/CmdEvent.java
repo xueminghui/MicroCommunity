@@ -11,7 +11,7 @@ import java.util.EventObject;
  */
 public class CmdEvent extends EventObject {
 
-    private ICmdDataFlowContext cmdDataFlowContext;
+    private final ICmdDataFlowContext cmdDataFlowContext;
     /**
      * Constructs a prototypical Event.
      *

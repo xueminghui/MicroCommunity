@@ -13,12 +13,13 @@ import com.java110.utils.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Component(ICouponAdapt.COUPON_PRE + "1011")
 public class GoodsCouponAdapt extends AbstractCouponAdapt {
 
-    @Autowired
+    @Resource
     private ICouponPropertyPoolV1InnerServiceSMO couponPropertyPoolV1InnerServiceSMOmpl;
 
     @Override

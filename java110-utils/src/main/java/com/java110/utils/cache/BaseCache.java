@@ -19,9 +19,8 @@ public class BaseCache {
 //        JedisPool jedisPool = (JedisPool) ApplicationContextFactory.getBean("jedisPool");
 //        return jedisPool.getResource();
         //Jedis jedis = (Jedis) ApplicationContextFactory.getBean("jedisClientCluster");
-        Jedis jedis = (Jedis) ApplicationContextFactory.getBean(JEDIS_DEFAULT_POOL);
 
-        return jedis;
+        return (Jedis) ApplicationContextFactory.getBean(JEDIS_DEFAULT_POOL);
     }
 
     /**

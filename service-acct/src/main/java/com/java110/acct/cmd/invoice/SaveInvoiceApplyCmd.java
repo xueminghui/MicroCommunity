@@ -37,10 +37,8 @@ import com.java110.intf.acct.IOwnerInvoiceV1InnerServiceSMO;
 import com.java110.intf.fee.IAccountReceiptV1InnerServiceSMO;
 import com.java110.intf.fee.IFeeDetailInnerServiceSMO;
 import com.java110.intf.fee.IPayFeeDetailV1InnerServiceSMO;
-import com.java110.intf.fee.IPayFeeV1InnerServiceSMO;
 import com.java110.intf.user.IOwnerV1InnerServiceSMO;
 import com.java110.intf.user.IUserV1InnerServiceSMO;
-import com.java110.po.account.AccountReceiptPo;
 import com.java110.po.fee.PayFeeDetailPo;
 import com.java110.po.invoiceApply.InvoiceApplyPo;
 import com.java110.po.invoiceApplyItem.InvoiceApplyItemPo;
@@ -49,10 +47,10 @@ import com.java110.utils.util.Assert;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.utils.util.DateUtil;
 import com.java110.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,33 +68,33 @@ import java.util.List;
 @Java110Cmd(serviceCode = "invoice.saveInvoiceApply")
 public class SaveInvoiceApplyCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(SaveInvoiceApplyCmd.class);
+    private static final Logger logger = LoggerFactory.getLogger(SaveInvoiceApplyCmd.class);
 
     public static final String CODE_PREFIX_ID = "10";
 
-    @Autowired
+    @Resource
     private IInvoiceApplyV1InnerServiceSMO invoiceApplyV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IOwnerInvoiceV1InnerServiceSMO ownerInvoiceV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IOwnerV1InnerServiceSMO ownerV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IInvoiceApplyItemV1InnerServiceSMO invoiceApplyItemV1InnerServiceSMOImpl;
 
 
-    @Autowired
+    @Resource
     private IFeeDetailInnerServiceSMO feeDetailInnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IPayFeeDetailV1InnerServiceSMO payFeeDetailV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IAccountReceiptV1InnerServiceSMO accountReceiptV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
     @Override

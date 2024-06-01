@@ -22,13 +22,11 @@ import com.java110.dto.invoiceEvent.InvoiceEventDto;
 import com.java110.po.invoiceEvent.InvoiceEventPo;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.core.base.smo.BaseServiceSMO;
-import com.java110.dto.user.UserDto;
 import com.java110.dto.PageDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,27 +40,24 @@ import java.util.List;
 @RestController
 public class InvoiceEventV1InnerServiceSMOImpl extends BaseServiceSMO implements IInvoiceEventV1InnerServiceSMO {
 
-    @Autowired
+    @Resource
     private IInvoiceEventV1ServiceDao invoiceEventV1ServiceDaoImpl;
 
 
     @Override
     public int saveInvoiceEvent(@RequestBody  InvoiceEventPo invoiceEventPo) {
-        int saveFlag = invoiceEventV1ServiceDaoImpl.saveInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
-        return saveFlag;
+        return invoiceEventV1ServiceDaoImpl.saveInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
     }
 
      @Override
     public int updateInvoiceEvent(@RequestBody  InvoiceEventPo invoiceEventPo) {
-        int saveFlag = invoiceEventV1ServiceDaoImpl.updateInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
-        return saveFlag;
+         return invoiceEventV1ServiceDaoImpl.updateInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
     }
 
      @Override
     public int deleteInvoiceEvent(@RequestBody  InvoiceEventPo invoiceEventPo) {
        invoiceEventPo.setStatusCd("1");
-       int saveFlag = invoiceEventV1ServiceDaoImpl.updateInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
-       return saveFlag;
+         return invoiceEventV1ServiceDaoImpl.updateInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventPo));
     }
 
     @Override
@@ -76,9 +71,7 @@ public class InvoiceEventV1InnerServiceSMOImpl extends BaseServiceSMO implements
             invoiceEventDto.setPage((page - 1) * invoiceEventDto.getRow());
         }
 
-        List<InvoiceEventDto> invoiceEvents = BeanConvertUtil.covertBeanList(invoiceEventV1ServiceDaoImpl.getInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventDto)), InvoiceEventDto.class);
-
-        return invoiceEvents;
+        return BeanConvertUtil.covertBeanList(invoiceEventV1ServiceDaoImpl.getInvoiceEventInfo(BeanConvertUtil.beanCovertMap(invoiceEventDto)), InvoiceEventDto.class);
     }
 
 

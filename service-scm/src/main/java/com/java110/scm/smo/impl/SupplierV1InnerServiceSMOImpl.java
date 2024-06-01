@@ -61,21 +61,18 @@ public class SupplierV1InnerServiceSMOImpl extends BaseServiceSMO implements ISu
 
     @Override
     public int saveSupplier(@RequestBody  SupplierPo supplierPo) {
-        int saveFlag = supplierV1ServiceDaoImpl.saveSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
-        return saveFlag;
+        return supplierV1ServiceDaoImpl.saveSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
     }
 
      @Override
     public int updateSupplier(@RequestBody  SupplierPo supplierPo) {
-        int saveFlag = supplierV1ServiceDaoImpl.updateSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
-        return saveFlag;
+         return supplierV1ServiceDaoImpl.updateSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
     }
 
      @Override
     public int deleteSupplier(@RequestBody  SupplierPo supplierPo) {
        supplierPo.setStatusCd("1");
-       int saveFlag = supplierV1ServiceDaoImpl.updateSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
-       return saveFlag;
+         return supplierV1ServiceDaoImpl.updateSupplierInfo(BeanConvertUtil.beanCovertMap(supplierPo));
     }
 
     @Override
@@ -89,9 +86,7 @@ public class SupplierV1InnerServiceSMOImpl extends BaseServiceSMO implements ISu
             supplierDto.setPage((page - 1) * supplierDto.getRow());
         }
 
-        List<SupplierDto> suppliers = BeanConvertUtil.covertBeanList(supplierV1ServiceDaoImpl.getSupplierInfo(BeanConvertUtil.beanCovertMap(supplierDto)), SupplierDto.class);
-
-        return suppliers;
+        return BeanConvertUtil.covertBeanList(supplierV1ServiceDaoImpl.getSupplierInfo(BeanConvertUtil.beanCovertMap(supplierDto)), SupplierDto.class);
     }
 
 
@@ -122,6 +117,7 @@ public class SupplierV1InnerServiceSMOImpl extends BaseServiceSMO implements ISu
         Assert.listOnlyOne(supplierDtos,"供应商不存在:"+supplierCouponDtos.get(0).getSupplierId());
 
         ISupplierAdapt supplierAdapt = ApplicationContextFactory.getBean(supplierDtos.get(0).getBeanName(),ISupplierAdapt.class);
+        assert supplierAdapt != null;
         return supplierAdapt.generatorQrcode(couponPropertyUserDto,supplierDtos.get(0),supplierCouponDtos.get(0));
     }
 

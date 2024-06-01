@@ -129,7 +129,7 @@ public class AppController extends BaseController {
                                              HttpServletRequest request) {
         ResponseEntity<String> responseEntity = null;
         try {
-            Map<String, String> headers = new HashMap<String, String>();
+            Map<String, String> headers = new HashMap<>();
             //todo 封装请求中的 头信息
             this.getRequestInfo(request, headers);
             //todo 将接口编码（服务编码） 放入头信息 通过头信息的方式 传递到后端

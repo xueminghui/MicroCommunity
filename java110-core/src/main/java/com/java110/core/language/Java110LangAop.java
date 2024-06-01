@@ -18,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * trace log  api aop
@@ -49,7 +50,7 @@ public class Java110LangAop {
 
 
         if (out instanceof ResponseEntity) {
-            String body = ((ResponseEntity) out).getBody().toString();
+            String body = Objects.requireNonNull(Objects.requireNonNull(((ResponseEntity<?>) out).getBody())).toString();
 
             if (!StringUtil.isJsonObject(body)) {
                 return out;

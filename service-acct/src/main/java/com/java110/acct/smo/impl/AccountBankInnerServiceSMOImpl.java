@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
 @RestController
 public class AccountBankInnerServiceSMOImpl extends BaseServiceSMO implements IAccountBankInnerServiceSMO {
 
-    @Autowired
+    @Resource
     private IAccountBankServiceDao accountBankServiceDaoImpl;
 
 
@@ -62,9 +63,7 @@ public class AccountBankInnerServiceSMOImpl extends BaseServiceSMO implements IA
             accountBankDto.setPage((page - 1) * accountBankDto.getRow());
         }
 
-        List<AccountBankDto> accountBanks = BeanConvertUtil.covertBeanList(accountBankServiceDaoImpl.getAccountBankInfo(BeanConvertUtil.beanCovertMap(accountBankDto)), AccountBankDto.class);
-
-        return accountBanks;
+        return BeanConvertUtil.covertBeanList(accountBankServiceDaoImpl.getAccountBankInfo(BeanConvertUtil.beanCovertMap(accountBankDto)), AccountBankDto.class);
     }
 
 

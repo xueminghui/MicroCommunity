@@ -7,9 +7,11 @@ import com.java110.dto.meter.NotifyMeterWaterOrderDto;
 import com.java110.intf.common.INotifySmartMeterV1InnerServiceSMO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -18,14 +20,15 @@ public class NotifySmartMeterController extends BaseController {
 
     private final static Logger logger = LoggerFactory.getLogger(NotifySmartMeterController.class);
 
-    @Autowired
+   @Resource
     private INotifySmartMeterV1InnerServiceSMO notifySmartWeterV1InnerServiceSMOImpl;
 
     /**
-     * <p>支付回调Api</p>
-     *
-     * @param request
-     * @throws Exception
+     * 支付回调Api
+     * @param implBean 实现类bean
+     * @param postInfo 提交信息
+     * @param request 请求体
+     * @return ResponseEntity
      */
     @RequestMapping(path = "/{implBean}", method = RequestMethod.POST)
     public ResponseEntity<String> notifyTq(

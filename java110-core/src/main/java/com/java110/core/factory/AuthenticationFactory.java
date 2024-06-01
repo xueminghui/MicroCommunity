@@ -204,7 +204,7 @@ public class AuthenticationFactory {
     /**
      * 用户密码 md5签名
      *
-     * @param inStr
+     * @param inStr 前面
      * @return
      */
     public static String passwdMd5(String inStr) throws NoAuthorityException {

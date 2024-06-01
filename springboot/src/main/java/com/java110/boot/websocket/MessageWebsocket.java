@@ -35,12 +35,12 @@ public class MessageWebsocket {
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
-    private static ConcurrentHashMap<String, MessageWebsocket> webSocketMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, MessageWebsocket> webSocketMap = new ConcurrentHashMap<>();
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
-    private static ConcurrentHashMap<String, String> clientMachineMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, String> clientMachineMap = new ConcurrentHashMap<>();
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
@@ -119,10 +119,7 @@ public class MessageWebsocket {
 
         WsDataDto wsDataDto = JSONObject.parseObject(message, WsDataDto.class);
 
-        switch (wsDataDto.getCmd()) {
-            case WsDataDto.CMD_PING:
-                //webSocketMap.get(userId).sendMessage(wsDataDto.toString());
-                break;
+        if (wsDataDto.getCmd().equals(WsDataDto.CMD_PING)) {//webSocketMap.get(userId).sendMessage(wsDataDto.toString());
         }
 
 //        //解析发送的报文

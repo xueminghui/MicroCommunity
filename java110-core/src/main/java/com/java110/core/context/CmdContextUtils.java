@@ -16,7 +16,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getUserId(ICmdDataFlowContext context) {
+    public static String getUserId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -35,7 +35,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getStoreId(ICmdDataFlowContext context) {
+    public static String getStoreId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -54,7 +54,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getSessionId(ICmdDataFlowContext context) {
+    public static String getSessionId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -73,7 +73,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getAppId(ICmdDataFlowContext context) {
+    public static String getAppId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -93,7 +93,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getLoginUserId(ICmdDataFlowContext context) {
+    public static String getLoginUserId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -112,7 +112,7 @@ public class CmdContextUtils {
      * @param context
      * @return
      */
-    public static final String getTransactionId(ICmdDataFlowContext context) {
+    public static String getTransactionId(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -125,7 +125,7 @@ public class CmdContextUtils {
         return "";
     }
 
-    public static final String getRequestTime(ICmdDataFlowContext context) {
+    public static String getRequestTime(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }
@@ -138,7 +138,7 @@ public class CmdContextUtils {
         return "";
     }
 
-    public static final String getLang(ICmdDataFlowContext context) {
+    public static String getLang(ICmdDataFlowContext context) {
         if (context == null) {
             return "";
         }

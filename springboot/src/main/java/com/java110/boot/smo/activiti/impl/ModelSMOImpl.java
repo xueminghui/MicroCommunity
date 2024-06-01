@@ -38,7 +38,7 @@ public class ModelSMOImpl extends DefaultAbstractComponentSMO implements IModelS
     private RestTemplate restTemplate;
 
     @Override
-    public ResponseEntity<String> getJson(String modelId) {
+    public ResponseEntity getJson(String modelId) {
         IPageData pd = PageData.newInstance().builder("-1", "-1", "", "",
                 "", "", "", "", AppDto.WEB_APP_ID);
         ///workflow/getEditorJson

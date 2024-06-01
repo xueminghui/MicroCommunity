@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,27 +43,24 @@ import java.util.List;
 @RestController
 public class OwnerInvoiceV1InnerServiceSMOImpl extends BaseServiceSMO implements IOwnerInvoiceV1InnerServiceSMO {
 
-    @Autowired
+    @Resource
     private IOwnerInvoiceV1ServiceDao ownerInvoiceV1ServiceDaoImpl;
 
 
     @Override
     public int saveOwnerInvoice(@RequestBody  OwnerInvoicePo ownerInvoicePo) {
-        int saveFlag = ownerInvoiceV1ServiceDaoImpl.saveOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
-        return saveFlag;
+        return ownerInvoiceV1ServiceDaoImpl.saveOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
     }
 
      @Override
     public int updateOwnerInvoice(@RequestBody  OwnerInvoicePo ownerInvoicePo) {
-        int saveFlag = ownerInvoiceV1ServiceDaoImpl.updateOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
-        return saveFlag;
+         return ownerInvoiceV1ServiceDaoImpl.updateOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
     }
 
      @Override
     public int deleteOwnerInvoice(@RequestBody  OwnerInvoicePo ownerInvoicePo) {
        ownerInvoicePo.setStatusCd("1");
-       int saveFlag = ownerInvoiceV1ServiceDaoImpl.updateOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
-       return saveFlag;
+         return ownerInvoiceV1ServiceDaoImpl.updateOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoicePo));
     }
 
     @Override
@@ -76,9 +74,7 @@ public class OwnerInvoiceV1InnerServiceSMOImpl extends BaseServiceSMO implements
             ownerInvoiceDto.setPage((page - 1) * ownerInvoiceDto.getRow());
         }
 
-        List<OwnerInvoiceDto> ownerInvoices = BeanConvertUtil.covertBeanList(ownerInvoiceV1ServiceDaoImpl.getOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoiceDto)), OwnerInvoiceDto.class);
-
-        return ownerInvoices;
+        return BeanConvertUtil.covertBeanList(ownerInvoiceV1ServiceDaoImpl.getOwnerInvoiceInfo(BeanConvertUtil.beanCovertMap(ownerInvoiceDto)), OwnerInvoiceDto.class);
     }
 
 

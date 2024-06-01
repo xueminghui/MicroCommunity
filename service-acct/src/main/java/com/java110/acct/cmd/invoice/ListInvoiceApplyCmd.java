@@ -23,13 +23,10 @@ import com.java110.core.event.cmd.CmdEvent;
 import com.java110.dto.file.FileRelDto;
 import com.java110.intf.acct.IInvoiceApplyV1InnerServiceSMO;
 import com.java110.intf.common.IFileRelInnerServiceSMO;
-import com.java110.utils.cache.MappingCache;
-import com.java110.utils.constant.MappingConstant;
 import com.java110.utils.exception.CmdException;
 import com.java110.utils.util.Assert;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.invoiceApply.InvoiceApplyDto;
 
 import java.util.List;
@@ -39,6 +36,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -54,11 +53,11 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "invoice.listInvoiceApply")
 public class ListInvoiceApplyCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(ListInvoiceApplyCmd.class);
-    @Autowired
+    private static final Logger logger = LoggerFactory.getLogger(ListInvoiceApplyCmd.class);
+    @Resource
     private IInvoiceApplyV1InnerServiceSMO invoiceApplyV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IFileRelInnerServiceSMO fileRelInnerServiceSMOImpl;
 
     @Override
