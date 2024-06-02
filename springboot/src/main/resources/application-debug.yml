@@ -2,8 +2,9 @@ server:
   port: 8008
   tomcat:
     uri-encoding: UTF-8
-
-
+logging:
+  level:
+    root: debug
 
 spring:
   profiles:
@@ -17,9 +18,9 @@ spring:
     name: boot-service
   redis:
     database: 0
-    host: 192.168.1.108
+    host: localhost
     port: 6379
-    password: hc12345678
+#    password: hc12345678
     pool:
       max-active: 300
       max-wait: 3000
@@ -40,8 +41,8 @@ feign:
 kafka:
   consumer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 47.113.205.244:2181    #dev.zk.java110.com:2181
+    servers: 47.113.205.244:9092     #dev.kafka.java110.com:9092
     enable:
       auto:
         commit: true
@@ -59,8 +60,8 @@ kafka:
 
   producer:
     zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
+      connect: 47.113.205.244:2181   #dev.zk.java110.com:2181
+    servers: 47.113.205.244:9092    #dev.kafka.java110.com:9092
     retries: 0
     batch:
       size: 4096

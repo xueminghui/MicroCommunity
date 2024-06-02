@@ -25,7 +25,7 @@ public class AppRouteCache extends BaseCache {
         try {
             redis = getJedis();
             appRoutes = SerializeUtil.unserializeList(redis.get((appId+_SUFFIX_APP_ROUTE).getBytes()),AppRoute.class);
-            if(appRoutes == null || appRoutes.size() ==0) {
+            if(appRoutes == null || appRoutes.isEmpty()) {
                 return null;
             }
         }finally {
@@ -39,7 +39,6 @@ public class AppRouteCache extends BaseCache {
 
     /**
      * 保存路由信息
-     * @param appRoutes
      */
     public static void setAppRoute(List<AppRoute> appRoutes){
         Jedis redis = null;

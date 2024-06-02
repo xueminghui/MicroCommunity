@@ -239,8 +239,7 @@ public class ResultVo implements Serializable {
      * @return
      */
     public static ResponseEntity<String> createResponseEntity(ResultVo resultVo) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -250,8 +249,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> success() {
         ResultVo resultVo = new ResultVo(CODE_OK, MSG_OK);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -261,8 +259,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> error(String msg,HttpStatus status) {
         ResultVo resultVo = new ResultVo(CODE_ERROR, msg);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), status);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), status);
     }
 
     /**
@@ -272,8 +269,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> error(String msg) {
         ResultVo resultVo = new ResultVo(CODE_ERROR, msg);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -283,8 +279,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> error(String msg,Object data) {
         ResultVo resultVo = new ResultVo(CODE_ERROR, msg,data);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -297,8 +292,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> createResponseEntity(int records, int total, Object data) {
         ResultVo resultVo = new ResultVo(records, total, data);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -312,8 +306,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> createResponseEntity(int records, int total, Object data, Object sumTotal) {
         ResultVo resultVo = new ResultVo(records, total, data, sumTotal);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -326,8 +319,7 @@ public class ResultVo implements Serializable {
         
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, url);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>("", headers, HttpStatus.FOUND);
-        return responseEntity;
+        return new ResponseEntity<String>("", headers, HttpStatus.FOUND);
     }
 
     /**
@@ -340,8 +332,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> createResponseEntity(int code, String msg, Object data) {
         ResultVo resultVo = new ResultVo(code, msg, data);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -353,8 +344,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> createResponseEntity(int code, String msg) {
         ResultVo resultVo = new ResultVo(code, msg);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
     /**
@@ -369,8 +359,7 @@ public class ResultVo implements Serializable {
      */
     public static ResponseEntity<String> createResponseEntity(int records, int total, int code, String msg, Object data) {
         ResultVo resultVo = new ResultVo(records, total, code, msg, data);
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
     }
 
 

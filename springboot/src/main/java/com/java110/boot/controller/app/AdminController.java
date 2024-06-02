@@ -44,7 +44,7 @@ public class AdminController {
     /**
      * 管理员免密登录至 执行的物业账户下
      *
-     * @param request
+     * @param request 请求体
      */
     @RequestMapping(path = "/adminLoginPropertyAccount", method = RequestMethod.POST)
     public ResponseEntity<String> adminLoginPropertyAccount(HttpServletRequest request) {

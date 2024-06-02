@@ -31,7 +31,7 @@ public class ApiDataFlow extends AbstractDataFlowContext {
     private String requestURL;
 
 
-    private List<AppRoute> appRoutes = new ArrayList<AppRoute>();
+    private final List<AppRoute> appRoutes = new ArrayList<AppRoute>();
     //请求业务系统报文
     private JSONObject requestBusinessJson;
 

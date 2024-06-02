@@ -33,7 +33,7 @@ import java.util.Date;
  **/
 public class OutRestTemplate extends RestTemplate {
 
-    private static Logger logger = LoggerFactory.getLogger(OutRestTemplate.class);
+    private static final Logger logger = LoggerFactory.getLogger(OutRestTemplate.class);
 
     // exchange
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="invoiceDetailSettingV1ServiceDaoImpl">
+    <resultMap id="invoiceDetailSettingPoMap" type="com.java110.po.invoiceDetailSetting.InvoiceDetailSettingPo">
+        <id column="id" property="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="invoice_item_name" property="invoiceItemName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="expense_name" property="expenseName" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result column="expense_num" property="expenseNum" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result column="expense_rate" property="expenseRate" jdbcType="DOUBLE" javaType="java.lang.Double" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" javaType="java.lang.String" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </resultMap>
+
+    <insert id="insertInvoiceDetailSetting" parameterType="com.java110.po.invoiceDetailSetting.InvoiceDetailSettingPo">
+        insert into invoice_detail_setting(id, invoice_item_name, expense_name, expense_num, expense_rate, remark, created_by, created_time)
+        values(#{id}, #{invoiceItemName}, #{expenseName}, #{expenseNum}, #{expenseRate}, #{remark}, #{createdBy}, #{createdTime})
+    </insert>
+
+    <update id="updateInvoiceDetailSetting" parameterType="com.java110.po.invoiceDetailSetting.InvoiceDetailSettingPo">
+        update invoice_detail_setting set invoice_item_name=#{invoiceItemName},
+                                          expense_name=#{expenseName},
+                                          expense_num = #{expesneNum},
+                                          expense_rate = #{expenseRate},
+                                          remark = #{remark},
+                                          updated_by = #{updatedBy},
+                                          updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
+
+    <select id="findDetailSettingsByCondition" parameterType="com.java110.po.invoiceDetailSetting.InvoiceDetailSettingPo" resultMap="invoiceDetailSettingPoMap">
+      select id, invoice_item_name, expense_name, expense_num, expense_rate, remark, created_by, created_time, updated_by, updated_time
+      from invoice_detail_setting
+      <where>
+          <if test="id!=null and id!=''">
+              and id like #{id, jdbcType=VARCHAR} || '%'
+          </if>
+          <if test="invoiceItemName!=null and invoiceItemName!=''">
+              and invoice_item_name like #{invoiceItemName, jdbcType=VARCHAR} || '%'
+          </if>
+          <if test="expenseName!=null and expenseName!=''">
+              and expense_name like #{expenseName, jdbcType=VARCHAR} || '%'
+          </if>
+      </where>
+
+    </select>
+</mapper>

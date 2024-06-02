@@ -4,10 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ownerInvoiceV1ServiceDaoImpl">
 
-
-
-
-
     <!-- 保存业主发票信息 add by wuxw 2018-07-03 -->
     <insert id="saveOwnerInvoiceInfo" parameterType="Map">
         insert into owner_invoice(

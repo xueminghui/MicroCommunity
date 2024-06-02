@@ -43,7 +43,7 @@ public class AddPrivilegePrivilegeGroupCmd extends Cmd {
 
         JSONArray pIds = reqJson.getJSONArray("pIds");
 
-        if (pIds.size() < 1) {
+        if (pIds.isEmpty()) {
             throw new CmdException("未包含权限");
         }
 

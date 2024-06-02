@@ -21,28 +21,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+
 @RestController
 @RequestMapping(value = "/userQuestionAnswer")
 public class UserQuestionAnswerApi {
 
-    @Autowired
+    @Resource
     private ISaveUserQuestionAnswerBMO saveUserQuestionAnswerBMOImpl;
-    @Autowired
+    @Resource
     private IUpdateUserQuestionAnswerBMO updateUserQuestionAnswerBMOImpl;
-    @Autowired
+    @Resource
     private IDeleteUserQuestionAnswerBMO deleteUserQuestionAnswerBMOImpl;
 
-    @Autowired
+    @Resource
     private IGetUserQuestionAnswerBMO getUserQuestionAnswerBMOImpl;
 
-    @Autowired
+    @Resource
     private ISaveUserQuestionAnswerValueBMO saveUserQuestionAnswerValueBMOImpl;
-    @Autowired
+    @Resource
     private IUpdateUserQuestionAnswerValueBMO updateUserQuestionAnswerValueBMOImpl;
-    @Autowired
+    @Resource
     private IDeleteUserQuestionAnswerValueBMO deleteUserQuestionAnswerValueBMOImpl;
 
-    @Autowired
+    @Resource
     private IGetUserQuestionAnswerValueBMO getUserQuestionAnswerValueBMOImpl;
 
     /**

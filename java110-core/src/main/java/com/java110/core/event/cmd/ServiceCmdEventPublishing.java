@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
  * Created by wuxw on 2018/4/17.
  */
 public class ServiceCmdEventPublishing {
-    private static Logger logger = LoggerFactory.getLogger(ServiceCmdEventPublishing.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceCmdEventPublishing.class);
 
     private static Executor taskExecutor;
 
@@ -91,7 +91,7 @@ public class ServiceCmdEventPublishing {
 
 
         //将数据放入缓存中
-        if (cmdListeners.size() > 0) {
+        if (!cmdListeners.isEmpty()) {
             cacheListenersMap.put(needCachedServiceCode, cmdListeners);
         }
         return cmdListeners;
@@ -152,7 +152,7 @@ public class ServiceCmdEventPublishing {
         //todo 根据serviceCode 去寻找 处理的Cmd处理类 如果java类中 @Java110Cmd(serviceCode = "xx.xx") 写了该注解就会被寻找到
         List<ServiceCmdListener> listeners = getListeners(serviceCode);
         //这里判断 serviceCode + httpMethod 的侦听，如果没有注册直接报错。
-        if (listeners == null || listeners.size() == 0) {
+        if (listeners == null || listeners.isEmpty()) {
             throw new ListenerExecuteException(ResponseConstant.RESULT_CODE_ERROR,
                     "服务【" + serviceCode + "】当前不支持");
         }
@@ -161,14 +161,11 @@ public class ServiceCmdEventPublishing {
             if (CommonConstant.PROCESS_ORDER_ASYNCHRONOUS.equals(asyn)) { //todo 异步处理,一般很少用
 
                 Executor executor = getTaskExecutor();
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            invokeListener(listener, event);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                executor.execute(() -> {
+                    try {
+                        invokeListener(listener, event);
+                    } catch (Exception e) {
+                        logger.error("invoke listener failed:"+listener.getClass().getName(), e);
                     }
                 });
                 break;
@@ -198,7 +195,6 @@ public class ServiceCmdEventPublishing {
      * @param event    the current event to propagate
      * @since 4.1
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     protected static void invokeListener(ServiceCmdListener listener, CmdEvent event) throws Exception {
         try {
             //todo 获取 cmd 上下文对象

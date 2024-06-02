@@ -40,7 +40,7 @@ import java.util.Map;
 @Service("ownerInvoiceV1ServiceDaoImpl")
 public class OwnerInvoiceV1ServiceDaoImpl extends BaseServiceDao implements IOwnerInvoiceV1ServiceDao {
 
-    private static Logger logger = LoggerFactory.getLogger(OwnerInvoiceV1ServiceDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(OwnerInvoiceV1ServiceDaoImpl.class);
 
 
 
@@ -55,9 +55,7 @@ public class OwnerInvoiceV1ServiceDaoImpl extends BaseServiceDao implements IOwn
     public int saveOwnerInvoiceInfo(Map info) throws DAOException {
         logger.debug("保存 saveOwnerInvoiceInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("ownerInvoiceV1ServiceDaoImpl.saveOwnerInvoiceInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.insert("ownerInvoiceV1ServiceDaoImpl.saveOwnerInvoiceInfo",info);
     }
 
 
@@ -71,9 +69,7 @@ public class OwnerInvoiceV1ServiceDaoImpl extends BaseServiceDao implements IOwn
     public List<Map> getOwnerInvoiceInfo(Map info) throws DAOException {
         logger.debug("查询 getOwnerInvoiceInfo 入参 info : {}",info);
 
-        List<Map> businessOwnerInvoiceInfos = sqlSessionTemplate.selectList("ownerInvoiceV1ServiceDaoImpl.getOwnerInvoiceInfo",info);
-
-        return businessOwnerInvoiceInfos;
+        return sqlSessionTemplate.selectList("ownerInvoiceV1ServiceDaoImpl.getOwnerInvoiceInfo",info);
     }
 
 

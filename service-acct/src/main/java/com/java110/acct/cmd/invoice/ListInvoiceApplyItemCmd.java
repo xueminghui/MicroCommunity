@@ -25,7 +25,6 @@ import com.java110.utils.exception.CmdException;
 import com.java110.utils.util.Assert;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.invoiceApplyItem.InvoiceApplyItemDto;
 import java.util.List;
 import java.util.ArrayList;
@@ -33,6 +32,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -48,8 +49,8 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "invoice.listInvoiceApplyItem")
 public class ListInvoiceApplyItemCmd extends Cmd {
 
-  private static Logger logger = LoggerFactory.getLogger(ListInvoiceApplyItemCmd.class);
-    @Autowired
+  private static final Logger logger = LoggerFactory.getLogger(ListInvoiceApplyItemCmd.class);
+    @Resource
     private IInvoiceApplyItemV1InnerServiceSMO invoiceApplyItemV1InnerServiceSMOImpl;
 
     @Override

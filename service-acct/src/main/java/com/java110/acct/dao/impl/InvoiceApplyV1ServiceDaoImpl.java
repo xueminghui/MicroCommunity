@@ -40,7 +40,7 @@ import java.util.Map;
 @Service("invoiceApplyV1ServiceDaoImpl")
 public class InvoiceApplyV1ServiceDaoImpl extends BaseServiceDao implements IInvoiceApplyV1ServiceDao {
 
-    private static Logger logger = LoggerFactory.getLogger(InvoiceApplyV1ServiceDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceApplyV1ServiceDaoImpl.class);
 
 
 
@@ -55,9 +55,7 @@ public class InvoiceApplyV1ServiceDaoImpl extends BaseServiceDao implements IInv
     public int saveInvoiceApplyInfo(Map info) throws DAOException {
         logger.debug("保存 saveInvoiceApplyInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("invoiceApplyV1ServiceDaoImpl.saveInvoiceApplyInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.insert("invoiceApplyV1ServiceDaoImpl.saveInvoiceApplyInfo",info);
     }
 
 
@@ -71,9 +69,7 @@ public class InvoiceApplyV1ServiceDaoImpl extends BaseServiceDao implements IInv
     public List<Map> getInvoiceApplyInfo(Map info) throws DAOException {
         logger.debug("查询 getInvoiceApplyInfo 入参 info : {}",info);
 
-        List<Map> businessInvoiceApplyInfos = sqlSessionTemplate.selectList("invoiceApplyV1ServiceDaoImpl.getInvoiceApplyInfo",info);
-
-        return businessInvoiceApplyInfos;
+        return sqlSessionTemplate.selectList("invoiceApplyV1ServiceDaoImpl.getInvoiceApplyInfo",info);
     }
 
 
@@ -86,9 +82,7 @@ public class InvoiceApplyV1ServiceDaoImpl extends BaseServiceDao implements IInv
     public int updateInvoiceApplyInfo(Map info) throws DAOException {
         logger.debug("修改 updateInvoiceApplyInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.update("invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.update("invoiceApplyV1ServiceDaoImpl.updateInvoiceApplyInfo",info);
     }
 
      /**
@@ -100,12 +94,7 @@ public class InvoiceApplyV1ServiceDaoImpl extends BaseServiceDao implements IInv
     public int queryInvoiceApplysCount(Map info) {
         logger.debug("查询 queryInvoiceApplysCount 入参 info : {}",info);
 
-        List<Map> businessInvoiceApplyInfos = sqlSessionTemplate.selectList("invoiceApplyV1ServiceDaoImpl.queryInvoiceApplysCount", info);
-        if (businessInvoiceApplyInfos.size() < 1) {
-            return 0;
-        }
-
-        return Integer.parseInt(businessInvoiceApplyInfos.get(0).get("count").toString());
+        return sqlSessionTemplate.selectOne("invoiceApplyV1ServiceDaoImpl.queryInvoiceApplysCount", info);
     }
 
 

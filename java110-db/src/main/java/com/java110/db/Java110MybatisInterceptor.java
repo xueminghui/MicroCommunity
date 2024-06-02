@@ -93,7 +93,7 @@ public class Java110MybatisInterceptor implements Interceptor {
         queryServiceDAOImpl = ApplicationContextFactory.getBean("queryServiceDAOImpl", IQueryServiceDAO.class);
         List<Map<String, Object>> deleteDatas = queryServiceDAOImpl.executeSql(execSql, null);
 
-        if (deleteDatas != null && deleteDatas.size() > 0) {
+        if (deleteDatas != null && !deleteDatas.isEmpty()) {
             for (Map<String, Object> map : deleteDatas) {
                 dealReturnMap(map);
                 preValues.add(map);

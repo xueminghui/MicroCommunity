@@ -40,7 +40,7 @@ import java.util.Map;
 @Service("invoiceApplyItemV1ServiceDaoImpl")
 public class InvoiceApplyItemV1ServiceDaoImpl extends BaseServiceDao implements IInvoiceApplyItemV1ServiceDao {
 
-    private static Logger logger = LoggerFactory.getLogger(InvoiceApplyItemV1ServiceDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceApplyItemV1ServiceDaoImpl.class);
 
 
 
@@ -55,18 +55,14 @@ public class InvoiceApplyItemV1ServiceDaoImpl extends BaseServiceDao implements 
     public int saveInvoiceApplyItemInfo(Map info) throws DAOException {
         logger.debug("保存 saveInvoiceApplyItemInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItemInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.insert("invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItemInfo",info);
     }
 
     @Override
     public int saveInvoiceApplyItems(Map info) {
         logger.debug("保存 saveInvoiceApplyItems 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.insert("invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItems",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.insert("invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItems",info);
     }
 
 
@@ -80,9 +76,7 @@ public class InvoiceApplyItemV1ServiceDaoImpl extends BaseServiceDao implements 
     public List<Map> getInvoiceApplyItemInfo(Map info) throws DAOException {
         logger.debug("查询 getInvoiceApplyItemInfo 入参 info : {}",info);
 
-        List<Map> businessInvoiceApplyItemInfos = sqlSessionTemplate.selectList("invoiceApplyItemV1ServiceDaoImpl.getInvoiceApplyItemInfo",info);
-
-        return businessInvoiceApplyItemInfos;
+        return sqlSessionTemplate.selectList("invoiceApplyItemV1ServiceDaoImpl.getInvoiceApplyItemInfo",info);
     }
 
 
@@ -95,9 +89,7 @@ public class InvoiceApplyItemV1ServiceDaoImpl extends BaseServiceDao implements 
     public int updateInvoiceApplyItemInfo(Map info) throws DAOException {
         logger.debug("修改 updateInvoiceApplyItemInfo 入参 info : {}",info);
 
-        int saveFlag = sqlSessionTemplate.update("invoiceApplyItemV1ServiceDaoImpl.updateInvoiceApplyItemInfo",info);
-
-        return saveFlag;
+        return sqlSessionTemplate.update("invoiceApplyItemV1ServiceDaoImpl.updateInvoiceApplyItemInfo",info);
     }
 
      /**

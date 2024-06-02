@@ -46,8 +46,7 @@ public class CouponRuleCppsV1InnerServiceSMOImpl extends BaseServiceSMO implemen
 
     @Override
     public int saveCouponRuleCpps(@RequestBody  CouponRuleCppsPo couponRuleCppsPo) {
-        int saveFlag = couponRuleCppsV1ServiceDaoImpl.saveCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsPo));
-        return saveFlag;
+        return couponRuleCppsV1ServiceDaoImpl.saveCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsPo));
     }
 
      @Override
@@ -59,8 +58,7 @@ public class CouponRuleCppsV1InnerServiceSMOImpl extends BaseServiceSMO implemen
      @Override
     public int deleteCouponRuleCpps(@RequestBody  CouponRuleCppsPo couponRuleCppsPo) {
        couponRuleCppsPo.setStatusCd("1");
-       int saveFlag = couponRuleCppsV1ServiceDaoImpl.updateCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsPo));
-       return saveFlag;
+         return couponRuleCppsV1ServiceDaoImpl.updateCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsPo));
     }
 
     @Override
@@ -74,9 +72,7 @@ public class CouponRuleCppsV1InnerServiceSMOImpl extends BaseServiceSMO implemen
             couponRuleCppsDto.setPage((page - 1) * couponRuleCppsDto.getRow());
         }
 
-        List<CouponRuleCppsDto> couponRuleCppss = BeanConvertUtil.covertBeanList(couponRuleCppsV1ServiceDaoImpl.getCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsDto)), CouponRuleCppsDto.class);
-
-        return couponRuleCppss;
+        return BeanConvertUtil.covertBeanList(couponRuleCppsV1ServiceDaoImpl.getCouponRuleCppsInfo(BeanConvertUtil.beanCovertMap(couponRuleCppsDto)), CouponRuleCppsDto.class);
     }
 
 

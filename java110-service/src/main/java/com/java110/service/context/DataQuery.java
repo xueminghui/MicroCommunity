@@ -31,7 +31,7 @@ public class DataQuery {
     private ServiceSql serviceSql;
 
     //rest 返回对象
-    private ResponseEntity responseEntity;
+    private ResponseEntity<String> responseEntity;
 
 
 
@@ -76,11 +76,11 @@ public class DataQuery {
         this.serviceSql = serviceSql;
     }
 
-    public ResponseEntity getResponseEntity() {
+    public ResponseEntity<String> getResponseEntity() {
         return responseEntity;
     }
 
-    public void setResponseEntity(ResponseEntity responseEntity) {
+    public void setResponseEntity(ResponseEntity<String> responseEntity) {
         this.responseEntity = responseEntity;
     }
 
@@ -134,6 +134,7 @@ public class DataQuery {
      */
     public List<Map<String, Object>> queryDataBySql(String sql, List<Object> sqlParam){
         IQueryServiceDAO queryServiceDAOImpl = ApplicationContextFactory.getBean("queryServiceDAOImpl",IQueryServiceDAO.class);
+        assert queryServiceDAOImpl != null;
         return queryServiceDAOImpl.executeSql(sql, sqlParam.toArray());
     }
 
@@ -142,7 +143,7 @@ public class DataQuery {
      * @param requestEntity 请求实体
      * @return
      */
-    public ResponseEntity<String> callService(RequestEntity requestEntity){
+    public ResponseEntity<String> callService(RequestEntity<String> requestEntity){
         return callService(requestEntity,false);
     }
 
@@ -152,7 +153,7 @@ public class DataQuery {
      * @param innerService 内部服务 true 外部服务为false
      * @return
      */
-    public ResponseEntity<String> callService(RequestEntity requestEntity,Boolean innerService){
+    public ResponseEntity<String> callService(RequestEntity<String> requestEntity,Boolean innerService){
 
         RestTemplate restTemplate = null;
 
@@ -161,6 +162,7 @@ public class DataQuery {
         }else{
             restTemplate = ApplicationContextFactory.getBean("outRestTemplate",RestTemplate.class);
         }
+        assert restTemplate != null;
         return restTemplate.exchange(requestEntity,String.class);
     }
 }

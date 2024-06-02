@@ -32,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
+
 /**
  * 类表述：保存
  * 服务编码：supplier.saveSupplier
@@ -45,11 +47,11 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "supplier.saveSupplier")
 public class SaveSupplierCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(SaveSupplierCmd.class);
+    private static final Logger logger = LoggerFactory.getLogger(SaveSupplierCmd.class);
 
     public static final String CODE_PREFIX_ID = "10";
 
-    @Autowired
+    @Resource
     private ISupplierV1InnerServiceSMO supplierV1InnerServiceSMOImpl;
 
     @Override

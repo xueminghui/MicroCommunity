@@ -16,7 +16,7 @@
 package com.java110.po.invoiceApply;
 
 import java.io.Serializable;
-import java.util.Date;
+
 
 /**
  * 类表述： Po 数据模型实体对象 基本保持与数据库模型一直 用于 增加修改删除 等时的数据载体

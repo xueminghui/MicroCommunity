@@ -1,5 +1,6 @@
 package com.java110.boot.smo.api.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.java110.boot.smo.DefaultAbstractComponentSMO;
 import com.java110.boot.smo.IApiServiceSMO;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -26,15 +28,15 @@ import java.util.Map;
 @Service("apiSMOImpl")
 public class ApiSMOImpl extends DefaultAbstractComponentSMO implements IApiSMO {
 
-    @Autowired
+    @Resource
     private IApiServiceSMO apiServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IStoreV1InnerServiceSMO storeV1InnerServiceSMOImpl;
 
     private final static Logger logger = LoggerFactory.getLogger(ApiSMOImpl.class);
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
     @Override
@@ -49,22 +51,22 @@ public class ApiSMOImpl extends DefaultAbstractComponentSMO implements IApiSMO {
     @Override
     protected ComponentValidateResult validateStoreStaffCommunityRelationship(IPageData pd, RestTemplate restTemplate) {
         // 校验 员工和商户是否有关系
-        ResponseEntity responseEntity = getStoreInfo(pd, restTemplate);
+        ResponseEntity<String> responseEntity = getStoreInfo(pd, restTemplate);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             return new ComponentValidateResult("", "", "", pd.getUserId(), pd.getUserName());
         }
 
-        JSONObject storeInfo = JSONObject.parseObject(responseEntity.getBody().toString());
+        JSONObject storeInfo = JSONObject.parseObject(responseEntity.getBody());
         //todo 说明是业主直接返回
         if (!storeInfo.containsKey("storeId")) {
             return new ComponentValidateResult("", "", "", pd.getUserId(), pd.getUserName());
         }
-
-        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
-        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
-
-        String storeId = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeId");
-        String storeTypeCd = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeTypeCd");
+        String body = responseEntity.getBody();
+        Assert.jsonObjectHaveKey(body, "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
+        Assert.jsonObjectHaveKey(body, "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
+        JSONObject bodyJson = JSONObject.parseObject(body);
+        String storeId = bodyJson.getString("storeId");
+        String storeTypeCd = bodyJson.getString("storeTypeCd");
 
         JSONObject paramIn = JSONObject.parseObject(pd.getReqData());
 
@@ -113,8 +115,7 @@ public class ApiSMOImpl extends DefaultAbstractComponentSMO implements IApiSMO {
         }
         headers.put("store-id", result.getStoreId());
         // todo 应用是否有接口权限校验
-        ResponseEntity<String> responseEntity = apiServiceSMOImpl.service(body, headers);
-        return responseEntity;
+        return apiServiceSMOImpl.service(body, headers);
     }
 
 

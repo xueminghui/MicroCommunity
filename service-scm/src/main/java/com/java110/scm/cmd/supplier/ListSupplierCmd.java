@@ -17,18 +17,13 @@ package com.java110.scm.cmd.supplier;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java110.core.annotation.Java110Cmd;
-import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.context.ICmdDataFlowContext;
 import com.java110.core.event.cmd.Cmd;
 import com.java110.core.event.cmd.CmdEvent;
-import com.java110.core.factory.GenerateCodeFactory;
 import com.java110.intf.scm.ISupplierV1InnerServiceSMO;
-import com.java110.po.supplier.SupplierPo;
 import com.java110.utils.exception.CmdException;
-import com.java110.utils.util.Assert;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.java110.dto.supplier.SupplierDto;
 
 import java.util.List;
@@ -38,6 +33,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -53,8 +50,8 @@ import org.slf4j.LoggerFactory;
 @Java110Cmd(serviceCode = "supplier.listSupplier")
 public class ListSupplierCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(ListSupplierCmd.class);
-    @Autowired
+    private static final Logger logger = LoggerFactory.getLogger(ListSupplierCmd.class);
+    @Resource
     private ISupplierV1InnerServiceSMO supplierV1InnerServiceSMOImpl;
 
     @Override

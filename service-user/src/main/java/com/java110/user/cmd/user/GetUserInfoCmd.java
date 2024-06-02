@@ -49,7 +49,7 @@ public class GetUserInfoCmd extends Cmd {
             context.setResponseEntity(responseEntity);
             return;
         }
-        JSONObject tmpUserInfo = JSONObject.parseObject(responseEntity.getBody().toString());
+        JSONObject tmpUserInfo = JSONObject.parseObject(responseEntity.getBody());
         JSONObject resultUserInfo = new JSONObject();
 
 
@@ -59,7 +59,7 @@ public class GetUserInfoCmd extends Cmd {
             storeDto.setPage(1);
             storeDto.setRow(1);
             List<StoreDto> storeDtos = storeV1InnerServiceSMOImpl.queryStores(storeDto);
-            if (storeDtos != null && storeDtos.size() > 0) {
+            if (storeDtos != null && !storeDtos.isEmpty()) {
                 resultUserInfo.put("storeTypeCd", storeDtos.get(0).getStoreTypeCd());
             }
         }
@@ -76,7 +76,7 @@ public class GetUserInfoCmd extends Cmd {
         String watermark = MappingCache.getValue(MappingConstant.DOMAIN_SYSTEM_SWITCH,"watermark");
         resultUserInfo.put("watermark", watermark);
 
-        responseEntity = new ResponseEntity<String>(resultUserInfo.toJSONString(), HttpStatus.OK);
+        responseEntity = new ResponseEntity<>(resultUserInfo.toJSONString(), HttpStatus.OK);
 
         context.setResponseEntity(responseEntity);
     }

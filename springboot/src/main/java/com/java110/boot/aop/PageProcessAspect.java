@@ -37,7 +37,7 @@ import java.util.Map;
 @Component
 public class PageProcessAspect {
 
-    private static Logger logger = LoggerFactory.getLogger(PageProcessAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(PageProcessAspect.class);
 
     @Pointcut("execution(public * com.java110..*.*Controller.*(..)) ")
     public void dataProcess() {
@@ -85,12 +85,12 @@ public class PageProcessAspect {
                 JSONObject paramObj = new JSONObject();
                 for (String key : params.keySet()) {
                     if (params.get(key).length > 0) {
-                        String value = "";
+                        StringBuilder value = new StringBuilder();
                         for (int paramIndex = 0; paramIndex < params.get(key).length; paramIndex++) {
-                            value += (params.get(key)[paramIndex] + ",");
+                            value.append(params.get(key)[paramIndex]).append(",");
                         }
-                        value = value.endsWith(",") ? value.substring(0, value.length() - 1) : value;
-                        paramObj.put(key, value);
+                        value = new StringBuilder(value.toString().endsWith(",") ? value.substring(0, value.length() - 1) : value.toString());
+                        paramObj.put(key, value.toString());
                     }
                     continue;
                 }
@@ -127,7 +127,7 @@ public class PageProcessAspect {
             }
         }
         Map<String, Object> headers = new HashMap<>();
-        Enumeration reqHeaderEnum = request.getHeaderNames();
+        Enumeration<String> reqHeaderEnum = request.getHeaderNames();
         while (reqHeaderEnum.hasMoreElements()) {
             String headerName = (String) reqHeaderEnum.nextElement();
             headers.put(headerName.toLowerCase(), request.getHeader(headerName));
@@ -177,11 +177,10 @@ public class PageProcessAspect {
     @Around("dataProcess()")
     public Object around(ProceedingJoinPoint pjp) {
         try {
-            Object o = pjp.proceed();
-            return o;
+            return pjp.proceed();
         } catch (Throwable e) {
             logger.error("执行方法异常", e);
-            return new ResponseEntity(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -194,7 +193,8 @@ public class PageProcessAspect {
      */
     private String getToken(HttpServletRequest request) throws FilterException {
         String token = "";
-        if (request.getCookies() != null && request.getCookies().length > 0) {
+        if (request.getCookies() != null) {
+            request.getCookies();
             for (Cookie cookie : request.getCookies()) {
                 if (CommonConstant.COOKIE_AUTH_TOKEN.equals(cookie.getName())) {
                     token = cookie.getValue();
@@ -230,6 +230,7 @@ public class PageProcessAspect {
         cookie.setHttpOnly(true);
         cookie.setPath("/");
 
+        assert response != null;
         response.addCookie(cookie);
         //response.addHeader("Set-Cookie","SameSite=None");
 

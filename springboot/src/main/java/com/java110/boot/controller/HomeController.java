@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -38,7 +39,7 @@ public class HomeController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 
-    @Autowired
+    @Resource
     private IFlowServiceSMO flowServiceSMOImpl;
 
     @RequestMapping(path = "/")

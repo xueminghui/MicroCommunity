@@ -32,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
+
 /**
  * 类表述：保存
  * 服务编码：invoiceApplyItem.saveInvoiceApplyItem
@@ -49,7 +51,7 @@ public class SaveInvoiceApplyItemCmd extends Cmd {
 
     public static final String CODE_PREFIX_ID = "10";
 
-    @Autowired
+    @Resource
     private IInvoiceApplyItemV1InnerServiceSMO invoiceApplyItemV1InnerServiceSMOImpl;
 
     @Override

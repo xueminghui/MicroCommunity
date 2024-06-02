@@ -333,7 +333,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
 
         //校验资源路劲是否定义权限
         List<BasePrivilegeDto> basePrivilegeDtos = PrivilegeCache.getPrivileges();
-        if (basePrivilegeDtos == null || basePrivilegeDtos.size() < 1) {
+        if (basePrivilegeDtos == null || basePrivilegeDtos.isEmpty()) {
             return;
         }
         String tmpResource = null;
@@ -341,6 +341,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         for (BasePrivilegeDto privilegeDto : basePrivilegeDtos) {
             if (resource.equals(privilegeDto.getResource())) {
                 hasPrivilege = true;
+                break;
             }
         }
         if (!hasPrivilege) { //权限没有配置，直接跳过
@@ -355,7 +356,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         JSONArray privileges = JSONArray.parseArray(resultVo.getMsg());
 
         hasPrivilege = false;
-        if (privileges == null || privileges.size() < 1) {
+        if (privileges == null || privileges.isEmpty()) {
             throw new UnsupportedOperationException("用户没有权限操作");
         }
         for (int privilegeIndex = 0; privilegeIndex < privileges.size(); privilegeIndex++) {
@@ -374,7 +375,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     /**
      * 查询商户信息
      *
-     * @return
+     * @return ResponseEntity
      */
     protected ResponseEntity<String> getStoreInfo(IPageData pd, RestTemplate restTemplate) {
         Assert.hasLength(pd.getUserId(), "用户未登录请先登录");
@@ -388,7 +389,6 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     /**
      * 查询商户信息
      *
-     * @return
      */
     protected void checkStoreEnterCommunity(IPageData pd, String storeId, String storeTypeCd, String communityId, RestTemplate restTemplate) {
         Assert.hasLength(pd.getUserId(), "用户未登录请先登录");
@@ -399,7 +399,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
 
         JSONArray communitys = JSONArray.parseArray(resultVo.getData().toString());
 
-        if (communitys == null || communitys.size() == 0) {
+        if (communitys == null || communitys.isEmpty()) {
             throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, "还未入驻小区，请先入驻小区");
         }
 
@@ -445,16 +445,16 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         Assert.listOnlyOne(users, "查询用户信息错误！");
         if (!StringUtil.isEmpty(users.get(0).getLevelCd()) && !users.get(0).getLevelCd().equals("02")) { //02表示普通用户
             // 校验 员工和商户是否有关系
-            ResponseEntity responseEntity = getStoreInfo(pd, restTemplate);
+            ResponseEntity<String> responseEntity = getStoreInfo(pd, restTemplate);
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, responseEntity.getBody() + "");
             }
 
-            Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
-            Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
+            Assert.jsonObjectHaveKey(responseEntity.getBody(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
+            Assert.jsonObjectHaveKey(responseEntity.getBody(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
 
-            String storeId = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeId");
-            String storeTypeCd = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeTypeCd");
+            String storeId = JSONObject.parseObject(responseEntity.getBody()).getString("storeId");
+            String storeTypeCd = JSONObject.parseObject(responseEntity.getBody()).getString("storeTypeCd");
 
             JSONObject paramIn = JSONObject.parseObject(pd.getReqData());
 
@@ -492,16 +492,16 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     protected ComponentValidateResult validateStoreStaffRelationship(IPageData pd, RestTemplate restTemplate) {
 
         // 校验 员工和商户是否有关系
-        ResponseEntity responseEntity = getStoreInfo(pd, restTemplate);
+        ResponseEntity<String> responseEntity = getStoreInfo(pd, restTemplate);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new SMOException(ResponseConstant.RESULT_CODE_ERROR, responseEntity.getBody() + "");
         }
 
-        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
-        Assert.jsonObjectHaveKey(responseEntity.getBody().toString(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
+        Assert.jsonObjectHaveKey(responseEntity.getBody(), "storeId", "根据用户ID查询商户ID失败，未包含storeId节点");
+        Assert.jsonObjectHaveKey(responseEntity.getBody(), "storeTypeCd", "根据用户ID查询商户类型失败，未包含storeTypeCd节点");
 
-        String storeId = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeId");
-        String storeTypeCd = JSONObject.parseObject(responseEntity.getBody().toString()).getString("storeTypeCd");
+        String storeId = JSONObject.parseObject(responseEntity.getBody()).getString("storeId");
+        String storeTypeCd = JSONObject.parseObject(responseEntity.getBody()).getString("storeTypeCd");
 
         return new ComponentValidateResult(storeId, storeTypeCd, "", pd.getUserId(), pd.getUserName());
     }
@@ -519,7 +519,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     protected <T> T getForApi(IPageData pd, T param, String serviceCode, Class<T> t) {
 
         List<T> list = getForApis(pd, param, serviceCode, t);
-        if (list != null && list.size() > 0) {
+        if (list != null && !list.isEmpty()) {
             return list.get(0);
         }
         return null;
@@ -538,7 +538,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
     protected <T> T postForApi(IPageData pd, T param, String serviceCode, Class<T> t) {
         List<T> ts = postForApis(pd, param, serviceCode, t);
 
-        if (ts == null || ts.size() < 1) {
+        if (ts == null || ts.isEmpty()) {
             return null;
         }
 
@@ -582,8 +582,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         }
         String jsonStr = JSONObject.toJSONString(datas);
 
-        List<T> list = JSONObject.parseArray(jsonStr, t);
-        return list;
+        return JSONObject.parseArray(jsonStr, t);
     }
 
     /**
@@ -625,8 +624,7 @@ public class DefaultAbstractComponentSMO extends AbstractComponentSMO {
         }
         String jsonStr = JSONObject.toJSONString(datas);
 
-        List<T> list = JSONObject.parseArray(jsonStr, t);
-        return list;
+        return JSONObject.parseArray(jsonStr, t);
     }
 
 

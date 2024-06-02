@@ -9,7 +9,7 @@ import com.java110.core.log.LoggerFactory;
 
 public abstract class Cmd implements ServiceCmdListener {
 
-    private static Logger logger = LoggerFactory.getLogger(Cmd.class);
+    private static final Logger logger = LoggerFactory.getLogger(Cmd.class);
 
     protected static final int MAX_ROW = 10000;
 

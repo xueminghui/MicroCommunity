@@ -22,13 +22,11 @@ import com.java110.dto.invoiceApplyItem.InvoiceApplyItemDto;
 import com.java110.po.invoiceApplyItem.InvoiceApplyItemPo;
 import com.java110.utils.util.BeanConvertUtil;
 import com.java110.core.base.smo.BaseServiceSMO;
-import com.java110.dto.user.UserDto;
 import com.java110.dto.PageDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +42,13 @@ import java.util.Map;
 @RestController
 public class InvoiceApplyItemV1InnerServiceSMOImpl extends BaseServiceSMO implements IInvoiceApplyItemV1InnerServiceSMO {
 
-    @Autowired
+    @Resource
     private IInvoiceApplyItemV1ServiceDao invoiceApplyItemV1ServiceDaoImpl;
 
 
     @Override
     public int saveInvoiceApplyItem(@RequestBody  InvoiceApplyItemPo invoiceApplyItemPo) {
-        int saveFlag = invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItemInfo(BeanConvertUtil.beanCovertMap(invoiceApplyItemPo));
-        return saveFlag;
+        return invoiceApplyItemV1ServiceDaoImpl.saveInvoiceApplyItemInfo(BeanConvertUtil.beanCovertMap(invoiceApplyItemPo));
     }
 
     @Override
@@ -85,9 +82,7 @@ public class InvoiceApplyItemV1InnerServiceSMOImpl extends BaseServiceSMO implem
             invoiceApplyItemDto.setPage((page - 1) * invoiceApplyItemDto.getRow());
         }
 
-        List<InvoiceApplyItemDto> invoiceApplyItems = BeanConvertUtil.covertBeanList(invoiceApplyItemV1ServiceDaoImpl.getInvoiceApplyItemInfo(BeanConvertUtil.beanCovertMap(invoiceApplyItemDto)), InvoiceApplyItemDto.class);
-
-        return invoiceApplyItems;
+        return BeanConvertUtil.covertBeanList(invoiceApplyItemV1ServiceDaoImpl.getInvoiceApplyItemInfo(BeanConvertUtil.beanCovertMap(invoiceApplyItemDto)), InvoiceApplyItemDto.class);
     }
 
 

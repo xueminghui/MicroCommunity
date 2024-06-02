@@ -15,9 +15,7 @@
  */
 package com.java110.acct.cmd.invoice;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.java110.acct.dao.IInvoiceEventV1ServiceDao;
 import com.java110.core.annotation.Java110Cmd;
 import com.java110.core.annotation.Java110Transactional;
 import com.java110.core.context.CmdContextUtils;
@@ -39,13 +37,12 @@ import com.java110.po.invoiceApply.InvoiceApplyPo;
 import com.java110.po.invoiceEvent.InvoiceEventPo;
 import com.java110.utils.exception.CmdException;
 import com.java110.utils.util.Assert;
-import com.java110.utils.util.BeanConvertUtil;
 import com.java110.utils.util.ListUtil;
 import com.java110.vo.ResultVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -62,22 +59,22 @@ import java.util.List;
 @Java110Cmd(serviceCode = "invoice.auditInvoiceApply")
 public class AuditInvoiceApplyCmd extends Cmd {
 
-    private static Logger logger = LoggerFactory.getLogger(AuditInvoiceApplyCmd.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuditInvoiceApplyCmd.class);
 
 
-    @Autowired
+    @Resource
     private IInvoiceApplyV1InnerServiceSMO invoiceApplyV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IInvoiceApplyItemV1InnerServiceSMO invoiceApplyItemV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IInvoiceEventV1InnerServiceSMO invoiceEventV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
 
-    @Autowired
+    @Resource
     private IPayFeeDetailV1InnerServiceSMO payFeeDetailV1InnerServiceSMOImpl;
 
 
@@ -150,7 +147,7 @@ public class AuditInvoiceApplyCmd extends Cmd {
             if ("1100".equals(reqJson.getString("state"))) {
                 payFeeDetailPo.setOpenInvoice("Y"); // todo 开票完成
             }else{
-                payFeeDetailPo.setOpenInvoice("N"); // todo 带开票
+                payFeeDetailPo.setOpenInvoice("N"); // todo 待开票
             }
 
             payFeeDetailV1InnerServiceSMOImpl.updatePayFeeDetailNew(payFeeDetailPo);

@@ -92,7 +92,7 @@ public class DataFlowFactory {
      * @return
      */
     public static AppRoute getRoute(DataFlow dataFlow, String serviceCode){
-        if (dataFlow.getAppRoutes().size() == 0){
+        if (dataFlow.getAppRoutes().isEmpty()){
             throw new RuntimeException("当前没有获取到AppId对应的信息");
         }
 
@@ -113,14 +113,14 @@ public class DataFlowFactory {
      * @return
      */
     public static AppRoute getRoute(ApiDataFlow dataFlow, String serviceCode){
-        if (dataFlow.getAppRoutes().size() == 0){
+        if (dataFlow.getAppRoutes().isEmpty()){
             throw new RuntimeException("当前没有获取到AppId对应的信息");
         }
 
         List<AppRoute> appRoutes = dataFlow.getAppRoutes();
         for(AppRoute appRoute : appRoutes) {
             if (StatusConstant.STATUS_CD_VALID.equals(appRoute.getStatusCd())
-                    &&appRoute.getAppService().getServiceCode().equals(serviceCode)){
+                    && appRoute.getAppService().getServiceCode().equals(serviceCode)){
                 return appRoute;
             }
         }
@@ -135,6 +135,7 @@ public class DataFlowFactory {
      */
     public static AppRoute getRoute(String appId,String serviceCode){
         List<AppRoute> appRoutes = AppRouteCache.getAppRoute(appId);
+        assert appRoutes != null;
         for(AppRoute appRoute : appRoutes) {
             if (StatusConstant.STATUS_CD_VALID.equals(appRoute.getStatusCd())
                     &&appRoute.getAppService().getServiceCode().equals(serviceCode)){
@@ -145,9 +146,7 @@ public class DataFlowFactory {
     }
     /**
      * 获取单个服务
-     * @param dataFlow
-     * @param serviceCode
-     * @return
+     * @param dataFlow 数据流对象
      */
     public static AppService getService(DataFlow dataFlow, String serviceCode){
         AppRoute route = getRoute(dataFlow, serviceCode);
