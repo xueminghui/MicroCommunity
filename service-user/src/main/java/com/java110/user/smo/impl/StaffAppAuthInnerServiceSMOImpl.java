@@ -43,7 +43,7 @@ public class StaffAppAuthInnerServiceSMOImpl extends BaseServiceSMO implements I
     public int updateStaffAppAuth(@RequestBody StaffAppAuthPo staffAppAuthPo) {
         int saveFlag = 1;
 
-        if (StringUtil.isEmpty(staffAppAuthPo.getOpenName())) {
+        if (!StringUtil.isEmpty(staffAppAuthPo.getOpenName())) {
             String nickName = "未获取";
             try {
                 nickName = Base64Convert.byteToBase64(staffAppAuthPo.getOpenName().getBytes("UTF-8"));
