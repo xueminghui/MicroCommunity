@@ -95,7 +95,7 @@ public class DeleteOwnerMemberCmd extends Cmd {
             throw new CmdException("业主不存在");
         }
 
-        if (StringUtil.isEmpty(ownerAppUserDtos.get(0).getOwnerId())) {
+        if (StringUtil.isEmpty(ownerAppUserDtos.get(0).getMemberId())) {
             throw new CmdException("业主不存在");
         }
 
@@ -106,7 +106,7 @@ public class DeleteOwnerMemberCmd extends Cmd {
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setMemberId(reqJson.getString("memberId"));
         ownerDto.setCommunityId(reqJson.getString("communityId"));
-        ownerDto.setOwnerId(ownerAppUserDtos.get(0).getOwnerId());
+        ownerDto.setOwnerId(ownerAppUserDtos.get(0).getMemberId());
         ownerDto.setOwnerTypeCds(new String[]{OwnerDto.OWNER_TYPE_CD_MEMBER, OwnerDto.OWNER_TYPE_CD_RENTING,
                 OwnerDto.OWNER_TYPE_CD_TEMP, OwnerDto.OWNER_TYPE_CD_OTHER});
 
