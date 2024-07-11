@@ -123,6 +123,12 @@ public class QueryFinishVisitCmd extends Cmd {
 
         for(JSONObject apiVisitDataVo: datas){
             for(OwnerDto tmpOwnerDto : ownerDtos){
+                if(StringUtil.isEmpty(apiVisitDataVo.getString("ownerId"))){
+                    continue;
+                }
+                if(StringUtil.isEmpty(tmpOwnerDto.getOwnerId())){
+                    continue;
+                }
                 if(!apiVisitDataVo.getString("ownerId").equals(tmpOwnerDto.getOwnerId())){
                     continue;
                 }
