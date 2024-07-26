@@ -96,14 +96,14 @@ public class SaveEquipmentAccountCmd extends Cmd {
             equipmentOperatingLogPo.setOperatingDescriptor("设备初始添加入库");
             String currentUserId = reqJson.getString("userId");
             System.out.println("currentUserId"+currentUserId);
-//            if (!StringUtil.isEmpty(currentUserId)){
-//                UserPo userDto =  new UserPo();
-//                userDto.setUserId(currentUserId);
-//                UserPo userPo = userV1InnerServiceSMO.queryUserByUserId(userDto);
-//                equipmentOperatingLogPo.setUserName(userPo.getName());
-//                equipmentOperatingLogPo.setUserId(currentUserId);
-//                equipmentOperatingLogPo.setUseTel(userPo.getTel());
-//            }
+            if (!StringUtil.isEmpty(currentUserId)){
+                UserPo userDto =  new UserPo();
+                userDto.setUserId(currentUserId);
+                List<UserDto> userDtos = userV1InnerServiceSMO.queryUsers(BeanConvertUtil.covertBean(userDto, UserDto.class));
+                equipmentOperatingLogPo.setUserName(userDtos.get(0).getName());
+                equipmentOperatingLogPo.setUserId(currentUserId);
+                equipmentOperatingLogPo.setUseTel(userDtos.get(0).getTel());
+            }
             equipmentOperatingLogV1InnerServiceSMOImpl.saveEquipmentOperatingLog(equipmentOperatingLogPo);
         }
         if (flag < 1) {
