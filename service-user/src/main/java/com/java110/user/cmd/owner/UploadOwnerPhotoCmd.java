@@ -126,8 +126,8 @@ public class UploadOwnerPhotoCmd extends Cmd {
             businessUnit.put("relTypeCd", "10000");
             businessUnit.put("saveWay", "table");
             businessUnit.put("objId", paramInJson.getString("memberId"));
-            businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
-            businessUnit.put("fileSaveName", paramInJson.getString("ownerPhotoId"));
+            businessUnit.put("fileRealName", paramInJson.getString("fileSaveName"));
+            businessUnit.put("fileSaveName", paramInJson.getString("fileSaveName"));
             FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
             fileRelInnerServiceSMOImpl.saveFileRel(fileRelPo);
             return;
@@ -135,7 +135,7 @@ public class UploadOwnerPhotoCmd extends Cmd {
 
         JSONObject businessUnit = new JSONObject();
         businessUnit.putAll(BeanConvertUtil.beanCovertMap(fileRelDtos.get(0)));
-        businessUnit.put("fileRealName", paramInJson.getString("ownerPhotoId"));
+        businessUnit.put("fileRealName", paramInJson.getString("fileSaveName"));
         businessUnit.put("fileSaveName", paramInJson.getString("fileSaveName"));
         FileRelPo fileRelPo = BeanConvertUtil.covertBean(businessUnit, FileRelPo.class);
         fileRelInnerServiceSMOImpl.updateFileRel(fileRelPo);

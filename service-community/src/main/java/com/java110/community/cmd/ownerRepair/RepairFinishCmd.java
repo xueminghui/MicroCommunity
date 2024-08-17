@@ -138,7 +138,7 @@ public class RepairFinishCmd extends Cmd {
         String repairMaterial = "";
         //费用明细(单价 * 数量 = 总价)
         String repairFee = "";
-        if (ListUtil.isNull(json) && ("1001".equals(maintenanceType) || "1003".equals(maintenanceType))) {
+        if (!ListUtil.isNull(json) && ("1001".equals(maintenanceType) || "1003".equals(maintenanceType))) {
             Object[] objects = json.toArray();
             //数据前期校验
             for (int i = 0; i < objects.length; i++) {
@@ -551,9 +551,13 @@ public class RepairFinishCmd extends Cmd {
             //维修类型
             repairPoolPo.setMaintenanceType(reqJson.getString("maintenanceType"));
             //用料
-            repairPoolPo.setRepairMaterials(repairMaterial.substring(0, repairMaterial.length() - 1));
+            if (!StringUtil.isEmpty(repairMaterial)) {
+                repairPoolPo.setRepairMaterials(repairMaterial.substring(0, repairMaterial.length() - 1));
+            }
             //费用明细
-            repairPoolPo.setRepairFee(repairFee.substring(0, repairFee.length() - 1));
+            if (!StringUtil.isEmpty(repairFee)) {
+                repairPoolPo.setRepairFee(repairFee.substring(0, repairFee.length() - 1));
+            }
             //支付方式
             repairPoolPo.setPayType(reqJson.getString("payType"));
             flag = repairPoolV1InnerServiceSMOImpl.updateRepairPoolNew(repairPoolPo);
