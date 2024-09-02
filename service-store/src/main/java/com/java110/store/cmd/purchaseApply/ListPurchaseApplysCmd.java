@@ -154,7 +154,7 @@ public class ListPurchaseApplysCmd extends Cmd {
 //                }
 //                purchaseApplyDetailVo.setTimes(resourceStoreDtos.get(0).getTimes());
 //                //todo 是否是固定物品
-//                apiPurchaseApplyDataVo.setIsFixed(resourceStoreDtos.get(0).getIsFixed());
+                apiPurchaseApplyDataVo.setIsFixed(purchaseApplyDetailVo.getIsFixed());
 //                apiPurchaseApplyDataVo.setIsFixedName(resourceStoreDtos.get(0).getIsFixedName());
 //                purchaseApplyDetailVo.setIsFixed(resourceStoreDtos.get(0).getIsFixed());
 //                purchaseApplyDetailVo.setIsFixedName(resourceStoreDtos.get(0).getIsFixedName());
